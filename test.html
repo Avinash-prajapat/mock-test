@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test - MockTest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --bg: #0a0a0f;
+        --bg-2: #12121a;
+        --text: #ffffff;
+        --muted: rgba(255,255,255,0.65);
+        --muted-2: rgba(255,255,255,0.45);
+        --accent-1: #7c5cff;
+        --accent-2: #22d3ee;
+        --glass: rgba(255,255,255,0.04);
+        --glass-border: rgba(255,255,255,0.08);
+        --card-hover: rgba(255,255,255,0.07);
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+    }
+
+    html, body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Animated Background ===== */
+    .bg-wrap {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        background:
+            radial-gradient(1200px 600px at 80% -10%, rgba(124,92,255,0.15), transparent 60%),
+            radial-gradient(900px 500px at -10% 30%, rgba(34,211,238,0.1), transparent 60%),
+            var(--bg);
+    }
+    .grid-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-image:
+            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 48px 48px;
+        mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+    }
+
+    /* ===== Navbar ===== */
+    .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        background: rgba(10,10,15,0.7);
+        border-bottom: 1px solid var(--glass-border);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 1.2rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+    .brand-logo {
+        width: 34px; height: 34px;
+        border-radius: 9px;
+        background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+        display: grid; place-items: center;
+        font-size: 1rem;
+        box-shadow: 0 4px 16px rgba(124,92,255,0.4);
+    }
+    .brand-text {
+        background: linear-gradient(90deg, #fff, #c4b5fd);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    /* ===== Timer ===== */
+    .timer {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        font-variant-numeric: tabular-nums;
+        color: var(--text);
+        transition: all 0.3s ease;
+    }
+    .timer.warning {
+        background: rgba(245,158,11,0.15);
+        border-color: rgba(245,158,11,0.4);
+        color: var(--warning);
+        box-shadow: 0 0 20px rgba(245,158,11,0.2);
+    }
+    .timer.danger {
+        background: rgba(239,68,68,0.2);
+        border-color: rgba(239,68,68,0.5);
+        color: #fca5a5;
+        box-shadow: 0 0 25px rgba(239,68,68,0.3);
+        animation: pulse-danger 1s ease-in-out infinite;
+    }
+    @keyframes pulse-danger {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.03); }
+    }
+
+    /* ===== Layout ===== */
+    .container {
+        max-width: 1100px;
+        margin: 2rem auto;
+        padding: 0 1.5rem;
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 1.5rem;
+        align-items: start;
+        animation: fadeUp 0.6s ease;
+    }
+
+    /* ===== Question Nav (Sidebar) ===== */
+    .question-nav {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 1.2rem;
+        backdrop-filter: blur(10px);
+        position: sticky;
+        top: 85px;
+        max-height: calc(100vh - 100px);
+        overflow-y: auto;
+    }
+    .nav-title {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-bottom: 1rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+    }
+    .nav-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.6rem;
+    }
+    .q-btn {
+        aspect-ratio: 1;
+        border: 1px solid var(--glass-border);
+        background: var(--glass);
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--muted);
+        transition: all 0.2s ease;
+        font-family: inherit;
+    }
+    .q-btn:hover {
+        background: var(--card-hover);
+        border-color: var(--accent-2);
+        color: var(--text);
+    }
+    .q-btn.answered {
+        background: linear-gradient(135deg, var(--accent-1), #5b8cff);
+        color: white;
+        border-color: transparent;
+        box-shadow: 0 4px 12px rgba(124,92,255,0.3);
+    }
+    .q-btn.active {
+        border-color: var(--accent-2);
+        box-shadow: 0 0 0 2px rgba(34,211,238,0.3);
+        color: var(--text);
+        transform: scale(1.05);
+    }
+
+    /* ===== Question Area ===== */
+    .question-area {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 2rem;
+        backdrop-filter: blur(10px);
+    }
+    .q-text {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 1.8rem;
+        line-height: 1.6;
+        color: var(--text);
+    }
+    .option {
+        padding: 1.1rem 1.3rem;
+        border: 1px solid var(--glass-border);
+        background: var(--glass);
+        border-radius: 12px;
+        margin-bottom: 0.8rem;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+    }
+    .option:hover {
+        background: var(--card-hover);
+        border-color: rgba(255,255,255,0.2);
+        transform: translateX(4px);
+    }
+    .option.selected {
+        border-color: var(--accent-1);
+        background: rgba(124,92,255,0.12);
+        box-shadow: 0 0 0 1px var(--accent-1), 0 4px 16px rgba(124,92,255,0.15);
+    }
+    .option-letter {
+        font-weight: 700;
+        color: var(--accent-2);
+        min-width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(34,211,238,0.1);
+        border-radius: 6px;
+        font-size: 0.85rem;
+        transition: all 0.25s ease;
+    }
+    .option.selected .option-letter {
+        background: var(--accent-1);
+        color: white;
+    }
+    .option-text {
+        padding-top: 2px;
+        line-height: 1.5;
+        color: var(--text);
+    }
+
+    /* ===== Controls ===== */
+    .controls {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 2rem;
+        gap: 1rem;
+        flex-wrap: wrap;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--glass-border);
+    }
+    .controls button {
+        padding: 0.8rem 1.5rem;
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        background: var(--glass);
+        color: var(--text);
+        cursor: pointer;
+        font-size: 0.95rem;
+        font-weight: 600;
+        font-family: inherit;
+        transition: all 0.25s ease;
+    }
+    .controls button:hover:not(:disabled) {
+        background: var(--card-hover);
+        border-color: rgba(255,255,255,0.2);
+        transform: translateY(-2px);
+    }
+    .controls button:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        transform: none;
+    }
+    .controls .submit-btn {
+        background: linear-gradient(135deg, var(--success), #059669);
+        border-color: transparent;
+        color: white;
+        box-shadow: 0 8px 24px rgba(16,185,129,0.3);
+        position: relative;
+        overflow: hidden;
+    }
+    .controls .submit-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+    }
+    .controls .submit-btn:hover:not(:disabled)::before {
+        transform: translateX(100%);
+    }
+    .controls .submit-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(16,185,129,0.45);
+    }
+
+    /* ===== Loading State ===== */
+    .loading {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem;
+        color: var(--muted);
+        font-size: 1.1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+    }
+    .loading::before {
+        content: "";
+        width: 40px; height: 40px;
+        border: 3px solid var(--glass-border);
+        border-top-color: var(--accent-1);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 768px) {
+        .navbar { padding: 0.9rem 1rem; }
+        .brand-text { display: none; } /* Show only logo on small mobile */
+        .container { 
+            grid-template-columns: 1fr; 
+            padding: 0 1rem;
+            margin: 1rem auto;
+        }
+        .question-nav { 
+            position: sticky; 
+            top: 65px; 
+            z-index: 10; 
+            order: -1; 
+            max-height: none;
+        }
+        .nav-grid { 
+            display: flex; 
+            overflow-x: auto; 
+            gap: 0.5rem; 
+            padding-bottom: 0.5rem;
+            scrollbar-width: none; /* Firefox */
+        }
+        .nav-grid::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+        .q-btn { 
+            min-width: 42px; 
+            flex-shrink: 0;
+        }
+        .question-area { padding: 1.5rem; }
+        .q-text { font-size: 1.1rem; }
+        .controls { justify-content: stretch; }
+        .controls button { flex: 1; text-align: center; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Background layers -->
+<div class="bg-wrap"></div>
+<div class="grid-overlay"></div>
+
+<nav class="navbar">
+    <div class="brand">
+        <div class="brand-logo">📝</div>
+        <span class="brand-text" id="testTitle">Loading...</span>
+    </div>
+    <div class="timer" id="timer">⏱ --:--</div>
+</nav>
+
+<div class="container" id="container">
+    <div class="loading">Loading test environment...</div>
+</div>
+
+<script src="js/config.js"></script>
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const TEST_ID = params.get('id');
+
+    let questions = [];
+    let currentIndex = 0;
+    let answers = {};
+    let timeLeft = 30 * 60;
+    let timerInterval = null;
+    let submitting = false;
+
+    // Fullscreen restore on this page
+    autoRestoreFullscreen();
+    createFullscreenIndicator();
+
+    // Tab switch detect
+    document.addEventListener('visibilitychange', () => {
+        if (document.hidden && isFsEnabled()) {
+            console.warn('⚠️ Tab switch detected!');
+        }
+    });
+
+    (async () => {
+        const user = await requireAuth();
+        if (!user) return;
+
+        if (!TEST_ID) {
+            alert('No test selected');
+            window.location.href = 'dashboard.html';
+            return;
+        }
+
+        const t = await apiCall(`/api/tests/${TEST_ID}`);
+        if (t.success && t.test) {
+            document.getElementById('testTitle').textContent = t.test.title;
+            timeLeft = (t.test.duration_minutes || 30) * 60;
+        }
+
+        const data = await apiCall(`/api/tests/${TEST_ID}/questions`);
+        if (!data.success || !data.questions.length) {
+            alert('No questions found for this test');
+            window.location.href = 'dashboard.html';
+            return;
+        }
+
+        questions = data.questions;
+        render();
+        startTimer();
+    })();
+
+    function render() {
+        const container = document.getElementById('container');
+        container.innerHTML = `
+            <div class="question-nav">
+                <div class="nav-title">Questions</div>
+                <div class="nav-grid" id="navGrid"></div>
+            </div>
+            <div class="question-area">
+                <div id="qBox"></div>
+                <div class="controls">
+                    <button id="prevBtn">← Prev</button>
+                    <button id="nextBtn">Next →</button>
+                    <button id="submitBtn" class="submit-btn">Submit Test</button>
+                </div>
+            </div>
+        `;
+
+        renderNav();
+        renderQuestion();
+
+        document.getElementById('prevBtn').onclick = () => {
+            if (currentIndex > 0) { currentIndex--; renderNav(); renderQuestion(); }
+        };
+        document.getElementById('nextBtn').onclick = () => {
+            if (currentIndex < questions.length - 1) { currentIndex++; renderNav(); renderQuestion(); }
+        };
+        document.getElementById('submitBtn').onclick = () => {
+            const unanswered = questions.length - Object.keys(answers).length;
+            const msg = unanswered > 0
+                ? `You have ${unanswered} unanswered question(s). Submit anyway?`
+                : 'Submit test?';
+            if (confirm(msg)) submitTest();
+        };
+    }
+
+    function renderNav() {
+        const grid = document.getElementById('navGrid');
+        grid.innerHTML = '';
+        questions.forEach((q, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'q-btn';
+            btn.textContent = i + 1;
+            if (answers[q.id]) btn.classList.add('answered');
+            if (i === currentIndex) btn.classList.add('active');
+            btn.onclick = () => { currentIndex = i; renderNav(); renderQuestion(); };
+            grid.appendChild(btn);
+        });
+    }
+
+    function renderQuestion() {
+        const q = questions[currentIndex];
+        const box = document.getElementById('qBox');
+        const opts = ['A', 'B', 'C', 'D'];
+
+        box.innerHTML = `
+            <div class="q-text">Q${currentIndex + 1}. ${escapeHtml(q.question_text)}</div>
+            ${opts.map(o => `
+                <div class="option ${answers[q.id] === o ? 'selected' : ''}" data-opt="${o}">
+                    <span class="option-letter">${o}</span>
+                    <span class="option-text">${escapeHtml(q['option_' + o.toLowerCase()])}</span>
+                </div>
+            `).join('')}
+        `;
+
+        box.querySelectorAll('.option').forEach(el => {
+            el.onclick = () => {
+                answers[q.id] = el.dataset.opt;
+                renderNav();
+                renderQuestion();
+            };
+        });
+
+        document.getElementById('prevBtn').disabled = currentIndex === 0;
+        document.getElementById('nextBtn').disabled = currentIndex === questions.length - 1;
+    }
+
+    function startTimer() {
+        const el = document.getElementById('timer');
+        const update = () => {
+            const m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+            const s = String(timeLeft % 60).padStart(2, '0');
+            el.textContent = `⏱ ${m}:${s}`;
+            el.classList.remove('warning', 'danger');
+            if (timeLeft <= 60) el.classList.add('danger');
+            else if (timeLeft <= 300) el.classList.add('warning');
+        };
+        update();
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            update();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert('Time up! Auto-submitting...');
+                submitTest();
+            }
+        }, 1000);
+    }
+
+    async function submitTest() {
+        if (submitting) return;
+        submitting = true;
+        clearInterval(timerInterval);
+
+        // 🔥 Flag RAHEGA — fullscreen nahi tootega
+        localStorage.setItem('fs_enabled_v2', '1');
+
+        const btn = document.getElementById('submitBtn');
+        if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
+
+        const data = await apiCall(`/api/tests/${TEST_ID}/submit`, {
+            method: 'POST',
+            body: JSON.stringify({ answers })
+        });
+
+        if (data.success) {
+            window.location.href = `result.html?id=${data.result_id}`;
+        } else {
+            alert(data.error || 'Submission failed');
+            submitting = false;
+            if (btn) { btn.disabled = false; btn.textContent = 'Submit Test'; }
+        }
+    }
+</script>
+</body>
+</html>

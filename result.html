@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Result - MockTest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --bg: #0a0a0f;
+        --bg-2: #12121a;
+        --text: #ffffff;
+        --muted: rgba(255,255,255,0.65);
+        --muted-2: rgba(255,255,255,0.45);
+        --accent-1: #7c5cff;
+        --accent-2: #22d3ee;
+        --glass: rgba(255,255,255,0.04);
+        --glass-border: rgba(255,255,255,0.08);
+        --card-hover: rgba(255,255,255,0.07);
+        --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+    }
+
+    html, body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Animated Background ===== */
+    .bg-wrap {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        background:
+            radial-gradient(1000px 500px at 70% -10%, rgba(124,92,255,0.2), transparent 60%),
+            radial-gradient(800px 450px at -10% 40%, rgba(34,211,238,0.15), transparent 60%),
+            radial-gradient(700px 400px at 50% 110%, rgba(244,114,182,0.12), transparent 60%),
+            var(--bg);
+    }
+    .grid-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-image:
+            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 48px 48px;
+        mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+    }
+    .orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.45;
+        z-index: -1;
+        animation: float 18s ease-in-out infinite;
+    }
+    .orb.o1 { width: 380px; height: 380px; background: #7c5cff; top: -100px; left: -100px; }
+    .orb.o2 { width: 320px; height: 320px; background: #22d3ee; bottom: 20%; right: -80px; animation-delay: -6s; }
+    .orb.o3 { width: 340px; height: 340px; background: #f472b6; bottom: -120px; left: 20%; animation-delay: -12s; }
+
+    @keyframes float {
+        0%, 100% { transform: translate(0,0) scale(1); }
+        33% { transform: translate(30px,-20px) scale(1.05); }
+        66% { transform: translate(-20px,30px) scale(0.95); }
+    }
+
+    /* ===== Layout ===== */
+    body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem;
+        min-height: 100vh;
+    }
+
+    /* ===== Card ===== */
+    .card {
+        width: 100%;
+        max-width: 520px;
+        padding: 2.5rem 2rem;
+        background: rgba(255,255,255,0.03);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+        animation: fadeUp 0.6s ease;
+    }
+    .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(124,92,255,0.6), transparent);
+    }
+
+    /* ===== Icon & Typography ===== */
+    .icon {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+        display: inline-block;
+        animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    @keyframes bounceIn {
+        0% { transform: scale(0); opacity: 0; }
+        60% { transform: scale(1.1); }
+        100% { transform: scale(1); opacity: 1; }
+    }
+
+    h1 {
+        font-size: 1.75rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.5rem;
+        background: linear-gradient(90deg, #fff, #c4b5fd);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+    .test-name {
+        color: var(--muted);
+        font-size: 0.95rem;
+        margin-bottom: 2rem;
+        font-weight: 500;
+    }
+
+    /* ===== Score Circle ===== */
+    .score-circle {
+        width: 170px;
+        height: 170px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2.2rem;
+        font-weight: 800;
+        color: var(--text);
+        position: relative;
+        background: conic-gradient(var(--score-color, var(--success)) var(--pct, 0%), rgba(255,255,255,0.08) 0);
+        box-shadow: 0 0 40px rgba(124,92,255,0.15);
+        transition: background 1s ease-out;
+    }
+    .score-circle::before {
+        content: '';
+        position: absolute;
+        inset: 10px;
+        background: var(--bg-2);
+        border-radius: 50%;
+        border: 1px solid var(--glass-border);
+    }
+    .score-circle span {
+        position: relative;
+        z-index: 1;
+        color: var(--text);
+        display: flex;
+        align-items: baseline;
+        gap: 0.2rem;
+    }
+    .score-slash {
+        opacity: 0.5;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .percentage {
+        font-size: 1.6rem;
+        font-weight: 800;
+        margin-bottom: 0.4rem;
+        letter-spacing: -0.02em;
+    }
+    .status-msg {
+        color: var(--muted);
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+    }
+
+    /* ===== Stats Grid ===== */
+    .stats {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    .stat {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        padding: 1.2rem 1rem;
+        border-radius: 14px;
+        transition: all 0.3s ease;
+    }
+    .stat:hover {
+        background: var(--card-hover);
+        transform: translateY(-3px);
+        border-color: rgba(255,255,255,0.15);
+    }
+    .stat-value {
+        font-size: 1.6rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+    .stat-label {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-top: 0.3rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    /* ===== Actions ===== */
+    .actions {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+    }
+    .actions a {
+        flex: 1;
+        padding: 0.9rem 1.2rem;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        min-width: 130px;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-primary {
+        background: linear-gradient(135deg, var(--accent-1), #5b8cff);
+        color: white;
+        box-shadow: 0 8px 24px rgba(124,92,255,0.35);
+    }
+    .btn-primary::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+    }
+    .btn-primary:hover::before { transform: translateX(100%); }
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(124,92,255,0.5);
+    }
+    .btn-secondary {
+        background: var(--glass);
+        color: var(--text);
+        border: 1px solid var(--glass-border);
+    }
+    .btn-secondary:hover {
+        background: var(--card-hover);
+        border-color: rgba(255,255,255,0.2);
+        transform: translateY(-2px);
+    }
+
+    /* ===== Loading State ===== */
+    .loading {
+        color: var(--muted);
+        font-size: 1.1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 2rem 0;
+    }
+    .loading::before {
+        content: "";
+        width: 36px; height: 36px;
+        border: 3px solid var(--glass-border);
+        border-top-color: var(--accent-1);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 600px) {
+        .card { padding: 2rem 1.5rem; }
+        h1 { font-size: 1.5rem; }
+        .score-circle { width: 150px; height: 150px; font-size: 2rem; }
+        .actions { flex-direction: column; }
+        .actions a { width: 100%; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Background layers -->
+<div class="bg-wrap"></div>
+<div class="grid-overlay"></div>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<div class="card" id="card">
+    <div class="loading">Analyzing your performance...</div>
+</div>
+
+<script src="js/config.js"></script>
+<script>
+    autoRestoreFullscreen();
+    createFullscreenIndicator();
+
+    const params = new URLSearchParams(window.location.search);
+    const RESULT_ID = params.get('id');
+
+    (async () => {
+        const user = await requireAuth();
+        if (!user) return;
+
+        if (!RESULT_ID) {
+            window.location.href = 'dashboard.html';
+            return;
+        }
+
+        const data = await apiCall(`/api/results/${RESULT_ID}`);
+        if (!data.success || !data.result) {
+            document.getElementById('card').innerHTML = `
+                <div class="icon">⚠️</div>
+                <h1>Result Not Found</h1>
+                <p class="test-name">The requested result does not exist.</p>
+                <div class="actions" style="justify-content: center; margin-top: 2rem;">
+                    <a href="dashboard.html" class="btn-primary">Go to Dashboard</a>
+                </div>
+            `;
+            return;
+        }
+
+        render(data.result);
+    })();
+
+    function render(r) {
+        const pct = r.total > 0 ? (r.score / r.total) * 100 : 0;
+        const passed = pct >= 40;
+
+        let emoji, msg, color;
+        if (pct >= 80) { emoji = '🏆'; msg = 'Outstanding performance!'; color = '#10b981'; }
+        else if (pct >= 60) { emoji = '🎉'; msg = 'Great job! Keep it up.'; color = '#10b981'; }
+        else if (pct >= 40) { emoji = '👍'; msg = 'Good effort! A little more practice.'; color = '#f59e0b'; }
+        else { emoji = '📚'; msg = 'Keep practicing! You will get there.'; color = '#ef4444'; }
+
+        const wrong = r.total - r.score;
+
+        document.getElementById('card').innerHTML = `
+            <div class="icon">${emoji}</div>
+            <h1>${passed ? 'Test Passed' : 'Test Completed'}</h1>
+            <p class="test-name">${escapeHtml(r.tests?.title || 'Test')}</p>
+
+            <div class="score-circle" style="--pct: ${pct}%; --score-color: ${color}">
+                <span>${r.score}<span class="score-slash">/</span>${r.total}</span>
+            </div>
+
+            <div class="percentage" style="color: ${color}">${pct.toFixed(1)}%</div>
+            <p class="status-msg">${msg}</p>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value" style="color: #10b981;">${r.score}</div>
+                    <div class="stat-label">Correct</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" style="color: #ef4444;">${wrong}</div>
+                    <div class="stat-label">Wrong / Skipped</div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="dashboard.html" class="btn-primary">Back to Dashboard</a>
+                <a href="test.html?id=${r.test_id}" class="btn-secondary">Retake Test</a>
+            </div>
+        `;
+    }
+</script>
+</body>
+</html>

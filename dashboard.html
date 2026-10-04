@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard - MockTest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+        --bg: #0a0a0f;
+        --bg-2: #12121a;
+        --text: #ffffff;
+        --muted: rgba(255,255,255,0.65);
+        --muted-2: rgba(255,255,255,0.45);
+        --accent-1: #7c5cff;
+        --accent-2: #22d3ee;
+        --accent-3: #f472b6;
+        --glass: rgba(255,255,255,0.04);
+        --glass-border: rgba(255,255,255,0.08);
+        --card-hover: rgba(255,255,255,0.07);
+        --success: #10b981;
+    }
+
+    html, body {
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== Animated Background ===== */
+    .bg-wrap {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        overflow: hidden;
+        background:
+            radial-gradient(1200px 600px at 80% -10%, rgba(124,92,255,0.2), transparent 60%),
+            radial-gradient(900px 500px at -10% 30%, rgba(34,211,238,0.15), transparent 60%),
+            radial-gradient(800px 500px at 50% 110%, rgba(244,114,182,0.12), transparent 60%),
+            var(--bg);
+    }
+    .grid-overlay {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        background-image:
+            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size: 48px 48px;
+        mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+        -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+    }
+    .orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.45;
+        z-index: -1;
+        animation: float 18s ease-in-out infinite;
+    }
+    .orb.o1 { width: 400px; height: 400px; background: #7c5cff; top: -100px; left: -100px; }
+    .orb.o2 { width: 340px; height: 340px; background: #22d3ee; top: 40%; right: -80px; animation-delay: -6s; }
+    .orb.o3 { width: 360px; height: 360px; background: #f472b6; bottom: -120px; left: 30%; animation-delay: -12s; }
+
+    @keyframes float {
+        0%, 100% { transform: translate(0,0) scale(1); }
+        33% { transform: translate(35px,-25px) scale(1.06); }
+        66% { transform: translate(-25px,35px) scale(0.95); }
+    }
+
+    /* ===== Navbar ===== */
+    .navbar-wrap {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        background: rgba(10,10,15,0.55);
+        border-bottom: 1px solid var(--glass-border);
+    }
+    .navbar {
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 1.2rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+    .brand-logo {
+        width: 36px; height: 36px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+        display: grid; place-items: center;
+        font-size: 1.1rem;
+        box-shadow: 0 8px 24px rgba(124,92,255,0.4);
+        position: relative;
+        overflow: hidden;
+    }
+    .brand-logo::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+        transform: translateX(-100%);
+        animation: shine 3.5s ease-in-out infinite;
+    }
+    @keyframes shine {
+        0%, 60% { transform: translateX(-100%); }
+        80%, 100% { transform: translateX(100%); }
+    }
+    .brand-text {
+        background: linear-gradient(90deg, #fff, #c4b5fd);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .user-email {
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-weight: 500;
+    }
+    .logout-btn {
+        padding: 0.55rem 1.1rem;
+        background: var(--glass);
+        color: var(--text);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        font-weight: 500;
+        font-family: inherit;
+        transition: all 0.25s ease;
+    }
+    .logout-btn:hover {
+        background: var(--card-hover);
+        border-color: rgba(255,255,255,0.18);
+        transform: translateY(-1px);
+    }
+
+    /* ===== Container ===== */
+    .container {
+        max-width: 1100px;
+        margin: 2.5rem auto;
+        padding: 0 1.5rem;
+    }
+
+    /* ===== Headings ===== */
+    h1 {
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(90deg, #fff, #c4b5fd);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        animation: fadeUp 0.6s ease;
+    }
+    h2 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        margin-top: 3rem;
+        margin-bottom: 1.2rem;
+        color: var(--text);
+        animation: fadeUp 0.7s ease;
+    }
+
+    /* ===== Stats Row ===== */
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.2rem;
+        animation: fadeUp 0.8s ease;
+    }
+    .stat-card {
+        padding: 1.5rem;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .stat-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .stat-card:hover {
+        background: var(--card-hover);
+        transform: translateY(-4px);
+        border-color: rgba(255,255,255,0.15);
+    }
+    .stat-card:hover::before {
+        opacity: 1;
+    }
+    .stat-value {
+        font-size: 2rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin-bottom: 0.3rem;
+    }
+    .stat-label {
+        font-size: 0.85rem;
+        color: var(--muted);
+        font-weight: 500;
+    }
+
+    /* ===== Tests Grid ===== */
+    .tests-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.2rem;
+        animation: fadeUp 0.9s ease;
+    }
+    .test-card {
+        padding: 1.6rem;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        backdrop-filter: blur(10px);
+        transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+    .test-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), rgba(124,92,255,0.15), transparent 40%);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        pointer-events: none;
+    }
+    .test-card:hover::before { opacity: 1; }
+    .test-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(124,92,255,0.35);
+        background: var(--card-hover);
+    }
+    .test-card h3 {
+        color: var(--text);
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 0.6rem;
+        letter-spacing: -0.01em;
+    }
+    .test-card p {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin-bottom: 1.2rem;
+        flex: 1;
+        line-height: 1.5;
+    }
+    .start-btn {
+        padding: 0.75rem 1.3rem;
+        background: linear-gradient(135deg, var(--accent-1), #5b8cff);
+        color: white;
+        text-decoration: none;
+        text-align: center;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 0.95rem;
+        box-shadow: 0 8px 24px rgba(124,92,255,0.3);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .start-btn::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+        transform: translateX(-100%);
+        transition: transform 0.6s ease;
+    }
+    .start-btn:hover::before { transform: translateX(100%); }
+    .start-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 32px rgba(124,92,255,0.5);
+    }
+
+    /* ===== Results List ===== */
+    .results-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        animation: fadeUp 1s ease;
+    }
+    .result-item {
+        padding: 1.1rem 1.4rem;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        backdrop-filter: blur(10px);
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.3s ease;
+    }
+    .result-item:hover {
+        background: var(--card-hover);
+        border-color: rgba(255,255,255,0.15);
+        transform: translateX(6px);
+    }
+    .result-item strong {
+        font-weight: 600;
+        font-size: 1rem;
+        color: var(--text);
+    }
+    .result-score {
+        font-weight: 700;
+        color: var(--success);
+        font-size: 1.15rem;
+        padding: 0.4rem 0.9rem;
+        background: rgba(16,185,129,0.1);
+        border: 1px solid rgba(16,185,129,0.2);
+        border-radius: 10px;
+    }
+    .result-date {
+        font-size: 0.8rem;
+        color: var(--muted-2);
+        margin-top: 0.3rem;
+    }
+
+    /* ===== Empty State ===== */
+    .empty {
+        text-align: center;
+        padding: 2.5rem 2rem;
+        color: var(--muted);
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 14px;
+        font-size: 0.95rem;
+        backdrop-filter: blur(10px);
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 600px) {
+        .navbar { padding: 0.9rem 1rem; }
+        .user-email { display: none; }
+        .container { padding: 0 1rem; margin: 1.5rem auto; }
+        h1 { font-size: 1.6rem; }
+        h2 { font-size: 1.15rem; margin-top: 2rem; }
+        .stats-row { grid-template-columns: 1fr; }
+        .tests-grid { grid-template-columns: 1fr; }
+    }
+</style>
+</head>
+<body>
+
+<!-- Background layers -->
+<div class="bg-wrap"></div>
+<div class="grid-overlay"></div>
+<div class="orb o1"></div>
+<div class="orb o2"></div>
+<div class="orb o3"></div>
+
+<!-- Navbar -->
+<div class="navbar-wrap">
+    <nav class="navbar">
+        <div class="brand">
+            <div class="brand-logo">📝</div>
+            <span class="brand-text">MockTest</span>
+        </div>
+        <div class="nav-right">
+            <span class="user-email" id="userEmail"></span>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+    </nav>
+</div>
+
+<div class="container">
+    <h1>Dashboard</h1>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-value" id="statTests">0</div>
+            <div class="stat-label">Available Tests</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="statAttempted">0</div>
+            <div class="stat-label">Tests Attempted</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="statAvg">0%</div>
+            <div class="stat-label">Average Score</div>
+        </div>
+    </div>
+
+    <h2>Available Tests</h2>
+    <div class="tests-grid" id="testsGrid">
+        <div class="empty">Loading tests...</div>
+    </div>
+
+    <h2>My Results</h2>
+    <div class="results-list" id="resultsList">
+        <div class="empty">Loading results...</div>
+    </div>
+</div>
+
+<!-- Mouse glow on test cards -->
+<script>
+    document.querySelectorAll('.test-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+            card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+        });
+    });
+</script>
+
+<script src="js/config.js"></script>
+<script>
+    autoRestoreFullscreen();
+    createFullscreenIndicator();
+
+    (async () => {
+        const user = await requireAuth();
+        if (!user) return;
+        document.getElementById('userEmail').textContent = user.email || '';
+        loadTests();
+        loadResults();
+    })();
+
+    async function loadTests() {
+        const data = await apiCall('/api/tests/list');
+        const grid = document.getElementById('testsGrid');
+        if (data.success && data.tests.length) {
+            document.getElementById('statTests').textContent = data.tests.length;
+            grid.innerHTML = data.tests.map(t => `
+                <div class="test-card">
+                    <h3>${escapeHtml(t.title)}</h3>
+                    <p>${escapeHtml(t.description || 'No description')}</p>
+                    <a href="test.html?id=${t.id}" class="start-btn">Start Test</a>
+                </div>
+            `).join('');
+            
+            // Re-attach mouse glow to new cards
+            document.querySelectorAll('.test-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+                    card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+                });
+            });
+        } else {
+            document.getElementById('statTests').textContent = '0';
+            grid.innerHTML = '<div class="empty">No tests available</div>';
+        }
+    }
+
+    async function loadResults() {
+        const data = await apiCall('/api/results/my');
+        const list = document.getElementById('resultsList');
+        if (data.success && data.results.length) {
+            document.getElementById('statAttempted').textContent = data.results.length;
+            const totalScore = data.results.reduce((a, r) => a + r.score, 0);
+            const totalMax = data.results.reduce((a, r) => a + r.total, 0);
+            const avg = totalMax > 0 ? Math.round((totalScore / totalMax) * 100) : 0;
+            document.getElementById('statAvg').textContent = avg + '%';
+
+            list.innerHTML = data.results.map(r => `
+                <a class="result-item" href="result.html?id=${r.id}">
+                    <div>
+                        <strong>${escapeHtml(r.tests?.title || 'Test')}</strong>
+                        <div class="result-date">${new Date(r.created_at).toLocaleString()}</div>
+                    </div>
+                    <div class="result-score">${r.score}/${r.total}</div>
+                </a>
+            `).join('');
+        } else {
+            list.innerHTML = '<div class="empty">No results yet. Start your first test!</div>';
+        }
+    }
+
+    document.getElementById('logoutBtn').onclick = async () => {
+        exitFullscreen();
+        await apiCall('/api/auth/logout', { method: 'POST' });
+        window.location.href = 'login.html';
+    };
+</script>
+</body>
+</html>
