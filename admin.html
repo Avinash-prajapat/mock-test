@@ -38,39 +38,59 @@
     }
 
     /* ===== GLOBAL PAGE LOADER ===== */
-    .page-loader-overlay {
-        position: fixed; inset: 0; z-index: 9999;
+    #globalLoader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
         background: rgba(10, 10, 15, 0.85);
         backdrop-filter: blur(8px);
-        display: flex; justify-content: center; align-items: center;
-        opacity: 0; pointer-events: none;
-        transition: opacity 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
     }
-    .page-loader-overlay.active {
-        opacity: 1; pointer-events: all;
+    #globalLoader.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
     }
     .loader-circle {
-        width: 48px; height: 48px;
+        width: 48px;
+        height: 48px;
         border: 4px solid rgba(255,255,255,0.1);
         border-left-color: var(--accent-1);
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
     }
+    .loader-text {
+        font-size: 0.9rem;
+        color: var(--muted);
+        font-weight: 500;
+        letter-spacing: 0.05em;
+    }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ===== BUTTON MINI SPINNER ===== */
+    /* ===== BUTTON SPINNER ===== */
     .btn-spinner {
         display: inline-block;
-        width: 14px; height: 14px;
+        width: 14px;
+        height: 14px;
         border: 2px solid rgba(255,255,255,0.3);
-        border-radius: 50%;
         border-top-color: #fff;
+        border-radius: 50%;
         animation: spin 0.8s linear infinite;
-        vertical-align: middle;
         margin-right: 6px;
+        vertical-align: middle;
+    }
+    .btn:disabled {
+        opacity: 0.7;
+        cursor: wait !important;
+        transform: none !important;
     }
 
-    /* ===== Animated Background ===== */
+    /* ===== ANIMATED BACKGROUND ===== */
     .bg-wrap {
         position: fixed; inset: 0; z-index: -1; overflow: hidden;
         background:
@@ -100,7 +120,7 @@
         66% { transform: translate(-25px,35px) scale(0.95); }
     }
 
-    /* ===== Navbar ===== */
+    /* ===== NAVBAR ===== */
     .navbar {
         position: sticky; top: 0; z-index: 50;
         backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
@@ -135,10 +155,10 @@
     }
     .logout-btn:hover:not(:disabled) { background: var(--card-hover); border-color: rgba(255,255,255,0.18); transform: translateY(-1px); }
 
-    /* ===== Layout ===== */
+    /* ===== LAYOUT ===== */
     .container { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; animation: fadeUp 0.6s ease; }
 
-    /* ===== Tabs ===== */
+    /* ===== TABS ===== */
     .tabs {
         display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
         background: var(--glass); padding: 0.4rem; border-radius: 14px;
@@ -158,7 +178,7 @@
     .tab-panel { display: none; }
     .tab-panel.active { display: block; animation: fadeUp 0.4s ease; }
 
-    /* ===== Stats ===== */
+    /* ===== STATS ===== */
     .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; margin-bottom: 2rem; }
     .stat-card {
         background: var(--glass); border: 1px solid var(--glass-border);
@@ -179,14 +199,12 @@
     }
     .stat-label { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; font-weight: 500; }
 
-    /* ===== Cards & Lists ===== */
+    /* ===== CARDS & LISTS ===== */
     .card {
         background: var(--glass); border: 1px solid var(--glass-border);
         padding: 1.5rem; border-radius: 16px; backdrop-filter: blur(10px); margin-bottom: 1rem;
     }
-    .card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:1rem; }
     .card h3 { color: var(--text); margin-bottom: 1rem; font-size: 1.1rem; font-weight: 700; }
-
     .test-item {
         background: var(--glass); border: 1px solid var(--glass-border);
         padding: 1.2rem; border-radius: 14px; display: flex; justify-content: space-between;
@@ -197,7 +215,6 @@
     .test-item h4 { color: var(--text); margin-bottom: 0.3rem; font-size: 1.05rem; font-weight: 600; }
     .test-item p { font-size: 0.85rem; color: var(--muted); }
     .test-item-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-
     .question-item {
         background: var(--glass); border: 1px solid var(--glass-border);
         border-left: 3px solid var(--accent-1); padding: 1.2rem; border-radius: 12px;
@@ -211,19 +228,17 @@
     }
     .question-item .answer { font-size: 0.85rem; color: var(--success); font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem; }
     .question-item-actions { margin-top: 0.8rem; display: flex; gap: 0.5rem; }
-
     .empty {
         text-align: center; padding: 3rem 2rem; color: var(--muted); 
         background: var(--glass); border: 1px solid var(--glass-border);
         border-radius: 14px; font-size: 0.95rem;
     }
 
-    /* ===== Buttons ===== */
+    /* ===== BUTTONS ===== */
     .btn {
         padding: 0.7rem 1.3rem; border: none; border-radius: 10px;
         font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
         font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
-        min-width: fit-content;
     }
     .btn-primary { 
         background: linear-gradient(135deg, var(--accent-1), #5b8cff); color: white; 
@@ -236,25 +251,20 @@
     }
     .btn-primary:hover::before { transform: translateX(100%); }
     .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(124,92,255,0.4); }
-    
     .btn-success { 
         background: linear-gradient(135deg, var(--success), #059669); color: white; 
         box-shadow: 0 4px 12px rgba(16,185,129,0.3);
     }
     .btn-success:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16,185,129,0.4); }
-    
     .btn-danger { 
         background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3);
     }
     .btn-danger:hover:not(:disabled) { background: rgba(239,68,68,0.25); border-color: rgba(239,68,68,0.5); transform: translateY(-2px); }
-    
     .btn-secondary { background: var(--glass); color: var(--text); border: 1px solid var(--glass-border); }
     .btn-secondary:hover:not(:disabled) { background: var(--card-hover); border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
-    
     .btn-sm { padding: 0.45rem 0.9rem; font-size: 0.8rem; }
-    .btn:disabled { opacity: 0.7; cursor: wait !important; transform: none !important; }
 
-    /* ===== Forms ===== */
+    /* ===== FORMS ===== */
     .form-group { margin-bottom: 1.2rem; }
     .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 600; color: var(--muted); }
     .form-group input, .form-group textarea, .form-group select {
@@ -276,26 +286,20 @@
     .form-group select option { background: var(--bg-2); color: var(--text); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-    /* ===== Search Input ===== */
+    /* ===== SEARCH INPUT ===== */
     #resultSearch { transition: all 0.3s ease; }
-    #resultSearch:focus {
-        background: rgba(255,255,255,0.08); border-color: var(--accent-1);
-        box-shadow: 0 0 0 3px rgba(124,92,255,0.15);
-    }
+    #resultSearch:focus { background: rgba(255,255,255,0.08); border-color: var(--accent-1); box-shadow: 0 0 0 3px rgba(124,92,255,0.15); }
     #resultSearch::placeholder { color: var(--muted-2); }
 
-    /* ===== Table ===== */
+    /* ===== TABLE ===== */
     .table-wrapper { overflow-x: auto; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; }
     table { width: 100%; border-collapse: collapse; }
     table th, table td { padding: 1rem 1.2rem; text-align: left; border-bottom: 1px solid var(--glass-border); font-size: 0.9rem; }
-    table th {
-        background: rgba(255,255,255,0.03); font-weight: 600; color: var(--muted); 
-        font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;
-    }
+    table th { background: rgba(255,255,255,0.03); font-weight: 600; color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
     table tr:last-child td { border-bottom: none; }
     table tr:hover td { background: var(--card-hover); }
 
-    /* ===== Modals ===== */
+    /* ===== MODALS ===== */
     .modal-overlay {
         position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
         display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem;
@@ -320,7 +324,7 @@
         overflow-x: auto; margin-bottom: 1rem; border: 1px solid var(--glass-border); color: var(--muted);
     }
 
-    /* ===== Toast ===== */
+    /* ===== TOAST ===== */
     .toast {
         position: fixed; top: 90px; right: 20px; background: var(--bg-2); color: var(--text);
         padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid var(--glass-border);
@@ -350,8 +354,9 @@
 <body>
 
 <!-- GLOBAL PAGE LOADER -->
-<div class="page-loader-overlay" id="pageLoader">
+<div id="globalLoader">
     <div class="loader-circle"></div>
+    <div class="loader-text">Loading Admin Panel...</div>
 </div>
 
 <!-- Background layers -->
@@ -393,7 +398,7 @@
     <!-- TESTS -->
     <div class="tab-panel" id="panel-tests">
         <div class="card">
-            <div class="card-header">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:1rem;">
                 <h3 style="margin:0;">All Tests</h3>
                 <button class="btn btn-primary" id="createTestBtn">+ Create Test</button>
             </div>
@@ -404,9 +409,9 @@
     <!-- RESULTS -->
     <div class="tab-panel" id="panel-results">
         <div class="card">
-            <div class="card-header">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:1rem;">
                 <h3 style="margin:0;">All Student Results</h3>
-                <input type="text" id="resultSearch" placeholder="🔍 Search name, email or test..." style="max-width:320px; width:100%; padding:0.7rem 1rem; background:var(--input-bg); border:1px solid var(--input-border); border-radius:10px; color:var(--text); font-size:0.9rem; outline:none;">
+                <input type="text" id="resultSearch" placeholder="🔍 Search by name, email or test..." style="max-width:320px; width:100%; padding:0.7rem 1rem; background:var(--input-bg); border:1px solid var(--input-border); border-radius:10px; color:var(--text); font-size:0.9rem; outline:none;">
             </div>
             <div id="resultsContainer" class="table-wrapper"></div>
         </div>
@@ -489,11 +494,19 @@
 
 <script src="js/config.js"></script>
 <script>
-    // ============ GLOBAL PAGE LOADER ============
-    function showPageLoader() { document.getElementById('pageLoader').classList.add('active'); }
-    function hidePageLoader() { document.getElementById('pageLoader').classList.remove('active'); }
+    // ============ GLOBAL LOADER CONTROL ============
+    const globalLoader = document.getElementById('globalLoader');
+    const loaderText = globalLoader.querySelector('.loader-text');
 
-    // ============ BUTTON MINI LOADER ============
+    function showPageLoader(msg = 'Loading...') {
+        loaderText.textContent = msg;
+        globalLoader.classList.remove('hidden');
+    }
+    function hidePageLoader() {
+        globalLoader.classList.add('hidden');
+    }
+
+    // ============ BUTTON LOADING HELPER ============
     function setBtnLoading(btn, isLoading) {
         if (!btn) return;
         if (isLoading) {
@@ -502,7 +515,7 @@
             btn.innerHTML = `<span class="btn-spinner"></span> Processing...`;
         } else {
             btn.disabled = false;
-            btn.innerHTML = btn.dataset.originalHtml || 'Submit';
+            if (btn.dataset.originalHtml) btn.innerHTML = btn.dataset.originalHtml;
         }
     }
 
@@ -514,20 +527,24 @@
         setTimeout(() => t.classList.remove('show'), 3000);
     }
 
-    // ============ AUTH CHECK ============
+    // ============ AUTH CHECK & INIT ============
     (async () => {
-        showPageLoader();
-        try {
-            const check = await apiCall('/api/admin/check');
-            if (!check.success || !check.is_admin) { window.location.href = 'admin-login.html'; return; }
-            const me = await apiCall('/api/auth/me');
-            document.getElementById('adminEmail').textContent = me.email || '';
-            await Promise.all([loadStats(), loadTests()]);
-        } catch(e) { console.error(e); }
-        finally { hidePageLoader(); }
+        showPageLoader('Verifying admin access...');
+        const check = await apiCall('/api/admin/check');
+        if (!check.success || !check.is_admin) {
+            window.location.href = 'admin-login.html';
+            return;
+        }
+        const me = await apiCall('/api/auth/me');
+        document.getElementById('adminEmail').textContent = me.email || '';
+        
+        showPageLoader('Loading dashboard stats...');
+        await loadStats();
+        await loadTests();
+        hidePageLoader();
     })();
 
-    // ============ TAB SWITCH ============
+    // ============ TAB SWITCH WITH LOADER ============
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.onclick = async () => {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -535,13 +552,10 @@
             btn.classList.add('active');
             document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
 
-            showPageLoader();
-            try {
-                if (btn.dataset.tab === 'dashboard') await loadStats();
-                if (btn.dataset.tab === 'tests') await loadTests();
-                if (btn.dataset.tab === 'results') await loadResults();
-            } catch(e) { console.error(e); }
-            finally { hidePageLoader(); }
+            const tab = btn.dataset.tab;
+            if (tab === 'dashboard') { showPageLoader('Loading stats...'); await loadStats(); hidePageLoader(); }
+            else if (tab === 'tests') { showPageLoader('Loading tests...'); await loadTests(); hidePageLoader(); }
+            else if (tab === 'results') { showPageLoader('Loading results...'); await loadResults(); hidePageLoader(); }
         };
     });
 
@@ -590,9 +604,7 @@
     function closeTestModal() { document.getElementById('testModal').classList.remove('active'); }
 
     async function editTest(id) {
-        showPageLoader();
         const data = await apiCall('/api/admin/tests');
-        hidePageLoader();
         if (!data.success) return;
         const t = data.tests.find(x => x.id === id);
         if (!t) return;
@@ -617,8 +629,8 @@
         const url = id ? `/api/admin/tests/${id}` : '/api/admin/tests';
         const method = id ? 'PUT' : 'POST';
         const data = await apiCall(url, { method, body: JSON.stringify(payload) });
-        if (data.success) { showToast(id ? 'Test updated!' : 'Test created!'); closeTestModal(); await loadTests(); }
-        else { showToast(data.error || 'Failed', 'error'); }
+        if (data.success) { showToast(id ? 'Test updated!' : 'Test created!'); closeTestModal(); loadTests(); }
+        else showToast(data.error || 'Failed', 'error');
         setBtnLoading(btn, false);
     };
 
@@ -626,21 +638,19 @@
         if (!confirm('Delete this test and all its questions?')) return;
         setBtnLoading(btn, true);
         const data = await apiCall(`/api/admin/tests/${id}`, { method: 'DELETE' });
-        if (data.success) { showToast('Test deleted'); await loadTests(); }
-        else { showToast(data.error || 'Failed', 'error'); }
-        setBtnLoading(btn, false);
+        if (data.success) { showToast('Test deleted'); loadTests(); }
+        else { showToast(data.error || 'Failed', 'error'); setBtnLoading(btn, false); }
     }
 
     // ============ QUESTIONS ============
     let currentTestId = null;
-
     async function manageQuestions(testId, testTitle) {
         currentTestId = testId;
         document.getElementById('questionsModalTitle').textContent = `Questions — ${testTitle}`;
         document.getElementById('questionsModal').classList.add('active');
-        showPageLoader();
+        // Show mini loader inside questions list area
+        document.getElementById('questionsList').innerHTML = '<div style="text-align:center;padding:2rem;"><div class="loader-circle" style="width:32px;height:32px;border-width:3px;margin:0 auto;"></div></div>';
         await loadQuestions(testId);
-        hidePageLoader();
     }
     function closeQuestionsModal() { document.getElementById('questionsModal').classList.remove('active'); currentTestId = null; loadTests(); }
 
@@ -652,18 +662,15 @@
                 <div class="question-item">
                     <div class="q-text">Q${i+1}. ${escapeHtml(q.question_text)}</div>
                     <div class="options">
-                        <div><strong>A.</strong> ${escapeHtml(q.option_a)}</div>
-                        <div><strong>B.</strong> ${escapeHtml(q.option_b)}</div>
-                        <div><strong>C.</strong> ${escapeHtml(q.option_c)}</div>
-                        <div><strong>D.</strong> ${escapeHtml(q.option_d)}</div>
+                        <div><strong>A.</strong> ${escapeHtml(q.option_a)}</div><div><strong>B.</strong> ${escapeHtml(q.option_b)}</div>
+                        <div><strong>C.</strong> ${escapeHtml(q.option_c)}</div><div><strong>D.</strong> ${escapeHtml(q.option_d)}</div>
                     </div>
                     <div class="answer">✓ Correct: ${q.correct_option} · Marks: ${q.marks}</div>
                     <div class="question-item-actions">
                         <button class="btn btn-secondary btn-sm" onclick='editQuestion(${JSON.stringify(q).replace(/'/g,"&apos;")})'>Edit</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${q.id}', this)">Delete</button>
                     </div>
-                </div>
-            `).join('');
+                </div>`).join('');
         } else { container.innerHTML = '<div class="empty">No questions yet.</div>'; }
     }
 
@@ -707,8 +714,8 @@
         const url = qId ? `/api/admin/questions/${qId}` : `/api/admin/tests/${currentTestId}/questions`;
         const method = qId ? 'PUT' : 'POST';
         const data = await apiCall(url, { method, body: JSON.stringify(payload) });
-        if (data.success) { showToast(qId ? 'Question updated!' : 'Question added!'); closeQuestionFormModal(); await loadQuestions(currentTestId); }
-        else { showToast(data.error || 'Failed', 'error'); }
+        if (data.success) { showToast(qId ? 'Question updated!' : 'Question added!'); closeQuestionFormModal(); loadQuestions(currentTestId); }
+        else showToast(data.error || 'Failed', 'error');
         setBtnLoading(btn, false);
     };
 
@@ -716,18 +723,13 @@
         if (!confirm('Delete this question?')) return;
         setBtnLoading(btn, true);
         const data = await apiCall(`/api/admin/questions/${qId}`, { method: 'DELETE' });
-        if (data.success) { showToast('Question deleted'); await loadQuestions(currentTestId); }
-        else { showToast(data.error || 'Failed', 'error'); }
-        setBtnLoading(btn, false);
+        if (data.success) { showToast('Question deleted'); loadQuestions(currentTestId); }
+        else { showToast(data.error || 'Failed', 'error'); setBtnLoading(btn, false); }
     }
 
     // ============ BULK UPLOAD ============
-    document.getElementById('bulkUploadBtn').onclick = () => {
-        document.getElementById('bulkJson').value = '';
-        document.getElementById('bulkModal').classList.add('active');
-    };
+    document.getElementById('bulkUploadBtn').onclick = () => { document.getElementById('bulkJson').value = ''; document.getElementById('bulkModal').classList.add('active'); };
     function closeBulkModal() { document.getElementById('bulkModal').classList.remove('active'); }
-
     document.getElementById('bulkSubmitBtn').onclick = async function() {
         if (!currentTestId) return;
         let questions;
@@ -736,33 +738,27 @@
         if (!Array.isArray(questions) || !questions.length) { showToast('Provide an array of questions', 'error'); return; }
         setBtnLoading(this, true);
         const data = await apiCall(`/api/admin/tests/${currentTestId}/questions/bulk`, { method: 'POST', body: JSON.stringify({ questions }) });
-        if (data.success) { showToast(`${data.inserted} questions uploaded!`); closeBulkModal(); await loadQuestions(currentTestId); }
-        else { showToast(data.error || 'Failed', 'error'); }
+        if (data.success) { showToast(`${data.inserted} questions uploaded!`); closeBulkModal(); loadQuestions(currentTestId); }
+        else showToast(data.error || 'Failed', 'error');
         setBtnLoading(this, false);
     };
 
     // ============ RESULTS & SEARCH ============
     let allResultsData = [];
-
     async function loadResults() {
         const data = await apiCall('/api/admin/results');
         if (data.success && data.results.length) { allResultsData = data.results; renderResults(allResultsData); }
         else { allResultsData = []; document.getElementById('resultsContainer').innerHTML = '<div class="empty">No results yet.</div>'; }
     }
-
     function renderResults(results) {
         const container = document.getElementById('resultsContainer');
         if (!results || results.length === 0) { container.innerHTML = '<div class="empty">No matching results found.</div>'; return; }
         container.innerHTML = `<table><thead><tr><th>Student</th><th>Email</th><th>Test</th><th>Score</th><th>%</th><th>Date</th></tr></thead><tbody>
-            ${results.map(r => {
-                const pct = r.total > 0 ? ((r.score / r.total) * 100).toFixed(1) : 0;
-                const color = pct >= 60 ? '#10b981' : (pct >= 40 ? '#f59e0b' : '#ef4444');
-                return `<tr><td>${escapeHtml(r.student_name)}</td><td>${escapeHtml(r.student_email)}</td><td>${escapeHtml(r.tests?.title||'N/A')}</td><td>${r.score}/${r.total}</td><td style="color:${color};font-weight:700;">${pct}%</td><td>${new Date(r.created_at).toLocaleString()}</td></tr>`;
-            }).join('')}
-        </tbody></table>`;
+            ${results.map(r => { const pct = r.total > 0 ? ((r.score / r.total) * 100).toFixed(1) : 0; const color = pct >= 60 ? '#10b981' : (pct >= 40 ? '#f59e0b' : '#ef4444');
+                return `<tr><td>${escapeHtml(r.student_name)}</td><td>${escapeHtml(r.student_email)}</td><td>${escapeHtml(r.tests?.title || 'N/A')}</td><td>${r.score}/${r.total}</td><td style="color:${color};font-weight:700;">${pct}%</td><td>${new Date(r.created_at).toLocaleString()}</td></tr>`;
+            }).join('')}</tbody></table>`;
     }
-
-    document.getElementById('resultSearch').addEventListener('input', (e) => {
+    document.getElementById('resultSearch')?.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
         if (!query) { renderResults(allResultsData); return; }
         const filtered = allResultsData.filter(r =>
