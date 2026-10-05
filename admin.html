@@ -39,19 +39,14 @@
 
     /* ===== Animated Background ===== */
     .bg-wrap {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        overflow: hidden;
+        position: fixed; inset: 0; z-index: -1; overflow: hidden;
         background:
             radial-gradient(1200px 600px at 80% -10%, rgba(124,92,255,0.15), transparent 60%),
             radial-gradient(900px 500px at -10% 30%, rgba(34,211,238,0.1), transparent 60%),
             var(--bg);
     }
     .grid-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
+        position: fixed; inset: 0; z-index: -1;
         background-image:
             linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
@@ -60,11 +55,7 @@
         -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
     }
     .orb {
-        position: fixed;
-        border-radius: 50%;
-        filter: blur(80px);
-        opacity: 0.4;
-        z-index: -1;
+        position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.4; z-index: -1;
         animation: float 18s ease-in-out infinite;
     }
     .orb.o1 { width: 400px; height: 400px; background: #7c5cff; top: -100px; left: -100px; }
@@ -77,445 +68,257 @@
         66% { transform: translate(-25px,35px) scale(0.95); }
     }
 
+    /* ===== Spinner for Buttons ===== */
+    .spinner {
+        display: inline-block;
+        width: 14px; height: 14px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 0.8s linear infinite;
+        vertical-align: middle;
+        margin-right: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     /* ===== Navbar ===== */
     .navbar {
-        position: sticky;
-        top: 0;
-        z-index: 50;
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
+        position: sticky; top: 0; z-index: 50;
+        backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
         background: rgba(10,10,15,0.7);
         border-bottom: 1px solid var(--glass-border);
         padding: 1rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        display: flex; justify-content: space-between; align-items: center;
     }
-    .brand {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        font-size: 1.2rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-    }
+    .brand { display: flex; align-items: center; gap: 0.6rem; font-size: 1.2rem; font-weight: 800; letter-spacing: -0.02em; }
     .brand-logo {
-        width: 34px; height: 34px;
-        border-radius: 9px;
+        width: 34px; height: 34px; border-radius: 9px;
         background: linear-gradient(135deg, #f59e0b, #ef4444);
-        display: grid; place-items: center;
-        font-size: 1rem;
+        display: grid; place-items: center; font-size: 1rem;
         box-shadow: 0 4px 16px rgba(239,68,68,0.3);
     }
     .brand-text {
         background: linear-gradient(90deg, #fff, #fcd34d);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        -webkit-background-clip: text; background-clip: text; color: transparent;
     }
     .badge {
         background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(239,68,68,0.2));
-        color: #fcd34d;
-        font-size: 0.7rem;
-        padding: 0.25rem 0.6rem;
-        border-radius: 6px;
-        font-weight: 700;
-        border: 1px solid rgba(245,158,11,0.3);
+        color: #fcd34d; font-size: 0.7rem; padding: 0.25rem 0.6rem;
+        border-radius: 6px; font-weight: 700; border: 1px solid rgba(245,158,11,0.3);
         letter-spacing: 0.05em;
     }
     .nav-right { display: flex; align-items: center; gap: 1rem; }
     .logout-btn {
-        padding: 0.55rem 1.1rem;
-        background: var(--glass);
-        color: var(--text);
-        border: 1px solid var(--glass-border);
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        font-weight: 500;
-        font-family: inherit;
+        padding: 0.55rem 1.1rem; background: var(--glass); color: var(--text);
+        border: 1px solid var(--glass-border); border-radius: 10px;
+        cursor: pointer; font-size: 0.9rem; font-weight: 500; font-family: inherit;
         transition: all 0.25s ease;
     }
-    .logout-btn:hover {
-        background: var(--card-hover);
-        border-color: rgba(255,255,255,0.18);
-        transform: translateY(-1px);
-    }
+    .logout-btn:hover { background: var(--card-hover); border-color: rgba(255,255,255,0.18); transform: translateY(-1px); }
 
     /* ===== Layout ===== */
-    .container {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 1.5rem;
-        animation: fadeUp 0.6s ease;
-    }
+    .container { max-width: 1200px; margin: 2rem auto; padding: 0 1.5rem; animation: fadeUp 0.6s ease; }
 
     /* ===== Tabs ===== */
     .tabs {
-        display: flex; gap: 0.5rem;
-        margin-bottom: 1.5rem;
-        background: var(--glass);
-        padding: 0.4rem;
-        border-radius: 14px;
-        border: 1px solid var(--glass-border);
-        overflow-x: auto;
-        scrollbar-width: none;
+        display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
+        background: var(--glass); padding: 0.4rem; border-radius: 14px;
+        border: 1px solid var(--glass-border); overflow-x: auto; scrollbar-width: none;
     }
     .tabs::-webkit-scrollbar { display: none; }
     .tab-btn {
-        padding: 0.7rem 1.3rem;
-        border: none; background: transparent;
-        border-radius: 10px; cursor: pointer;
-        font-size: 0.95rem; font-weight: 600;
-        color: var(--muted);
-        white-space: nowrap;
-        transition: all 0.3s ease;
-        font-family: inherit;
+        padding: 0.7rem 1.3rem; border: none; background: transparent;
+        border-radius: 10px; cursor: pointer; font-size: 0.95rem; font-weight: 600;
+        color: var(--muted); white-space: nowrap; transition: all 0.3s ease; font-family: inherit;
     }
     .tab-btn.active { 
         background: linear-gradient(135deg, var(--accent-1), #5b8cff); 
-        color: white; 
-        box-shadow: 0 4px 12px rgba(124,92,255,0.3);
+        color: white; box-shadow: 0 4px 12px rgba(124,92,255,0.3);
     }
-    .tab-btn:hover:not(.active) { 
-        background: var(--card-hover); 
-        color: var(--text);
-    }
+    .tab-btn:hover:not(.active) { background: var(--card-hover); color: var(--text); }
     .tab-panel { display: none; }
     .tab-panel.active { display: block; animation: fadeUp 0.4s ease; }
 
     /* ===== Stats ===== */
-    .stats-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.2rem; margin-bottom: 2rem;
-    }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; margin-bottom: 2rem; }
     .stat-card {
-        background: var(--glass);
-        border: 1px solid var(--glass-border);
-        padding: 1.5rem;
-        border-radius: 16px;
-        backdrop-filter: blur(10px);
-        transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
+        background: var(--glass); border: 1px solid var(--glass-border);
+        padding: 1.5rem; border-radius: 16px; backdrop-filter: blur(10px);
+        transition: all 0.3s ease; position: relative; overflow: hidden;
     }
     .stat-card::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 2px;
+        content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
         background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-        opacity: 0;
-        transition: opacity 0.3s ease;
+        opacity: 0; transition: opacity 0.3s ease;
     }
-    .stat-card:hover {
-        background: var(--card-hover);
-        transform: translateY(-4px);
-        border-color: rgba(255,255,255,0.15);
-    }
+    .stat-card:hover { background: var(--card-hover); transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
     .stat-card:hover::before { opacity: 1; }
     .stat-value { 
         font-size: 2rem; font-weight: 800; 
         background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+        -webkit-background-clip: text; background-clip: text; color: transparent;
     }
     .stat-label { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; font-weight: 500; }
 
     /* ===== Cards & Lists ===== */
     .card {
-        background: var(--glass);
-        border: 1px solid var(--glass-border);
-        padding: 1.5rem;
-        border-radius: 16px;
-        backdrop-filter: blur(10px);
-        margin-bottom: 1rem;
+        background: var(--glass); border: 1px solid var(--glass-border);
+        padding: 1.5rem; border-radius: 16px; backdrop-filter: blur(10px); margin-bottom: 1rem;
     }
     .card h3 { color: var(--text); margin-bottom: 1rem; font-size: 1.1rem; font-weight: 700; }
 
     .test-item {
-        background: var(--glass);
-        border: 1px solid var(--glass-border);
-        padding: 1.2rem;
-        border-radius: 14px;
-        display: flex; justify-content: space-between;
-        align-items: center; gap: 1rem;
-        margin-bottom: 0.8rem;
-        flex-wrap: wrap;
-        transition: all 0.3s ease;
+        background: var(--glass); border: 1px solid var(--glass-border);
+        padding: 1.2rem; border-radius: 14px; display: flex; justify-content: space-between;
+        align-items: center; gap: 1rem; margin-bottom: 0.8rem; flex-wrap: wrap; transition: all 0.3s ease;
     }
-    .test-item:hover {
-        background: var(--card-hover);
-        transform: translateY(-2px);
-        border-color: rgba(255,255,255,0.15);
-    }
+    .test-item:hover { background: var(--card-hover); transform: translateY(-2px); border-color: rgba(255,255,255,0.15); }
     .test-item-info { flex: 1; min-width: 200px; }
     .test-item h4 { color: var(--text); margin-bottom: 0.3rem; font-size: 1.05rem; font-weight: 600; }
     .test-item p { font-size: 0.85rem; color: var(--muted); }
     .test-item-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
 
     .question-item {
-        background: var(--glass);
-        border: 1px solid var(--glass-border);
-        border-left: 3px solid var(--accent-1);
-        padding: 1.2rem;
-        border-radius: 12px;
-        margin-bottom: 0.8rem;
-        transition: all 0.3s ease;
+        background: var(--glass); border: 1px solid var(--glass-border);
+        border-left: 3px solid var(--accent-1); padding: 1.2rem; border-radius: 12px;
+        margin-bottom: 0.8rem; transition: all 0.3s ease;
     }
-    .question-item:hover {
-        background: var(--card-hover);
-        transform: translateX(4px);
-    }
-    .question-item .q-text {
-        font-weight: 600; margin-bottom: 0.6rem;
-        color: var(--text); font-size: 1rem;
-    }
+    .question-item:hover { background: var(--card-hover); transform: translateX(4px); }
+    .question-item .q-text { font-weight: 600; margin-bottom: 0.6rem; color: var(--text); font-size: 1rem; }
     .question-item .options {
-        font-size: 0.9rem; color: var(--muted);
-        display: grid; grid-template-columns: 1fr 1fr;
-        gap: 0.4rem 1rem;
-        margin-bottom: 0.6rem;
+        font-size: 0.9rem; color: var(--muted); display: grid; grid-template-columns: 1fr 1fr;
+        gap: 0.4rem 1rem; margin-bottom: 0.6rem;
     }
-    .question-item .answer {
-        font-size: 0.85rem; color: var(--success);
-        font-weight: 600;
-        display: inline-flex; align-items: center; gap: 0.3rem;
-    }
-    .question-item-actions {
-        margin-top: 0.8rem;
-        display: flex; gap: 0.5rem;
-    }
+    .question-item .answer { font-size: 0.85rem; color: var(--success); font-weight: 600; display: inline-flex; align-items: center; gap: 0.3rem; }
+    .question-item-actions { margin-top: 0.8rem; display: flex; gap: 0.5rem; }
 
     .empty {
-        text-align: center; padding: 3rem 2rem;
-        color: var(--muted); 
-        background: var(--glass);
-        border: 1px solid var(--glass-border);
-        border-radius: 14px;
-        font-size: 0.95rem;
+        text-align: center; padding: 3rem 2rem; color: var(--muted); 
+        background: var(--glass); border: 1px solid var(--glass-border);
+        border-radius: 14px; font-size: 0.95rem;
     }
 
     /* ===== Buttons ===== */
     .btn {
-        padding: 0.7rem 1.3rem;
-        border: none; border-radius: 10px;
-        font-size: 0.9rem; font-weight: 600;
-        cursor: pointer; transition: all 0.3s ease;
-        font-family: inherit;
-        display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+        padding: 0.7rem 1.3rem; border: none; border-radius: 10px;
+        font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease;
+        font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
     }
     .btn-primary { 
-        background: linear-gradient(135deg, var(--accent-1), #5b8cff); 
-        color: white; 
-        box-shadow: 0 4px 12px rgba(124,92,255,0.3);
-        position: relative; overflow: hidden;
+        background: linear-gradient(135deg, var(--accent-1), #5b8cff); color: white; 
+        box-shadow: 0 4px 12px rgba(124,92,255,0.3); position: relative; overflow: hidden;
     }
     .btn-primary::before {
-        content: "";
-        position: absolute; inset: 0;
+        content: ""; position: absolute; inset: 0;
         background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
-        transform: translateX(-100%);
-        transition: transform 0.6s ease;
+        transform: translateX(-100%); transition: transform 0.6s ease;
     }
     .btn-primary:hover::before { transform: translateX(100%); }
-    .btn-primary:hover { 
-        transform: translateY(-2px); 
-        box-shadow: 0 8px 20px rgba(124,92,255,0.4);
-    }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(124,92,255,0.4); }
+    
     .btn-success { 
-        background: linear-gradient(135deg, var(--success), #059669); 
-        color: white; 
+        background: linear-gradient(135deg, var(--success), #059669); color: white; 
         box-shadow: 0 4px 12px rgba(16,185,129,0.3);
     }
-    .btn-success:hover { 
-        transform: translateY(-2px); 
-        box-shadow: 0 8px 20px rgba(16,185,129,0.4);
-    }
+    .btn-success:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16,185,129,0.4); }
+    
     .btn-danger { 
-        background: rgba(239,68,68,0.15); 
-        color: #fca5a5; 
-        border: 1px solid rgba(239,68,68,0.3);
+        background: rgba(239,68,68,0.15); color: #fca5a5; border: 1px solid rgba(239,68,68,0.3);
     }
-    .btn-danger:hover { 
-        background: rgba(239,68,68,0.25); 
-        border-color: rgba(239,68,68,0.5);
-        transform: translateY(-2px);
-    }
-    .btn-secondary { 
-        background: var(--glass); 
-        color: var(--text); 
-        border: 1px solid var(--glass-border);
-    }
-    .btn-secondary:hover { 
-        background: var(--card-hover); 
-        border-color: rgba(255,255,255,0.2);
-        transform: translateY(-2px);
-    }
+    .btn-danger:hover:not(:disabled) { background: rgba(239,68,68,0.25); border-color: rgba(239,68,68,0.5); transform: translateY(-2px); }
+    
+    .btn-secondary { background: var(--glass); color: var(--text); border: 1px solid var(--glass-border); }
+    .btn-secondary:hover:not(:disabled) { background: var(--card-hover); border-color: rgba(255,255,255,0.2); transform: translateY(-2px); }
+    
     .btn-sm { padding: 0.45rem 0.9rem; font-size: 0.8rem; }
+    
+    /* Disabled state for loading */
+    .btn:disabled { opacity: 0.7; cursor: wait !important; transform: none !important; }
 
     /* ===== Forms ===== */
     .form-group { margin-bottom: 1.2rem; }
-    .form-group label {
-        display: block; margin-bottom: 0.5rem;
-        font-size: 0.9rem; font-weight: 600;
-        color: var(--muted);
-    }
-    .form-group input,
-    .form-group textarea,
-    .form-group select {
-        width: 100%; padding: 0.85rem 1rem;
-        background: var(--input-bg);
-        border: 1px solid var(--input-border); 
-        border-radius: 12px;
-        font-size: 0.95rem; outline: none;
-        font-family: inherit;
-        color: var(--text);
+    .form-group label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; font-weight: 600; color: var(--muted); }
+    .form-group input, .form-group textarea, .form-group select {
+        width: 100%; padding: 0.85rem 1rem; background: var(--input-bg);
+        border: 1px solid var(--input-border); border-radius: 12px;
+        font-size: 0.95rem; outline: none; font-family: inherit; color: var(--text);
         transition: all 0.3s ease;
     }
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-        color: var(--muted-2);
-    }
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus { 
-        background: rgba(255,255,255,0.08);
-        border-color: var(--accent-1); 
+    .form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted-2); }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus { 
+        background: rgba(255,255,255,0.08); border-color: var(--accent-1); 
         box-shadow: 0 0 0 3px rgba(124,92,255,0.15);
     }
     .form-group select {
         appearance: none;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='rgba(255,255,255,0.5)' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 1rem center;
-        padding-right: 2.5rem;
+        background-repeat: no-repeat; background-position: right 1rem center; padding-right: 2.5rem;
     }
-    .form-group select option {
-        background: var(--bg-2);
-        color: var(--text);
+    .form-group select option { background: var(--bg-2); color: var(--text); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* ===== Search Input ===== */
+    #resultSearch {
+        transition: all 0.3s ease;
     }
-    .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
+    #resultSearch:focus {
+        background: rgba(255,255,255,0.08);
+        border-color: var(--accent-1);
+        box-shadow: 0 0 0 3px rgba(124,92,255,0.15);
     }
+    #resultSearch::placeholder { color: var(--muted-2); }
 
     /* ===== Table ===== */
-    .table-wrapper { 
-        overflow-x: auto; 
-        background: var(--glass); 
-        border: 1px solid var(--glass-border);
-        border-radius: 14px; 
-    }
+    .table-wrapper { overflow-x: auto; background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; }
     table { width: 100%; border-collapse: collapse; }
-    table th, table td {
-        padding: 1rem 1.2rem; text-align: left;
-        border-bottom: 1px solid var(--glass-border);
-        font-size: 0.9rem;
-    }
+    table th, table td { padding: 1rem 1.2rem; text-align: left; border-bottom: 1px solid var(--glass-border); font-size: 0.9rem; }
     table th {
-        background: rgba(255,255,255,0.03); 
-        font-weight: 600;
-        color: var(--muted); 
-        font-size: 0.8rem;
-        text-transform: uppercase; 
-        letter-spacing: 0.05em;
+        background: rgba(255,255,255,0.03); font-weight: 600; color: var(--muted); 
+        font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em;
     }
     table tr:last-child td { border-bottom: none; }
     table tr:hover td { background: var(--card-hover); }
 
     /* ===== Modals ===== */
     .modal-overlay {
-        position: fixed; inset: 0;
-        background: rgba(0,0,0,0.7);
-        backdrop-filter: blur(8px);
-        display: none; justify-content: center;
-        align-items: center; z-index: 1000;
-        padding: 1rem;
-        opacity: 0;
-        transition: opacity 0.3s ease;
+        position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+        display: none; justify-content: center; align-items: center; z-index: 1000; padding: 1rem;
+        opacity: 0; transition: opacity 0.3s ease;
     }
-    .modal-overlay.active { 
-        display: flex; 
-        opacity: 1;
-    }
+    .modal-overlay.active { display: flex; opacity: 1; }
     .modal {
-        background: var(--bg-2); 
-        width: 100%; max-width: 600px;
-        max-height: 90vh; overflow-y: auto;
-        border-radius: 20px; 
-        padding: 2rem;
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        position: relative;
-        transform: scale(0.95);
-        transition: transform 0.3s ease;
+        background: var(--bg-2); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;
+        border-radius: 20px; padding: 2rem; border: 1px solid var(--glass-border);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5); position: relative;
+        transform: scale(0.95); transition: transform 0.3s ease;
     }
-    .modal-overlay.active .modal {
-        transform: scale(1);
-    }
+    .modal-overlay.active .modal { transform: scale(1); }
     .modal::before {
-        content: "";
-        position: absolute;
-        top: 0; left: 0; right: 0;
-        height: 1px;
+        content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
         background: linear-gradient(90deg, transparent, rgba(124,92,255,0.6), transparent);
     }
-    .modal h3 { 
-        margin-bottom: 1.5rem; 
-        color: var(--text); 
-        font-size: 1.3rem;
-        font-weight: 700;
-    }
-    .modal-actions {
-        display: flex; gap: 0.8rem; justify-content: flex-end;
-        margin-top: 1.5rem;
-    }
+    .modal h3 { margin-bottom: 1.5rem; color: var(--text); font-size: 1.3rem; font-weight: 700; }
+    .modal-actions { display: flex; gap: 0.8rem; justify-content: flex-end; margin-top: 1.5rem; }
     pre {
-        background: rgba(0,0,0,0.3);
-        padding: 1rem;
-        border-radius: 10px;
-        font-size: 0.8rem;
-        overflow-x: auto;
-        margin-bottom: 1rem;
-        border: 1px solid var(--glass-border);
-        color: var(--muted);
+        background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 10px; font-size: 0.8rem;
+        overflow-x: auto; margin-bottom: 1rem; border: 1px solid var(--glass-border); color: var(--muted);
     }
 
     /* ===== Toast ===== */
     .toast {
-        position: fixed; top: 90px; right: 20px;
-        background: var(--bg-2); 
-        color: var(--text);
-        padding: 1rem 1.5rem; 
-        border-radius: 12px;
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        z-index: 10000;
+        position: fixed; top: 90px; right: 20px; background: var(--bg-2); color: var(--text);
+        padding: 1rem 1.5rem; border-radius: 12px; border: 1px solid var(--glass-border);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 10000;
         opacity: 0; transform: translateX(120%);
         transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-        backdrop-filter: blur(10px);
-        font-weight: 500;
-        display: flex; align-items: center; gap: 0.5rem;
+        backdrop-filter: blur(10px); font-weight: 500; display: flex; align-items: center; gap: 0.5rem;
     }
     .toast.show { opacity: 1; transform: translateX(0); }
-    .toast.success { 
-        border-color: rgba(16,185,129,0.4);
-        color: #6ee7b7;
-    }
-    .toast.error { 
-        border-color: rgba(239,68,68,0.4);
-        color: #fca5a5;
-    }
+    .toast.success { border-color: rgba(16,185,129,0.4); color: #6ee7b7; }
+    .toast.error { border-color: rgba(239,68,68,0.4); color: #fca5a5; }
 
     /* ===== Animations ===== */
-    @keyframes fadeUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ===== Responsive ===== */
     @media (max-width: 768px) {
@@ -552,7 +355,6 @@
 </nav>
 
 <div class="container">
-
     <!-- Tabs -->
     <div class="tabs">
         <button class="tab-btn active" data-tab="dashboard">📊 Dashboard</button>
@@ -596,7 +398,10 @@
     <!-- ============ RESULTS ============ -->
     <div class="tab-panel" id="panel-results">
         <div class="card">
-            <h3>All Student Results</h3>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:1rem;">
+                <h3 style="margin:0;">All Student Results</h3>
+                <input type="text" id="resultSearch" placeholder="🔍 Search by name, email or test..." style="max-width:320px; width:100%; padding:0.7rem 1rem; background:var(--input-bg); border:1px solid var(--input-border); border-radius:10px; color:var(--text); font-size:0.9rem; outline:none;">
+            </div>
             <div id="resultsContainer" class="table-wrapper"></div>
         </div>
     </div>
@@ -697,9 +502,7 @@
 <div class="modal-overlay" id="bulkModal">
     <div class="modal">
         <h3>Bulk Upload Questions</h3>
-        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem;">
-            Paste JSON array. Format:
-        </p>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem;">Paste JSON array. Format:</p>
         <pre>[
   {
     "question_text": "Capital of India?",
@@ -726,6 +529,22 @@
 
 <script src="js/config.js"></script>
 <script>
+    // ============ HELPER: Button Loading State ============
+    function setBtnLoading(btn, isLoading) {
+        if (isLoading) {
+            if (!btn.dataset.originalHtml) {
+                btn.dataset.originalHtml = btn.innerHTML;
+            }
+            btn.disabled = true;
+            btn.innerHTML = `<span class="spinner"></span> Processing...`;
+            btn.style.opacity = '0.8';
+        } else {
+            btn.disabled = false;
+            btn.innerHTML = btn.dataset.originalHtml;
+            btn.style.opacity = '1';
+        }
+    }
+
     // ============ AUTH CHECK ============
     (async () => {
         const check = await apiCall('/api/admin/check');
@@ -786,7 +605,7 @@
                     <div class="test-item-actions">
                         <button class="btn btn-primary btn-sm" onclick="manageQuestions('${t.id}', '${escapeHtml(t.title)}')">Questions</button>
                         <button class="btn btn-secondary btn-sm" onclick="editTest('${t.id}')">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteTest('${t.id}')">Delete</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteTest('${t.id}', this)">Delete</button>
                     </div>
                 </div>
             `).join('');
@@ -795,7 +614,6 @@
         }
     }
 
-    // Create/Edit test modal
     document.getElementById('createTestBtn').onclick = () => {
         document.getElementById('testModalTitle').textContent = 'Create Test';
         document.getElementById('testId').value = '';
@@ -824,6 +642,9 @@
 
     document.getElementById('testForm').onsubmit = async (e) => {
         e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        setBtnLoading(btn, true);
+        
         const id = document.getElementById('testId').value;
         const payload = {
             title: document.getElementById('testTitle').value.trim(),
@@ -834,10 +655,7 @@
         const url = id ? `/api/admin/tests/${id}` : '/api/admin/tests';
         const method = id ? 'PUT' : 'POST';
 
-        const data = await apiCall(url, {
-            method,
-            body: JSON.stringify(payload)
-        });
+        const data = await apiCall(url, { method, body: JSON.stringify(payload) });
 
         if (data.success) {
             showToast(id ? 'Test updated!' : 'Test created!');
@@ -846,16 +664,19 @@
         } else {
             showToast(data.error || 'Failed', 'error');
         }
+        setBtnLoading(btn, false);
     };
 
-    async function deleteTest(id) {
+    async function deleteTest(id, btn) {
         if (!confirm('Delete this test and all its questions?')) return;
+        setBtnLoading(btn, true);
         const data = await apiCall(`/api/admin/tests/${id}`, { method: 'DELETE' });
         if (data.success) {
             showToast('Test deleted');
             loadTests();
         } else {
             showToast(data.error || 'Failed', 'error');
+            setBtnLoading(btn, false);
         }
     }
 
@@ -891,7 +712,7 @@
                     <div class="answer">✓ Correct: ${q.correct_option} · Marks: ${q.marks}</div>
                     <div class="question-item-actions">
                         <button class="btn btn-secondary btn-sm" onclick='editQuestion(${JSON.stringify(q).replace(/'/g, "&apos;")})'>Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${q.id}')">Delete</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${q.id}', this)">Delete</button>
                     </div>
                 </div>
             `).join('');
@@ -928,6 +749,8 @@
     document.getElementById('questionForm').onsubmit = async (e) => {
         e.preventDefault();
         if (!currentTestId) return;
+        const btn = e.target.querySelector('button[type="submit"]');
+        setBtnLoading(btn, true);
 
         const qId = document.getElementById('questionId').value;
         const payload = {
@@ -940,15 +763,10 @@
             marks: parseInt(document.getElementById('qMarks').value) || 1
         };
 
-        const url = qId
-            ? `/api/admin/questions/${qId}`
-            : `/api/admin/tests/${currentTestId}/questions`;
+        const url = qId ? `/api/admin/questions/${qId}` : `/api/admin/tests/${currentTestId}/questions`;
         const method = qId ? 'PUT' : 'POST';
 
-        const data = await apiCall(url, {
-            method,
-            body: JSON.stringify(payload)
-        });
+        const data = await apiCall(url, { method, body: JSON.stringify(payload) });
 
         if (data.success) {
             showToast(qId ? 'Question updated!' : 'Question added!');
@@ -957,16 +775,19 @@
         } else {
             showToast(data.error || 'Failed', 'error');
         }
+        setBtnLoading(btn, false);
     };
 
-    async function deleteQuestion(qId) {
+    async function deleteQuestion(qId, btn) {
         if (!confirm('Delete this question?')) return;
+        setBtnLoading(btn, true);
         const data = await apiCall(`/api/admin/questions/${qId}`, { method: 'DELETE' });
         if (data.success) {
             showToast('Question deleted');
             loadQuestions(currentTestId);
         } else {
             showToast(data.error || 'Failed', 'error');
+            setBtnLoading(btn, false);
         }
     }
 
@@ -980,7 +801,7 @@
         document.getElementById('bulkModal').classList.remove('active');
     }
 
-    document.getElementById('bulkSubmitBtn').onclick = async () => {
+    document.getElementById('bulkSubmitBtn').onclick = async function() {
         if (!currentTestId) return;
         let questions;
         try {
@@ -995,6 +816,7 @@
             return;
         }
 
+        setBtnLoading(this, true);
         const data = await apiCall(`/api/admin/tests/${currentTestId}/questions/bulk`, {
             method: 'POST',
             body: JSON.stringify({ questions })
@@ -1002,58 +824,89 @@
 
         if (data.success) {
             showToast(`${data.inserted} questions uploaded!`);
-            if (data.errors && data.errors.length) {
-                console.warn('Errors:', data.errors);
-            }
+            if (data.errors && data.errors.length) console.warn('Errors:', data.errors);
             closeBulkModal();
             loadQuestions(currentTestId);
         } else {
             showToast(data.error || 'Failed', 'error');
         }
+        setBtnLoading(this, false);
     };
 
-    // ============ RESULTS ============
+    // ============ RESULTS & SEARCH ============
+    let allResultsData = [];
+
     async function loadResults() {
         const data = await apiCall('/api/admin/results');
         const container = document.getElementById('resultsContainer');
         if (data.success && data.results.length) {
-            container.innerHTML = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Student</th>
-                            <th>Email</th>
-                            <th>Test</th>
-                            <th>Score</th>
-                            <th>%</th>
-                            <th>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${data.results.map(r => {
-                            const pct = r.total > 0 ? ((r.score / r.total) * 100).toFixed(1) : 0;
-                            const color = pct >= 60 ? '#10b981' : (pct >= 40 ? '#f59e0b' : '#ef4444');
-                            return `
-                                <tr>
-                                    <td>${escapeHtml(r.student_name)}</td>
-                                    <td>${escapeHtml(r.student_email)}</td>
-                                    <td>${escapeHtml(r.tests?.title || 'N/A')}</td>
-                                    <td>${r.score}/${r.total}</td>
-                                    <td style="color:${color};font-weight:700;">${pct}%</td>
-                                    <td>${new Date(r.created_at).toLocaleString()}</td>
-                                </tr>
-                            `;
-                        }).join('')}
-                    </tbody>
-                </table>
-            `;
+            allResultsData = data.results;
+            renderResults(allResultsData);
         } else {
+            allResultsData = [];
             container.innerHTML = '<div class="empty">No results yet.</div>';
         }
     }
 
+    function renderResults(results) {
+        const container = document.getElementById('resultsContainer');
+        if (!results || results.length === 0) {
+            container.innerHTML = '<div class="empty">No matching results found.</div>';
+            return;
+        }
+        container.innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Email</th>
+                        <th>Test</th>
+                        <th>Score</th>
+                        <th>%</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${results.map(r => {
+                        const pct = r.total > 0 ? ((r.score / r.total) * 100).toFixed(1) : 0;
+                        const color = pct >= 60 ? '#10b981' : (pct >= 40 ? '#f59e0b' : '#ef4444');
+                        return `
+                            <tr>
+                                <td>${escapeHtml(r.student_name)}</td>
+                                <td>${escapeHtml(r.student_email)}</td>
+                                <td>${escapeHtml(r.tests?.title || 'N/A')}</td>
+                                <td>${r.score}/${r.total}</td>
+                                <td style="color:${color};font-weight:700;">${pct}%</td>
+                                <td>${new Date(r.created_at).toLocaleString()}</td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            </table>
+        `;
+    }
+
+    // Real-time Search Filter
+    const resultSearchInput = document.getElementById('resultSearch');
+    if (resultSearchInput) {
+        resultSearchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (!query) {
+                renderResults(allResultsData);
+                return;
+            }
+            const filtered = allResultsData.filter(r => 
+                (r.student_name && r.student_name.toLowerCase().includes(query)) ||
+                (r.student_email && r.student_email.toLowerCase().includes(query)) ||
+                (r.tests?.title && r.tests.title.toLowerCase().includes(query))
+            );
+            renderResults(filtered);
+        });
+    }
+
     // ============ LOGOUT ============
-    document.getElementById('logoutBtn').onclick = async () => {
+    document.getElementById('logoutBtn').onclick = async function() {
+        setBtnLoading(this, true);
         await apiCall('/api/auth/logout', { method: 'POST' });
         window.location.href = 'admin-login.html';
     };
