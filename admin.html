@@ -37,19 +37,19 @@
         -webkit-font-smoothing: antialiased;
     }
 
-    /* ===== GLOBAL PAGE LOADER ===== */
+    /* ===== GLOBAL PAGE LOADER (Optimized) ===== */
     #globalLoader {
         position: fixed;
         inset: 0;
         z-index: 9999;
-        background: rgba(10, 10, 15, 0.85);
-        backdrop-filter: blur(8px);
+        background: rgba(10, 10, 15, 0.9);
+        backdrop-filter: blur(10px);
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         gap: 1rem;
-        transition: opacity 0.3s ease, visibility 0.3s ease;
+        transition: opacity 0.2s ease, visibility 0.2s ease; /* Faster transition */
     }
     #globalLoader.hidden {
         opacity: 0;
@@ -57,15 +57,15 @@
         pointer-events: none;
     }
     .loader-circle {
-        width: 48px;
-        height: 48px;
-        border: 4px solid rgba(255,255,255,0.1);
+        width: 40px;
+        height: 40px;
+        border: 3px solid rgba(255,255,255,0.1);
         border-left-color: var(--accent-1);
         border-radius: 50%;
-        animation: spin 0.8s linear infinite;
+        animation: spin 0.6s linear infinite;
     }
     .loader-text {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: var(--muted);
         font-weight: 500;
         letter-spacing: 0.05em;
@@ -80,7 +80,7 @@
         border: 2px solid rgba(255,255,255,0.3);
         border-top-color: #fff;
         border-radius: 50%;
-        animation: spin 0.8s linear infinite;
+        animation: spin 0.6s linear infinite;
         margin-right: 6px;
         vertical-align: middle;
     }
@@ -356,7 +356,7 @@
 <!-- GLOBAL PAGE LOADER -->
 <div id="globalLoader">
     <div class="loader-circle"></div>
-    <div class="loader-text">Loading Admin Panel...</div>
+    <div class="loader-text">Initializing...</div>
 </div>
 
 <!-- Background layers -->
@@ -494,7 +494,7 @@
 
 <script src="js/config.js"></script>
 <script>
-    // ============ GLOBAL LOADER CONTROL ============
+    // ============ GLOBAL LOADER CONTROL (OPTIMIZED) =====
     const globalLoader = document.getElementById('globalLoader');
     const loaderText = globalLoader.querySelector('.loader-text');
 
@@ -502,7 +502,9 @@
         loaderText.textContent = msg;
         globalLoader.classList.remove('hidden');
     }
+    
     function hidePageLoader() {
+        // Immediate hide for snappy feel
         globalLoader.classList.add('hidden');
     }
 
@@ -527,35 +529,53 @@
         setTimeout(() => t.classList.remove('show'), 3000);
     }
 
-    // ============ AUTH CHECK & INIT ============
+    // ============ AUTH CHECK & INIT (OPTIMIZED) ============
     (async () => {
-        showPageLoader('Verifying admin access...');
+        // Show loader only briefly for auth check
+        showPageLoader('Verifying access...');
+        
         const check = await apiCall('/api/admin/check');
         if (!check.success || !check.is_admin) {
             window.location.href = 'admin-login.html';
             return;
         }
+        
         const me = await apiCall('/api/auth/me');
         document.getElementById('adminEmail').textContent = me.email || '';
         
-        showPageLoader('Loading dashboard stats...');
-        await loadStats();
-        await loadTests();
+        // Load initial data in parallel for speed
+        showPageLoader('Fetching data...');
+        await Promise.all([loadStats(), loadTests()]);
+        
+        // Hide loader IMMEDIATELY after data is fetched
         hidePageLoader();
     })();
 
-    // ============ TAB SWITCH WITH LOADER ============
+    // ============ TAB SWITCH WITH SMART LOADER ============
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.onclick = async () => {
+            // Don't show loader if switching to already loaded dashboard/tests initially
+            // But show it for heavy loads like Results
+            const tab = btn.dataset.tab;
+            
+            // Update UI immediately
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
             btn.classList.add('active');
-            document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+            document.getElementById('panel-' + tab).classList.add('active');
 
-            const tab = btn.dataset.tab;
-            if (tab === 'dashboard') { showPageLoader('Loading stats...'); await loadStats(); hidePageLoader(); }
-            else if (tab === 'tests') { showPageLoader('Loading tests...'); await loadTests(); hidePageLoader(); }
-            else if (tab === 'results') { showPageLoader('Loading results...'); await loadResults(); hidePageLoader(); }
+            // Only show loader if data isn't likely cached or for heavy tabs
+            if (tab === 'results') {
+                showPageLoader('Loading results...');
+                await loadResults();
+                hidePageLoader();
+            } else if (tab === 'dashboard') {
+                // Quick refresh stats without full screen loader if possible, 
+                // or use minimal loader
+                await loadStats();
+            } else if (tab === 'tests') {
+                await loadTests();
+            }
         };
     });
 
@@ -648,7 +668,7 @@
         currentTestId = testId;
         document.getElementById('questionsModalTitle').textContent = `Questions — ${testTitle}`;
         document.getElementById('questionsModal').classList.add('active');
-        // Show mini loader inside questions list area
+        // Show mini loader inside modal
         document.getElementById('questionsList').innerHTML = '<div style="text-align:center;padding:2rem;"><div class="loader-circle" style="width:32px;height:32px;border-width:3px;margin:0 auto;"></div></div>';
         await loadQuestions(testId);
     }
