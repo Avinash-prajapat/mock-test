@@ -82,12 +82,11 @@ function exitFullscreen() {
     }
 }
 
-// Ye function sirf test.html me call hoga
+// Sirf test page pe call karo
 function enforceTestFullscreen() {
     if (!isFsEnabled()) return;
     console.log('[FS] Test fullscreen enforcement active');
 
-    // Agar fullscreen toot jaye -> overlay dikhao
     document.addEventListener('fullscreenchange', () => {
         if (!document.fullscreenElement && isFsEnabled()) {
             showResumeOverlay();
@@ -97,7 +96,6 @@ function enforceTestFullscreen() {
         }
     });
 
-    // Dangerous keys block (sirf test me)
     document.addEventListener('keydown', (e) => {
         if (!isFsEnabled()) return;
         if (e.key === 'Escape' || e.key === 'F11') e.preventDefault();
@@ -106,7 +104,6 @@ function enforceTestFullscreen() {
         if (e.key === 'F12') e.preventDefault();
     }, true);
 
-    // Right-click, copy, cut block
     document.addEventListener('contextmenu', (e) => {
         if (isFsEnabled()) e.preventDefault();
     });
@@ -117,7 +114,6 @@ function enforceTestFullscreen() {
         if (isFsEnabled()) e.preventDefault();
     });
 
-    // Page load pe agar fullscreen nahi hai -> overlay dikhao
     setTimeout(() => {
         if (isFsEnabled() && !document.fullscreenElement) {
             showResumeOverlay();
