@@ -8,9 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="logo.png">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon" href="logo.png">
-<link rel="shortcut icon" href="logo.png">
 <meta name="theme-color" content="#7c5cff">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -52,7 +49,6 @@
     .orb.o2 { width: 320px; height: 320px; background: #22d3ee; bottom: 20%; right: -80px; animation-delay: -6s; }
     @keyframes float { 0%,100%{transform:translate(0,0)} 50%{transform:translate(30px,-20px)} }
 
-    /* ===== Top Navbar ===== */
     .topbar {
         padding: 1rem 2rem;
         max-width: 900px;
@@ -80,6 +76,12 @@
         display: grid; place-items: center;
         font-size: 1rem;
         box-shadow: 0 8px 24px rgba(124,92,255,0.4);
+        overflow: hidden;
+    }
+    .topbar-logo img {
+        width: 100%; height: 100%;
+        object-fit: contain;
+        display: block;
     }
     .topbar-text {
         background: linear-gradient(90deg, #fff, #c4b5fd);
@@ -176,6 +178,7 @@
         padding: 0.5rem 1rem; border: none; background: transparent;
         color: var(--muted); cursor: pointer; border-radius: 8px;
         font-size: 0.85rem; font-weight: 600; transition: all 0.2s;
+        font-family: inherit;
     }
     .filter-btn.active { background: rgba(124,92,255,0.2); color: #c4b5fd; }
 
@@ -231,6 +234,95 @@
         .stats { grid-template-columns: 1fr; }
         .analysis-header { flex-direction: column; align-items: flex-start; }
     }
+
+    /* ============================================================
+       CUSTOM CONFIRM POPUP
+       ============================================================ */
+    .popup-overlay {
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.75);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999999;
+        padding: 1rem;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+    .popup-overlay.active { display: flex; opacity: 1; }
+    .popup {
+        background: #12121a;
+        width: 100%;
+        max-width: 400px;
+        padding: 2rem;
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 25px 70px rgba(0,0,0,0.6);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        animation: popupIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .popup::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(124,92,255,0.6), transparent);
+    }
+    @keyframes popupIn {
+        from { opacity: 0; transform: scale(0.9) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .popup-icon {
+        width: 64px; height: 64px;
+        border-radius: 50%;
+        display: grid; place-items: center;
+        font-size: 1.8rem;
+        margin: 0 auto 1.2rem;
+    }
+    .popup-icon.danger {
+        background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.1));
+        border: 2px solid rgba(239,68,68,0.3);
+        color: #fca5a5;
+    }
+    .popup-icon.warning {
+        background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.1));
+        border: 2px solid rgba(245,158,11,0.3);
+        color: #fcd34d;
+    }
+    .popup-icon.info {
+        background: linear-gradient(135deg, rgba(124,92,255,0.2), rgba(34,211,238,0.1));
+        border: 2px solid rgba(124,92,255,0.3);
+        color: #c4b5fd;
+    }
+    .popup h3 { font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 0.6rem; }
+    .popup p { font-size: 0.95rem; color: rgba(255,255,255,0.65); line-height: 1.55; margin-bottom: 1.8rem; }
+    .popup-actions { display: flex; gap: 0.7rem; }
+    .popup-actions button {
+        flex: 1; padding: 0.85rem 1rem; border: none; border-radius: 12px;
+        font-size: 0.95rem; font-weight: 600; cursor: pointer;
+        transition: all 0.2s ease; font-family: inherit;
+    }
+    .popup-actions .popup-cancel {
+        background: rgba(255,255,255,0.04); color: #fff;
+        border: 1px solid rgba(255,255,255,0.08);
+    }
+    .popup-actions .popup-cancel:hover {
+        background: rgba(255,255,255,0.07); transform: translateY(-2px);
+    }
+    .popup-actions .popup-confirm {
+        background: linear-gradient(135deg, #7c5cff, #5b8cff);
+        color: white;
+        box-shadow: 0 6px 20px rgba(124,92,255,0.35);
+    }
+    .popup-actions .popup-confirm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(124,92,255,0.5);
+    }
+    .popup-actions button:active { transform: scale(0.97); }
 </style>
 </head>
 <body>
@@ -240,10 +332,11 @@
 <div class="orb o1"></div>
 <div class="orb o2"></div>
 
-<!-- Topbar with clickable brand -->
 <div class="topbar">
     <a href="index.html" class="topbar-brand">
-        <div class="topbar-logo">📝</div>
+        <div class="topbar-logo">
+            <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='📝';">
+        </div>
         <span class="topbar-text">MockTest</span>
     </a>
 </div>
@@ -268,10 +361,78 @@
     </div>
 </div>
 
+<!-- ============ CUSTOM CONFIRM POPUP ============ -->
+<div class="popup-overlay" id="confirmPopup">
+    <div class="popup">
+        <div class="popup-icon info" id="popupIcon">ℹ️</div>
+        <h3 id="popupTitle">Are you sure?</h3>
+        <p id="popupMessage">Do you want to continue?</p>
+        <div class="popup-actions">
+            <button class="popup-cancel" id="popupCancelBtn">Cancel</button>
+            <button class="popup-confirm" id="popupConfirmBtn">Confirm</button>
+        </div>
+    </div>
+</div>
+
 <script src="js/config.js"></script>
 <script>
     const params = new URLSearchParams(window.location.search);
     const RESULT_ID = params.get('id');
+
+    // ============ CUSTOM CONFIRM POPUP ============
+    function showConfirm(options) {
+        const overlay = document.getElementById('confirmPopup');
+        const iconEl = document.getElementById('popupIcon');
+        const titleEl = document.getElementById('popupTitle');
+        const msgEl = document.getElementById('popupMessage');
+        const cancelBtn = document.getElementById('popupCancelBtn');
+        const confirmBtn = document.getElementById('popupConfirmBtn');
+
+        titleEl.textContent = options.title || 'Are you sure?';
+        msgEl.textContent = options.message || 'Do you want to continue?';
+        cancelBtn.textContent = options.cancelText || 'Cancel';
+        confirmBtn.textContent = options.confirmText || 'Confirm';
+
+        iconEl.textContent = options.icon || 'ℹ️';
+        iconEl.className = 'popup-icon ' + (options.iconType || 'info');
+
+        if (options.primary) confirmBtn.classList.add('primary');
+        else confirmBtn.classList.remove('primary');
+
+        overlay.classList.add('active');
+
+        const newCancel = cancelBtn.cloneNode(true);
+        const newConfirm = confirmBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+        confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
+
+        const close = () => overlay.classList.remove('active');
+
+        newCancel.onclick = () => {
+            close();
+            if (options.onCancel) options.onCancel();
+        };
+        newConfirm.onclick = () => {
+            close();
+            if (options.onConfirm) options.onConfirm();
+        };
+
+        overlay.onclick = (e) => {
+            if (e.target === overlay) {
+                close();
+                if (options.onCancel) options.onCancel();
+            }
+        };
+
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                close();
+                document.removeEventListener('keydown', escHandler);
+                if (options.onCancel) options.onCancel();
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+    }
 
     (async () => {
         const user = await requireAuth();
