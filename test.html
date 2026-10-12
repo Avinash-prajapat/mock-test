@@ -8,9 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="logo.png">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon" href="logo.png">
-<link rel="shortcut icon" href="logo.png">
 <meta name="theme-color" content="#7c5cff">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -40,6 +37,19 @@
         -webkit-font-smoothing: antialiased;
     }
 
+    /* ===== Button spinner ===== */
+    .btn-spinner {
+        display: inline-block;
+        width: 14px; height: 14px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+        margin-right: 6px;
+        vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
     .bg-wrap {
         position: fixed;
         inset: 0;
@@ -62,7 +72,9 @@
         -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
     }
 
-    /* ===== Navbar ===== */
+    /* ============================================================
+       NAVBAR
+       ============================================================ */
     .navbar {
         position: sticky;
         top: 0;
@@ -75,6 +87,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
     }
     .brand {
         display: flex;
@@ -85,6 +99,8 @@
         letter-spacing: -0.02em;
         cursor: pointer;
         transition: transform 0.2s;
+        flex: 1;
+        min-width: 180px;
     }
     .brand:hover { transform: scale(1.03); }
     .brand-logo {
@@ -94,15 +110,63 @@
         display: grid; place-items: center;
         font-size: 1rem;
         box-shadow: 0 4px 16px rgba(124,92,255,0.4);
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+    .brand-logo img {
+        width: 100%; height: 100%;
+        object-fit: contain;
+        display: block;
     }
     .brand-text {
         background: linear-gradient(90deg, #fff, #c4b5fd);
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
     }
 
-    /* ===== Timer ===== */
+    /* Right side of navbar */
+    .navbar-right {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+    }
+
+    /* 🔥 Progress badge */
+    .progress-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1rem;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        font-size: 0.85rem;
+        color: var(--muted);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .progress-badge .progress-num {
+        color: var(--accent-2);
+        font-weight: 700;
+        font-size: 0.95rem;
+    }
+    .progress-badge .progress-sep {
+        opacity: 0.4;
+        margin: 0 2px;
+    }
+    .progress-badge .flag-num {
+        color: var(--warning);
+        font-weight: 700;
+        font-size: 0.95rem;
+    }
+
+    /* Timer */
     .timer {
         display: flex;
         align-items: center;
@@ -116,6 +180,7 @@
         font-variant-numeric: tabular-nums;
         color: var(--text);
         transition: all 0.3s ease;
+        white-space: nowrap;
     }
     .timer.warning {
         background: rgba(245,158,11,0.15);
@@ -135,6 +200,9 @@
         50% { transform: scale(1.03); }
     }
 
+    /* ============================================================
+       MAIN LAYOUT
+       ============================================================ */
     .container {
         max-width: 1100px;
         margin: 2rem auto;
@@ -157,6 +225,11 @@
         max-height: calc(100vh - 100px);
         overflow-y: auto;
     }
+    .question-nav::-webkit-scrollbar { width: 6px; }
+    .question-nav::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.1);
+        border-radius: 3px;
+    }
     .nav-title {
         font-size: 0.8rem;
         color: var(--muted);
@@ -165,6 +238,31 @@
         letter-spacing: 0.05em;
         text-transform: uppercase;
     }
+    .nav-legend {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        font-size: 0.75rem;
+        color: var(--muted-2);
+        margin-bottom: 1rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--glass-border);
+    }
+    .nav-legend span {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    .legend-dot {
+        width: 10px; height: 10px;
+        border-radius: 3px;
+        display: inline-block;
+        flex-shrink: 0;
+    }
+    .legend-dot.answered { background: linear-gradient(135deg, var(--accent-1), #5b8cff); }
+    .legend-dot.flagged { background: rgba(245,158,11,0.8); }
+    .legend-dot.notanswered { background: var(--glass); border: 1px solid var(--glass-border); }
+
     .nav-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -181,6 +279,7 @@
         color: var(--muted);
         transition: all 0.2s ease;
         font-family: inherit;
+        position: relative;
     }
     .q-btn:hover {
         background: var(--card-hover);
@@ -193,6 +292,23 @@
         border-color: transparent;
         box-shadow: 0 4px 12px rgba(124,92,255,0.3);
     }
+    .q-btn.flagged {
+        border-color: var(--warning);
+        background: rgba(245,158,11,0.15);
+        color: #fcd34d;
+    }
+    .q-btn.flagged.answered {
+        background: linear-gradient(135deg, var(--warning), #d97706);
+        color: white;
+    }
+    .q-btn.flagged::after {
+        content: "🚩";
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        font-size: 0.65rem;
+        line-height: 1;
+    }
     .q-btn.active {
         border-color: var(--accent-2);
         box-shadow: 0 0 0 2px rgba(34,211,238,0.3);
@@ -200,6 +316,9 @@
         transform: scale(1.05);
     }
 
+    /* ============================================================
+       QUESTION AREA
+       ============================================================ */
     .question-area {
         background: var(--glass);
         border: 1px solid var(--glass-border);
@@ -207,6 +326,46 @@
         padding: 2rem;
         backdrop-filter: blur(10px);
     }
+    .question-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .q-counter {
+        font-size: 0.85rem;
+        color: var(--muted);
+        font-weight: 600;
+    }
+    .flag-btn {
+        padding: 0.5rem 1rem;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        font-weight: 600;
+        font-family: inherit;
+        color: var(--muted);
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+    .flag-btn:hover {
+        background: var(--card-hover);
+        color: var(--text);
+        border-color: rgba(255,255,255,0.18);
+    }
+    .flag-btn.active {
+        background: rgba(245,158,11,0.15);
+        border-color: var(--warning);
+        color: #fcd34d;
+    }
+    .flag-btn:active { transform: scale(0.95); }
+
     .q-text {
         font-size: 1.2rem;
         font-weight: 600;
@@ -248,6 +407,7 @@
         border-radius: 6px;
         font-size: 0.85rem;
         transition: all 0.25s ease;
+        flex-shrink: 0;
     }
     .option.selected .option-letter {
         background: var(--accent-1);
@@ -333,15 +493,19 @@
         border-radius: 50%;
         animation: spin 1s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
     @keyframes fadeUp {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
     @media (max-width: 768px) {
         .navbar { padding: 0.9rem 1rem; }
         .brand-text { display: none; }
+        .progress-badge { padding: 0.5rem 0.8rem; font-size: 0.8rem; }
+        .timer { padding: 0.5rem 0.9rem; font-size: 1rem; }
         .container {
             grid-template-columns: 1fr;
             padding: 0 1rem;
@@ -354,6 +518,7 @@
             order: -1;
             max-height: none;
         }
+        .nav-legend { display: none; }
         .nav-grid {
             display: flex;
             overflow-x: auto;
@@ -372,8 +537,10 @@
         .controls button { flex: 1; text-align: center; }
     }
 
-    /* ===== Start Test Overlay ===== */
-    .start-overlay {
+    /* ============================================================
+       OVERLAYS
+       ============================================================ */
+    .start-overlay, .resume-overlay {
         position: fixed; inset: 0; z-index: 999999;
         background: rgba(0,0,0,0.95); color: white;
         display: flex; flex-direction: column;
@@ -381,16 +548,20 @@
         font-family: system-ui, -apple-system, sans-serif;
         text-align: center; padding: 2rem;
     }
-    .start-overlay .big-icon {
+    .start-overlay .big-icon,
+    .resume-overlay .big-icon {
         font-size: 4rem; margin-bottom: 1rem;
     }
-    .start-overlay h2 {
+    .start-overlay h2,
+    .resume-overlay h2 {
         font-size: 1.6rem; margin-bottom: 0.6rem; font-weight: 700;
     }
-    .start-overlay p {
-        opacity: 0.8; margin-bottom: 2rem; max-width: 400px; line-height: 1.6;
+    .start-overlay p,
+    .resume-overlay p {
+        opacity: 0.8; margin-bottom: 2rem; max-width: 420px; line-height: 1.6;
     }
-    .start-overlay button {
+    .start-overlay button,
+    .resume-overlay button {
         padding: 1rem 2.5rem;
         background: linear-gradient(135deg, #10b981, #059669);
         color: white;
@@ -399,9 +570,20 @@
         cursor: pointer;
         box-shadow: 0 8px 24px rgba(16,185,129,0.4);
         transition: transform 0.2s;
+        font-family: inherit;
     }
-    .start-overlay button:hover {
+    .start-overlay button:hover,
+    .resume-overlay button:hover {
         transform: translateY(-2px);
+    }
+    .resume-overlay button {
+        background: linear-gradient(135deg, #7c5cff, #5b8cff);
+        box-shadow: 0 8px 24px rgba(124,92,255,0.4);
+    }
+    .resume-overlay .resume-hint {
+        margin-top: 1rem;
+        font-size: 0.85rem;
+        opacity: 0.6;
     }
 </style>
 </head>
@@ -410,12 +592,25 @@
 <div class="bg-wrap"></div>
 <div class="grid-overlay"></div>
 
+<!-- ============ NAVBAR ============ -->
 <nav class="navbar">
     <div class="brand" onclick="confirmExitTest()">
-        <div class="brand-logo">📝</div>
+        <div class="brand-logo">
+            <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='📝';">
+        </div>
         <span class="brand-text" id="testTitle">Loading...</span>
     </div>
-    <div class="timer" id="timer">⏱ --:--</div>
+    <div class="navbar-right">
+        <!-- 🔥 Progress badge -->
+        <div class="progress-badge">
+            <span class="progress-num" id="answeredCount">0</span>
+            <span class="progress-sep">/</span>
+            <span id="totalCount">0</span>
+            <span style="opacity:0.5; margin: 0 0.3rem;">answered</span>
+            <span style="color:var(--warning);" id="flagCount" title="Flagged for review">🚩 0</span>
+        </div>
+        <div class="timer" id="timer">⏱ --:--</div>
+    </div>
 </nav>
 
 <div class="container" id="container">
@@ -427,26 +622,88 @@
     const params = new URLSearchParams(window.location.search);
     const TEST_ID = params.get('id');
 
+    // ============ SESSION STORAGE KEY ============
+    const STORAGE_KEY = 'test_autosave_' + TEST_ID;
+
+    // ============ STATE ============
     let questions = [];
     let currentIndex = 0;
     let answers = {};
+    let flagged = {};  // 🔥 Flagged questions
     let timeLeft = 30 * 60;
     let timerInterval = null;
     let submitting = false;
     let testStarted = false;
+    let autoSaveInterval = null;
 
-    // 🔥 Fullscreen enforcement sirf test page pe
+    // ============================================================
+    // 🔥 SESSION STORAGE — Auto Save / Restore
+    // ============================================================
+    function saveState() {
+        if (!testStarted || submitting) return;
+        try {
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify({
+                answers: answers,
+                flagged: flagged,
+                currentIndex: currentIndex,
+                timeLeft: timeLeft,
+                savedAt: Date.now()
+            }));
+        } catch (e) {
+            console.warn('[AUTOSAVE] Failed:', e);
+        }
+    }
+
+    function loadState() {
+        try {
+            const saved = sessionStorage.getItem(STORAGE_KEY);
+            if (!saved) return false;
+            const state = JSON.parse(saved);
+            answers = state.answers || {};
+            flagged = state.flagged || {};
+            currentIndex = state.currentIndex || 0;
+            if (typeof state.timeLeft === 'number' && state.timeLeft > 0) {
+                timeLeft = state.timeLeft;
+            }
+            console.log('[AUTOSAVE] Restored:', Object.keys(answers).length, 'answers,', Math.floor(timeLeft/60), 'min left');
+            return true;
+        } catch (e) {
+            console.warn('[AUTOSAVE] Load failed:', e);
+            return false;
+        }
+    }
+
+    function clearState() {
+        try {
+            sessionStorage.removeItem(STORAGE_KEY);
+            console.log('[AUTOSAVE] Cleared');
+        } catch (e) {}
+    }
+
+    // Auto-save har 3 second
+    function startAutoSave() {
+        if (autoSaveInterval) clearInterval(autoSaveInterval);
+        autoSaveInterval = setInterval(saveState, 3000);
+    }
+    function stopAutoSave() {
+        if (autoSaveInterval) {
+            clearInterval(autoSaveInterval);
+            autoSaveInterval = null;
+        }
+    }
+
+    // ============================================================
+    // 🔥 FULLSCREEN ENFORCEMENT
+    // ============================================================
     function activateTestFullscreen() {
         sessionStorage.setItem('exam_fullscreen', '1');
 
-        // Fullscreen exit detect -> overlay
         document.addEventListener('fullscreenchange', () => {
             if (!document.fullscreenElement && testStarted && isFsEnabled()) {
                 showResumeOverlay();
             }
         });
 
-        // Block keys
         document.addEventListener('keydown', (e) => {
             if (!isFsEnabled()) return;
             if (e.key === 'Escape' || e.key === 'F11') e.preventDefault();
@@ -455,7 +712,6 @@
             if (e.key === 'F12') e.preventDefault();
         }, true);
 
-        // Block right-click, copy, cut
         document.addEventListener('contextmenu', (e) => {
             if (isFsEnabled()) e.preventDefault();
         });
@@ -466,7 +722,6 @@
             if (isFsEnabled()) e.preventDefault();
         });
 
-        // Tab switch detect
         document.addEventListener('visibilitychange', () => {
             if (document.hidden && isFsEnabled()) {
                 console.warn('⚠️ Tab switch detected!');
@@ -480,48 +735,40 @@
 
         const overlay = document.createElement('div');
         overlay.id = 'fs-resume-overlay';
-        overlay.style.cssText = `
-            position: fixed; inset: 0; z-index: 999999;
-            background: rgba(0,0,0,0.95); color: white;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            font-family: system-ui, -apple-system, sans-serif;
-            text-align: center; padding: 2rem; cursor: pointer;
-        `;
+        overlay.className = 'resume-overlay';
         overlay.innerHTML = `
-            <div style="font-size: 4rem; margin-bottom: 1rem;">⛶</div>
-            <h2 style="font-size: 1.6rem; margin-bottom: 0.6rem; font-weight: 700;">
-                Fullscreen Mode Required
-            </h2>
-            <p style="opacity: 0.8; margin-bottom: 2rem; max-width: 400px; line-height: 1.6;">
-                You must stay in fullscreen mode during the test.<br><br>
-                <strong>Click anywhere to resume.</strong>
-            </p>
-            <button style="
-                padding: 1rem 2.5rem;
-                background: #4f46e5; color: white;
-                border: none; border-radius: 12px;
-                font-size: 1rem; font-weight: 600;
-                cursor: pointer;
-            ">Resume Test</button>
+            <div class="big-icon">⛶</div>
+            <h2>Fullscreen Mode Required</h2>
+            <p>You must stay in fullscreen mode during the test.<br><strong>Click below to resume.</strong></p>
+            <button id="resumeTestBtn">Resume Test in Fullscreen</button>
+            <div class="resume-hint">Your answers are automatically saved ✓</div>
         `;
-        overlay.onclick = async (e) => {
-            e.stopPropagation();
+        document.body.appendChild(overlay);
+
+        document.getElementById('resumeTestBtn').onclick = async () => {
             const ok = await goFullscreen();
             if (ok) overlay.remove();
         };
-        document.body.appendChild(overlay);
     }
 
     function showStartOverlay() {
         const overlay = document.createElement('div');
         overlay.id = 'start-overlay';
         overlay.className = 'start-overlay';
+
+        // 🔥 Check if state exists — show "Resume" instead of "Start"
+        const hasSaved = !!sessionStorage.getItem(STORAGE_KEY);
+
         overlay.innerHTML = `
             <div class="big-icon">⛶</div>
-            <h2>Ready to Start Test?</h2>
-            <p>The test will open in <strong>fullscreen mode</strong>.<br>You must stay in fullscreen during the test.</p>
-            <button id="startTestBtn">Start Test in Fullscreen</button>
+            <h2>${hasSaved ? 'Resume Test?' : 'Ready to Start Test?'}</h2>
+            <p>
+                ${hasSaved
+                    ? 'We found your previous progress.<br>The test will open in <strong>fullscreen mode</strong>.'
+                    : 'The test will open in <strong>fullscreen mode</strong>.<br>You must stay in fullscreen during the test.'}
+            </p>
+            <button id="startTestBtn">${hasSaved ? 'Resume Test' : 'Start Test in Fullscreen'}</button>
+            ${hasSaved ? '<div style="margin-top:1rem;font-size:0.85rem;opacity:0.6;"><button id="freshStartBtn" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:#fca5a5;padding:0.5rem 1rem;font-size:0.8rem;cursor:pointer;border-radius:8px;">Start Fresh (clear progress)</button></div>' : ''}
         `;
         document.body.appendChild(overlay);
 
@@ -530,25 +777,66 @@
             if (ok) {
                 testStarted = true;
                 overlay.remove();
+
+                // 🔥 Restore state if saved
+                if (hasSaved) {
+                    loadState();
+                }
+
                 loadTestData();
+                startAutoSave();
             } else {
                 alert('Fullscreen is required. Please allow fullscreen and try again.');
             }
         };
+
+        // Fresh start button
+        const freshBtn = document.getElementById('freshStartBtn');
+        if (freshBtn) {
+            freshBtn.onclick = (e) => {
+                e.stopPropagation();
+                if (confirm('Clear previous progress and start fresh?')) {
+                    clearState();
+                    answers = {};
+                    flagged = {};
+                    currentIndex = 0;
+                    location.reload();
+                }
+            };
+        }
     }
 
+    // ============================================================
+    // CONFIRM EXIT TEST
+    // ============================================================
     function confirmExitTest() {
         if (!testStarted) {
             window.location.href = 'index.html';
             return;
         }
-        if (confirm('Are you sure you want to leave the test? Your progress will be lost.')) {
+        if (confirm('Are you sure you want to leave the test? Your answers are saved and you can resume.')) {
+            saveState();  // Save before leaving
             sessionStorage.removeItem('exam_fullscreen');
             if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
             window.location.href = 'dashboard.html';
         }
     }
 
+    // ============================================================
+    // 🔥 BEFORE UNLOAD WARNING
+    // ============================================================
+    window.addEventListener('beforeunload', (e) => {
+        if (testStarted && !submitting) {
+            saveState();  // Save before unload
+            e.preventDefault();
+            e.returnValue = 'Are you sure you want to leave? Your progress is saved.';
+            return e.returnValue;
+        }
+    });
+
+    // ============================================================
+    // INIT
+    // ============================================================
     (async () => {
         const user = await requireAuth();
         if (!user) return;
@@ -559,41 +847,64 @@
             return;
         }
 
-        // Activate fullscreen enforcement
         activateTestFullscreen();
-
-        // Show start overlay (user must click to enter fullscreen)
         showStartOverlay();
     })();
 
+    // ============================================================
+    // LOAD TEST DATA
+    // ============================================================
     async function loadTestData() {
         const t = await apiCall(`/api/tests/${TEST_ID}`);
         if (t.success && t.test) {
             document.getElementById('testTitle').textContent = t.test.title;
-            timeLeft = (t.test.duration_minutes || 30) * 60;
+            // ⚠️ Timer sirf fresh start pe set hoga
+            if (!sessionStorage.getItem(STORAGE_KEY)) {
+                timeLeft = (t.test.duration_minutes || 30) * 60;
+            }
         }
 
         const data = await apiCall(`/api/tests/${TEST_ID}/questions`);
         if (!data.success || !data.questions.length) {
             alert('No questions found for this test');
             sessionStorage.removeItem('exam_fullscreen');
+            clearState();
             window.location.href = 'dashboard.html';
             return;
         }
 
         questions = data.questions;
+
+        // Validate restored currentIndex
+        if (currentIndex >= questions.length) currentIndex = 0;
+
         render();
         startTimer();
+        updateProgress();
     }
 
+    // ============================================================
+    // RENDER
+    // ============================================================
     function render() {
         const container = document.getElementById('container');
         container.innerHTML = `
             <div class="question-nav">
                 <div class="nav-title">Questions</div>
+                <div class="nav-legend">
+                    <span><span class="legend-dot answered"></span> Answered</span>
+                    <span><span class="legend-dot flagged"></span> Flagged for review</span>
+                    <span><span class="legend-dot notanswered"></span> Not answered</span>
+                </div>
                 <div class="nav-grid" id="navGrid"></div>
             </div>
             <div class="question-area">
+                <div class="question-header">
+                    <div class="q-counter" id="qCounter">Question 1 of 1</div>
+                    <button class="flag-btn" id="flagBtn" title="Flag for review">
+                        <span id="flagIcon">🚩</span> <span id="flagText">Flag for review</span>
+                    </button>
+                </div>
                 <div id="qBox"></div>
                 <div class="controls">
                     <button id="prevBtn">← Prev</button>
@@ -607,18 +918,32 @@
         renderQuestion();
 
         document.getElementById('prevBtn').onclick = () => {
-            if (currentIndex > 0) { currentIndex--; renderNav(); renderQuestion(); }
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderNav();
+                renderQuestion();
+                saveState();
+            }
         };
         document.getElementById('nextBtn').onclick = () => {
-            if (currentIndex < questions.length - 1) { currentIndex++; renderNav(); renderQuestion(); }
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                renderNav();
+                renderQuestion();
+                saveState();
+            }
         };
         document.getElementById('submitBtn').onclick = () => {
             const unanswered = questions.length - Object.keys(answers).length;
-            const msg = unanswered > 0
-                ? `You have ${unanswered} unanswered question(s). Submit anyway?`
-                : 'Submit test?';
+            const flaggedCount = Object.keys(flagged).length;
+            let msg = '';
+            if (unanswered > 0) msg += `You have ${unanswered} unanswered question(s).\n`;
+            if (flaggedCount > 0) msg += `You have ${flaggedCount} flagged question(s).\n`;
+            msg += '\nSubmit test?';
             if (confirm(msg)) submitTest();
         };
+
+        document.getElementById('flagBtn').onclick = toggleFlag;
     }
 
     function renderNav() {
@@ -629,8 +954,14 @@
             btn.className = 'q-btn';
             btn.textContent = i + 1;
             if (answers[q.id]) btn.classList.add('answered');
+            if (flagged[q.id]) btn.classList.add('flagged');
             if (i === currentIndex) btn.classList.add('active');
-            btn.onclick = () => { currentIndex = i; renderNav(); renderQuestion(); };
+            btn.onclick = () => {
+                currentIndex = i;
+                renderNav();
+                renderQuestion();
+                saveState();
+            };
             grid.appendChild(btn);
         });
     }
@@ -639,6 +970,23 @@
         const q = questions[currentIndex];
         const box = document.getElementById('qBox');
         const opts = ['A', 'B', 'C', 'D'];
+
+        // Update counter
+        document.getElementById('qCounter').textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+
+        // Update flag button
+        const flagBtn = document.getElementById('flagBtn');
+        const flagIcon = document.getElementById('flagIcon');
+        const flagText = document.getElementById('flagText');
+        if (flagged[q.id]) {
+            flagBtn.classList.add('active');
+            flagIcon.textContent = '🚩';
+            flagText.textContent = 'Flagged';
+        } else {
+            flagBtn.classList.remove('active');
+            flagIcon.textContent = '⚐';
+            flagText.textContent = 'Flag for review';
+        }
 
         box.innerHTML = `
             <div class="q-text">Q${currentIndex + 1}. ${escapeHtml(q.question_text)}</div>
@@ -653,6 +1001,8 @@
         box.querySelectorAll('.option').forEach(el => {
             el.onclick = () => {
                 answers[q.id] = el.dataset.opt;
+                saveState();  // 🔥 Instant save
+                updateProgress();
                 renderNav();
                 renderQuestion();
             };
@@ -662,6 +1012,36 @@
         document.getElementById('nextBtn').disabled = currentIndex === questions.length - 1;
     }
 
+    // ============================================================
+    // 🔥 FLAG FOR REVIEW
+    // ============================================================
+    function toggleFlag() {
+        const q = questions[currentIndex];
+        if (flagged[q.id]) {
+            delete flagged[q.id];
+        } else {
+            flagged[q.id] = true;
+        }
+        saveState();
+        updateProgress();
+        renderNav();
+        renderQuestion();
+    }
+
+    // ============================================================
+    // 🔥 UPDATE PROGRESS BADGE
+    // ============================================================
+    function updateProgress() {
+        const answeredCount = Object.keys(answers).length;
+        const flagCount = Object.keys(flagged).length;
+        document.getElementById('answeredCount').textContent = answeredCount;
+        document.getElementById('totalCount').textContent = questions.length;
+        document.getElementById('flagCount').textContent = `🚩 ${flagCount}`;
+    }
+
+    // ============================================================
+    // TIMER
+    // ============================================================
     function startTimer() {
         const el = document.getElementById('timer');
         const update = () => {
@@ -676,6 +1056,7 @@
         timerInterval = setInterval(() => {
             timeLeft--;
             update();
+            // Timer autosave handled by saveState() every 3s
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
                 alert('Time up! Auto-submitting...');
@@ -684,19 +1065,27 @@
         }, 1000);
     }
 
+    // ============================================================
+    // SUBMIT
+    // ============================================================
     async function submitTest() {
         if (submitting) return;
         submitting = true;
-        clearInterval(timerInterval);
 
-        // 🔥 Fullscreen exit karo
+        clearInterval(timerInterval);
+        stopAutoSave();
+
+        // Fullscreen exit
         sessionStorage.removeItem('exam_fullscreen');
         if (document.fullscreenElement) {
             document.exitFullscreen().catch(() => {});
         }
 
         const btn = document.getElementById('submitBtn');
-        if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `<span class="btn-spinner"></span> Submitting...`;
+        }
 
         const data = await apiCall(`/api/tests/${TEST_ID}/submit`, {
             method: 'POST',
@@ -704,12 +1093,17 @@
         });
 
         if (data.success) {
+            clearState();  // 🔥 Clear saved state on success
             window.location.href = `result.html?id=${data.result_id}`;
         } else {
             alert(data.error || 'Submission failed');
             submitting = false;
             sessionStorage.setItem('exam_fullscreen', '1');
-            if (btn) { btn.disabled = false; btn.textContent = 'Submit Test'; }
+            startAutoSave();
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = 'Submit Test';
+            }
         }
     }
 </script>
