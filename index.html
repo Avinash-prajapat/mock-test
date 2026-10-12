@@ -8,9 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="logo.png">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon" href="logo.png">
-<link rel="shortcut icon" href="logo.png">
 <meta name="theme-color" content="#7c5cff">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,6 +25,7 @@
         --glass-border: rgba(255,255,255,0.08);
         --card-hover: rgba(255,255,255,0.07);
         --success: #10b981;
+        --warning: #f59e0b;
     }
 
     html, body {
@@ -37,6 +35,7 @@
         min-height: 100vh;
         overflow-x: hidden;
         -webkit-font-smoothing: antialiased;
+        scroll-behavior: smooth;
     }
 
     /* ===== Animated Background ===== */
@@ -71,7 +70,7 @@
         66% { transform: translate(-30px,40px) scale(0.95); }
     }
 
-    /* ===== Navbar (same style as signup/login) ===== */
+    /* ===== Navbar ===== */
     .navbar-wrap {
         position: sticky; top: 0; z-index: 50;
         backdrop-filter: blur(16px);
@@ -92,6 +91,7 @@
         cursor: pointer;
         transition: transform 0.2s;
         text-decoration: none;
+        color: var(--text);
     }
     .brand:hover { transform: scale(1.03); }
     .brand-logo {
@@ -103,11 +103,17 @@
         box-shadow: 0 8px 24px rgba(124,92,255,0.4);
         position: relative; overflow: hidden;
     }
+    .brand-logo img {
+        width: 100%; height: 100%;
+        object-fit: contain;
+        display: block;
+    }
     .brand-logo::after {
         content: ""; position: absolute; inset: 0;
         background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
         transform: translateX(-100%);
         animation: shine 3.5s ease-in-out infinite;
+        pointer-events: none;
     }
     @keyframes shine {
         0%, 60% { transform: translateX(-100%); }
@@ -244,16 +250,68 @@
         transform: translateY(-2px);
     }
 
+    /* ===== Stats Strip ===== */
+    .stats-strip {
+        max-width: 900px;
+        margin: 3.5rem auto 0;
+        padding: 0 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 1rem;
+        animation: fadeUp 1.2s 0.4s ease both;
+    }
+    .stat-item {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 14px;
+        padding: 1.3rem 1rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    .stat-item::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .stat-item:hover {
+        background: var(--card-hover);
+        transform: translateY(-4px);
+        border-color: rgba(124,92,255,0.35);
+    }
+    .stat-item:hover::before { opacity: 1; }
+    .stat-num {
+        font-size: 1.8rem;
+        font-weight: 800;
+        background: linear-gradient(90deg, #a78bfa, #22d3ee);
+        -webkit-background-clip: text; background-clip: text;
+        color: transparent;
+        line-height: 1;
+        margin-bottom: 0.3rem;
+    }
+    .stat-label {
+        font-size: 0.8rem;
+        color: var(--muted);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
     /* ===== Trust Strip ===== */
     .trust-strip {
         max-width: 900px;
-        margin: 4rem auto 0;
+        margin: 3rem auto 0;
         padding: 0 2rem;
         display: flex;
         justify-content: center;
         gap: 2rem;
         flex-wrap: wrap;
-        animation: fadeUp 1.2s 0.5s ease both;
+        animation: fadeUp 1.3s 0.5s ease both;
     }
     .trust-item {
         display: flex; align-items: center; gap: 0.5rem;
@@ -269,12 +327,12 @@
         font-weight: 700;
     }
 
-    /* ===== Features ===== */
+    /* ===== Section Titles ===== */
     .section-title {
         text-align: center;
         margin: 5rem auto 0.6rem;
         padding: 0 2rem;
-        font-size: 1.6rem;
+        font-size: 1.8rem;
         font-weight: 800;
         letter-spacing: -0.02em;
         animation: fadeUp 0.8s ease both;
@@ -288,6 +346,7 @@
         animation: fadeUp 0.9s ease both;
     }
 
+    /* ===== Features ===== */
     .features {
         max-width: 1100px; margin: 0 auto 3rem;
         padding: 0 2rem;
@@ -304,15 +363,7 @@
         backdrop-filter: blur(10px);
         transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
         overflow: hidden;
-        opacity: 0;
-        transform: translateY(20px);
-        animation: fadeUp 0.8s ease forwards;
     }
-    .feature:nth-child(1) { animation-delay: 0.6s; }
-    .feature:nth-child(2) { animation-delay: 0.7s; }
-    .feature:nth-child(3) { animation-delay: 0.8s; }
-    .feature:nth-child(4) { animation-delay: 0.9s; }
-
     .feature::before {
         content: ""; position: absolute; inset: 0;
         background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), rgba(124,92,255,0.18), transparent 40%);
@@ -325,7 +376,6 @@
         border-color: rgba(124,92,255,0.35);
         background: var(--card-hover);
     }
-
     .feature .icon-wrap {
         width: 52px; height: 52px;
         border-radius: 14px;
@@ -390,6 +440,111 @@
         line-height: 1.5;
     }
 
+    /* ===== Testimonials ===== */
+    .testimonials {
+        max-width: 1100px;
+        margin: 0 auto 3rem;
+        padding: 0 2rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.25rem;
+    }
+    .testimonial {
+        padding: 1.6rem;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    .testimonial::before {
+        content: """;
+        position: absolute;
+        top: 0.8rem;
+        right: 1.2rem;
+        font-size: 3rem;
+        color: rgba(124,92,255,0.2);
+        font-family: Georgia, serif;
+        line-height: 1;
+    }
+    .testimonial:hover {
+        background: var(--card-hover);
+        transform: translateY(-4px);
+        border-color: rgba(124,92,255,0.3);
+    }
+    .testi-stars {
+        color: #fcd34d;
+        font-size: 0.9rem;
+        letter-spacing: 2px;
+        margin-bottom: 0.8rem;
+    }
+    .testimonial p {
+        font-size: 0.95rem;
+        color: var(--muted);
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        font-style: italic;
+    }
+    .testi-author {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--accent-2);
+    }
+
+    /* ===== FAQ ===== */
+    .faq {
+        max-width: 800px;
+        margin: 0 auto 4rem;
+        padding: 0 2rem;
+    }
+    .faq-item {
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 14px;
+        margin-bottom: 0.8rem;
+        padding: 1.1rem 1.3rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    .faq-item:hover {
+        background: var(--card-hover);
+        border-color: rgba(124,92,255,0.3);
+    }
+    .faq-item[open] {
+        background: var(--card-hover);
+        border-color: rgba(124,92,255,0.4);
+    }
+    .faq-item summary {
+        font-weight: 600;
+        font-size: 1rem;
+        color: var(--text);
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        user-select: none;
+    }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after {
+        content: "▾";
+        color: var(--accent-2);
+        font-size: 0.9rem;
+        transition: transform 0.3s;
+        flex-shrink: 0;
+    }
+    .faq-item[open] summary::after {
+        transform: rotate(180deg);
+    }
+    .faq-item p {
+        color: var(--muted);
+        margin-top: 0.9rem;
+        font-size: 0.9rem;
+        line-height: 1.65;
+        padding-top: 0.9rem;
+        border-top: 1px solid var(--glass-border);
+    }
+
     /* ===== Final CTA ===== */
     .final-cta {
         max-width: 800px;
@@ -427,6 +582,22 @@
         font-weight: 700;
         color: var(--text);
         margin-bottom: 0.4rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+    footer .footer-brand-logo {
+        width: 24px; height: 24px;
+        border-radius: 6px;
+        background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+        display: grid; place-items: center;
+        font-size: 0.75rem;
+        overflow: hidden;
+    }
+    footer .footer-brand-logo img {
+        width: 100%; height: 100%;
+        object-fit: contain;
     }
     footer .footer-links {
         display: flex;
@@ -442,11 +613,44 @@
     }
     footer a:hover { color: var(--accent-2); }
 
+    /* ===== Floating Dashboard Button ===== */
+    .floating-dashboard {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        padding: 1rem 1.5rem;
+        background: linear-gradient(135deg, var(--accent-1), #5b8cff);
+        color: white;
+        text-decoration: none;
+        border-radius: 999px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        box-shadow: 0 12px 32px rgba(124,92,255,0.5);
+        z-index: 100;
+        transition: all 0.3s;
+        display: none;
+        align-items: center;
+        gap: 0.5rem;
+        animation: slideIn 0.5s ease;
+    }
+    .floating-dashboard.show {
+        display: inline-flex;
+    }
+    .floating-dashboard:hover {
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 18px 40px rgba(124,92,255,0.65);
+    }
+    @keyframes slideIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
     @keyframes fadeUp {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
+    /* ===== Responsive ===== */
     @media (max-width: 600px) {
         .navbar { padding: 0.9rem 1rem; }
         .brand { font-size: 1.05rem; }
@@ -454,26 +658,33 @@
         .nav-btns a { padding: 0.5rem 0.9rem; font-size: 0.85rem; }
         .hero { padding: 4rem 1.25rem 2rem; }
         .hero p { font-size: 1rem; }
-        .section-title { font-size: 1.3rem; margin-top: 3rem; }
+        .section-title { font-size: 1.4rem; margin-top: 3rem; }
         .final-cta { padding: 2rem 1.5rem; }
         .final-cta h2 { font-size: 1.4rem; }
+        .floating-dashboard {
+            bottom: 1rem;
+            right: 1rem;
+            padding: 0.85rem 1.2rem;
+            font-size: 0.85rem;
+        }
     }
 </style>
 </head>
 <body>
 
-<!-- Background layers -->
 <div class="bg-wrap"></div>
 <div class="grid-overlay"></div>
 <div class="orb o1"></div>
 <div class="orb o2"></div>
 <div class="orb o3"></div>
 
-<!-- Navbar -->
+<!-- ============ NAVBAR ============ -->
 <div class="navbar-wrap">
     <nav class="navbar">
         <a href="index.html" class="brand">
-            <div class="brand-logo">📝</div>
+            <div class="brand-logo">
+                <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='📝';">
+            </div>
             <span class="brand-text">MockTest</span>
         </a>
         <div class="nav-btns">
@@ -483,7 +694,7 @@
     </nav>
 </div>
 
-<!-- Hero -->
+<!-- ============ HERO ============ -->
 <section class="hero">
     <div class="badge">
         <span class="dot"></span>
@@ -504,6 +715,27 @@
         </a>
     </div>
 
+    <!-- ============ STATS ============ -->
+    <div class="stats-strip">
+        <div class="stat-item">
+            <div class="stat-num">7+</div>
+            <div class="stat-label">Subjects</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">350+</div>
+            <div class="stat-label">Questions</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">100%</div>
+            <div class="stat-label">Free</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-num">24/7</div>
+            <div class="stat-label">Access</div>
+        </div>
+    </div>
+
+    <!-- ============ TRUST STRIP ============ -->
     <div class="trust-strip">
         <div class="trust-item"><span class="check">✓</span> 100% Free</div>
         <div class="trust-item"><span class="check">✓</span> No Signup Fees</div>
@@ -512,7 +744,7 @@
     </div>
 </section>
 
-<!-- Features -->
+<!-- ============ FEATURES ============ -->
 <h2 class="section-title">Why Choose MockTest?</h2>
 <p class="section-sub">Everything you need to practice and improve</p>
 
@@ -539,7 +771,7 @@
     </div>
 </section>
 
-<!-- How It Works -->
+<!-- ============ HOW IT WORKS ============ -->
 <h2 class="section-title">How It Works</h2>
 <p class="section-sub">Get started in 3 simple steps</p>
 
@@ -561,7 +793,64 @@
     </div>
 </section>
 
-<!-- Final CTA -->
+<!-- ============ TESTIMONIALS ============ -->
+<h2 class="section-title">What Students Say</h2>
+<p class="section-sub">Trusted by students across India</p>
+
+<section class="testimonials">
+    <div class="testimonial">
+        <div class="testi-stars">★★★★★</div>
+        <p>"Bahut helpful platform! Test dene ke baad turant result milta hai. Practice ke liye best hai."</p>
+        <div class="testi-author">— Rahul Kumar, Class 12</div>
+    </div>
+    <div class="testimonial">
+        <div class="testi-stars">★★★★★</div>
+        <p>"Fullscreen mode real exam jaisa feel deta hai. Daily practice kar raha hu isse."</p>
+        <div class="testi-author">— Priya Sharma, JEE Aspirant</div>
+    </div>
+    <div class="testimonial">
+        <div class="testi-stars">★★★★★</div>
+        <p>"Free me itna accha platform. Apne sabhi dosto ko recommend kar diya hai."</p>
+        <div class="testi-author">— Amit Verma, NEET Aspirant</div>
+    </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<h2 class="section-title">Frequently Asked Questions</h2>
+<p class="section-sub">Everything you need to know</p>
+
+<section class="faq">
+    <details class="faq-item">
+        <summary>Is MockTest completely free?</summary>
+        <p>Yes! MockTest is 100% free forever. There are no hidden charges, no signup fees, and no premium plans. All features are available to everyone.</p>
+    </details>
+    <details class="faq-item">
+        <summary>Do I need to install anything?</summary>
+        <p>No installation required. Just open your browser, sign up, and start practicing. Works on Chrome, Firefox, Safari, Edge, and all modern browsers.</p>
+    </details>
+    <details class="faq-item">
+        <summary>Can I use it on mobile?</summary>
+        <p>Absolutely! MockTest works perfectly on mobile phones, tablets, laptops, and desktops. The interface is fully responsive.</p>
+    </details>
+    <details class="faq-item">
+        <summary>What subjects are available?</summary>
+        <p>Currently we have General Knowledge, English Grammar, Science, Reasoning, Hindi Grammar, Maths Basics, and Computer Basics. More subjects are being added regularly.</p>
+    </details>
+    <details class="faq-item">
+        <summary>How does the fullscreen mode work?</summary>
+        <p>When you start a test, it opens in fullscreen mode to prevent distraction and discourage cheating. You can't exit fullscreen until you submit the test.</p>
+    </details>
+    <details class="faq-item">
+        <summary>Is my progress saved if I refresh?</summary>
+        <p>Yes! Your answers and timer are automatically saved. If you accidentally refresh or close the tab, you can resume your test from where you left off.</p>
+    </details>
+    <details class="faq-item">
+        <summary>Can I retake a test?</summary>
+        <p>Yes! You can retake any test as many times as you want. Each attempt is recorded separately, so you can track your improvement over time.</p>
+    </details>
+</section>
+
+<!-- ============ FINAL CTA ============ -->
 <section class="final-cta">
     <h2>Ready to Start Practicing?</h2>
     <p>Join now and take your first mock test in under a minute.</p>
@@ -571,8 +860,14 @@
     </a>
 </section>
 
+<!-- ============ FOOTER ============ -->
 <footer>
-    <div class="footer-brand">📝 MockTest</div>
+    <div class="footer-brand">
+        <div class="footer-brand-logo">
+            <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='📝';">
+        </div>
+        <span>MockTest</span>
+    </div>
     <div>© 2026 MockTest. Built for aspirants, by aspirants.</div>
     <div class="footer-links">
         <a href="login.html">Login</a>
@@ -581,8 +876,15 @@
     </div>
 </footer>
 
-<!-- Mouse glow on feature cards -->
+<!-- ============ FLOATING DASHBOARD BUTTON ============ -->
+<a href="dashboard.html" class="floating-dashboard" id="floatingDash">
+    📊 Go to Dashboard
+</a>
+
+<script src="js/config.js"></script>
+
 <script>
+    // ============ MOUSE GLOW ON FEATURE CARDS ============
     document.querySelectorAll('.feature').forEach(card => {
         card.addEventListener('mousemove', (e) => {
             const rect = card.getBoundingClientRect();
@@ -590,12 +892,28 @@
             card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
         });
     });
-</script>
 
-<!-- Backend scripts -->
-<script src="js/config.js"></script>
-<script>
-    redirectIfLoggedIn();
+    // ============ FLOATING DASHBOARD BUTTON ============
+    (async () => {
+        try {
+            const user = await apiCall('/api/auth/me');
+            if (user.success) {
+                document.getElementById('floatingDash').classList.add('show');
+            }
+        } catch (e) { }
+
+        // Also check redirect if logged in
+        redirectIfLoggedIn();
+    })();
+
+    // ============ SMOOTH SCROLL ============
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
+        });
+    });
 </script>
 </body>
 </html>
