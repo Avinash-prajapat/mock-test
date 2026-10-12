@@ -8,9 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="logo.png">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon" href="logo.png">
-<link rel="shortcut icon" href="logo.png">
 <meta name="theme-color" content="#7c5cff">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -39,12 +36,8 @@
         -webkit-font-smoothing: antialiased;
     }
 
-    /* ===== Animated Background ===== */
     .bg-wrap {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        overflow: hidden;
+        position: fixed; inset: 0; z-index: -1; overflow: hidden;
         background:
             radial-gradient(1000px 500px at 70% -10%, rgba(124,92,255,0.25), transparent 60%),
             radial-gradient(800px 450px at -10% 40%, rgba(34,211,238,0.18), transparent 60%),
@@ -52,9 +45,7 @@
             var(--bg);
     }
     .grid-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
+        position: fixed; inset: 0; z-index: -1;
         background-image:
             linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
@@ -63,24 +54,20 @@
         -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
     }
     .orb {
-        position: fixed;
-        border-radius: 50%;
-        filter: blur(80px);
-        opacity: 0.5;
-        z-index: -1;
+        position: fixed; border-radius: 50%; filter: blur(80px);
+        opacity: 0.5; z-index: -1;
         animation: float 18s ease-in-out infinite;
     }
     .orb.o1 { width: 380px; height: 380px; background: #7c5cff; top: -100px; left: -100px; }
     .orb.o2 { width: 320px; height: 320px; background: #22d3ee; bottom: 20%; right: -80px; animation-delay: -6s; }
     .orb.o3 { width: 340px; height: 340px; background: #f472b6; bottom: -120px; left: 20%; animation-delay: -12s; }
-
     @keyframes float {
         0%, 100% { transform: translate(0,0) scale(1); }
         33% { transform: translate(30px,-20px) scale(1.05); }
         66% { transform: translate(-20px,30px) scale(0.95); }
     }
 
-    /* ===== Top-Left Brand ===== */
+    /* Top-Left Brand */
     .brand-bar {
         position: fixed;
         top: 1.2rem;
@@ -106,6 +93,11 @@
         position: relative;
         overflow: hidden;
     }
+    .brand-bar-logo img {
+        width: 100%; height: 100%;
+        object-fit: contain;
+        display: block;
+    }
     .brand-bar-logo::after {
         content: "";
         position: absolute;
@@ -113,6 +105,7 @@
         background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
         transform: translateX(-100%);
         animation: shine 3.5s ease-in-out infinite;
+        pointer-events: none;
     }
     @keyframes shine {
         0%, 60% { transform: translateX(-100%); }
@@ -128,7 +121,6 @@
         color: transparent;
     }
 
-    /* ===== Layout ===== */
     body {
         display: flex;
         justify-content: center;
@@ -137,7 +129,6 @@
         min-height: 100vh;
     }
 
-    /* ===== Card ===== */
     .box {
         width: 100%;
         max-width: 420px;
@@ -155,14 +146,11 @@
     .box::before {
         content: "";
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
+        top: 0; left: 0; right: 0;
         height: 1px;
         background: linear-gradient(90deg, transparent, rgba(124,92,255,0.5), transparent);
     }
 
-    /* ===== Typography ===== */
     h1 {
         text-align: center;
         font-size: 1.75rem;
@@ -181,11 +169,16 @@
         font-size: 0.95rem;
     }
 
-    /* ===== Form Inputs ===== */
-    input {
-        width: 100%;
-        padding: 0.9rem 1rem;
+    /* ====================================================
+       INPUT WRAPPER (for eye icon)
+       ==================================================== */
+    .input-wrap {
+        position: relative;
         margin-bottom: 1rem;
+    }
+    .input-wrap input {
+        width: 100%;
+        padding: 0.9rem 3rem 0.9rem 1rem;
         background: var(--input-bg);
         border: 1px solid var(--input-border);
         border-radius: 12px;
@@ -195,16 +188,44 @@
         outline: none;
         transition: all 0.3s ease;
     }
-    input::placeholder {
+    .input-wrap input::placeholder {
         color: var(--muted-2);
     }
-    input:focus {
+    .input-wrap input:focus {
         background: rgba(255,255,255,0.08);
         border-color: var(--accent-1);
         box-shadow: 0 0 0 3px rgba(124,92,255,0.15);
     }
+    /* Eye toggle button */
+    .eye-toggle {
+        position: absolute;
+        right: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: transparent;
+        border: none;
+        color: var(--muted-2);
+        cursor: pointer;
+        display: grid;
+        place-items: center;
+        font-size: 1rem;
+        transition: all 0.2s;
+        font-family: inherit;
+    }
+    .eye-toggle:hover {
+        background: rgba(255,255,255,0.06);
+        color: var(--text);
+    }
+    .eye-toggle:active {
+        transform: translateY(-50%) scale(0.9);
+    }
 
-    /* ===== Submit Button ===== */
+    /* ====================================================
+       SUBMIT BUTTON
+       ==================================================== */
     button.submit {
         width: 100%;
         padding: 0.95rem;
@@ -220,6 +241,10 @@
         box-shadow: 0 8px 24px rgba(124,92,255,0.35);
         position: relative;
         overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.4rem;
     }
     button.submit::before {
         content: "";
@@ -237,22 +262,76 @@
         box-shadow: 0 12px 32px rgba(124,92,255,0.5);
     }
     button.submit:disabled {
-        opacity: 0.6;
+        opacity: 0.7;
         cursor: not-allowed;
     }
+    button.submit:active:not(:disabled) {
+        transform: scale(0.98);
+    }
 
-    /* ===== Messages ===== */
+    /* Button spinner */
+    .btn-spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-top-color: #fff;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ====================================================
+       MESSAGES
+       ==================================================== */
     .msg {
         text-align: center;
         margin-top: 1rem;
         font-size: 0.9rem;
         min-height: 20px;
         transition: all 0.3s ease;
+        padding: 0.6rem;
+        border-radius: 8px;
     }
-    .msg.error { color: var(--error); }
-    .msg.success { color: var(--success); }
+    .msg.error {
+        color: #fca5a5;
+        background: rgba(239,68,68,0.1);
+        border: 1px solid rgba(239,68,68,0.2);
+    }
+    .msg.success {
+        color: #6ee7b7;
+        background: rgba(16,185,129,0.1);
+        border: 1px solid rgba(16,185,129,0.2);
+    }
+    .msg:empty {
+        padding: 0;
+        background: transparent;
+        border: none;
+    }
 
-    /* ===== Bottom Link ===== */
+    /* ====================================================
+       FORGOT PASSWORD
+       ==================================================== */
+    .forgot-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: -0.5rem;
+        margin-bottom: 1rem;
+    }
+    .forgot-row a {
+        font-size: 0.85rem;
+        color: var(--muted);
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+        cursor: pointer;
+    }
+    .forgot-row a:hover {
+        color: var(--accent-2);
+        text-decoration: underline;
+    }
+
+    /* Bottom Link */
     .bottom-link {
         text-align: center;
         margin-top: 1.5rem;
@@ -270,13 +349,43 @@
         text-decoration: underline;
     }
 
-    /* ===== Animations ===== */
+    /* Divider */
+    .divider {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        margin: 1.5rem 0 1rem;
+        color: var(--muted-2);
+        font-size: 0.8rem;
+    }
+    .divider::before,
+    .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--glass-border);
+    }
+
+    /* Admin link at bottom */
+    .admin-link {
+        text-align: center;
+        margin-top: 0.8rem;
+    }
+    .admin-link a {
+        font-size: 0.8rem;
+        color: var(--muted-2);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+    .admin-link a:hover {
+        color: #fcd34d;
+    }
+
     @keyframes fadeUp {
         from { opacity: 0; transform: translateY(20px); }
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== Responsive ===== */
     @media (max-width: 600px) {
         .box { padding: 2rem 1.5rem; }
         h1 { font-size: 1.5rem; }
@@ -288,16 +397,16 @@
 </head>
 <body>
 
-<!-- Background layers -->
 <div class="bg-wrap"></div>
 <div class="grid-overlay"></div>
 <div class="orb o1"></div>
 <div class="orb o2"></div>
 <div class="orb o3"></div>
 
-<!-- Top-left brand -->
 <a href="index.html" class="brand-bar">
-    <div class="brand-bar-logo">📝</div>
+    <div class="brand-bar-logo">
+        <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='📝';">
+    </div>
     <span class="brand-bar-text">MockTest</span>
 </a>
 
@@ -305,9 +414,21 @@
     <h1>Welcome Back</h1>
     <p class="subtitle">Login to continue your practice</p>
 
-    <form id="loginForm">
-        <input type="email" id="email" placeholder="Email address" required>
-        <input type="password" id="password" placeholder="Password" required>
+    <form id="loginForm" autocomplete="on">
+        <div class="input-wrap">
+            <input type="email" id="email" placeholder="Email address" required
+                autocomplete="email" name="email">
+        </div>
+        <div class="input-wrap">
+            <input type="password" id="password" placeholder="Password" required
+                autocomplete="current-password" name="password">
+            <button type="button" class="eye-toggle" id="togglePassword" title="Show password">👁️</button>
+        </div>
+
+        <div class="forgot-row">
+            <a id="forgotLink">Forgot password?</a>
+        </div>
+
         <button type="submit" class="submit" id="loginBtn">Login</button>
         <p class="msg" id="msg"></p>
     </form>
@@ -315,37 +436,80 @@
     <div class="bottom-link">
         Don't have an account? <a href="signup.html">Sign up</a>
     </div>
+
+    <div class="divider">or</div>
+
+    <div class="admin-link">
+        <a href="admin-login.html">🔐 Login as Admin</a>
+    </div>
 </div>
 
 <script src="js/config.js"></script>
 <script>
     redirectIfLoggedIn();
 
+    // ============ PASSWORD TOGGLE ============
+    const toggleBtn = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    toggleBtn.onclick = () => {
+        const isPassword = passwordInput.type === 'password';
+        passwordInput.type = isPassword ? 'text' : 'password';
+        toggleBtn.textContent = isPassword ? '🙈' : '👁️';
+        toggleBtn.title = isPassword ? 'Hide password' : 'Show password';
+    };
+
+    // ============ FORGOT PASSWORD ============
+    document.getElementById('forgotLink').onclick = () => {
+        // Simple prompt - can be replaced with actual flow
+        const email = prompt('Enter your registered email address:');
+        if (!email) return;
+
+        // Show message
+        const msg = document.getElementById('msg');
+        msg.textContent = 'Password reset instructions sent to ' + email;
+        msg.className = 'msg success';
+
+        // In real app, this would call an API endpoint
+        // apiCall('/api/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email }) });
+    };
+
+    // ============ LOGIN SUBMIT ============
     document.getElementById('loginForm').onsubmit = async (e) => {
         e.preventDefault();
         const btn = document.getElementById('loginBtn');
         const msg = document.getElementById('msg');
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
 
+        // Validation
+        if (!email || !password) {
+            msg.textContent = 'Please enter email and password';
+            msg.className = 'msg error';
+            return;
+        }
+
+        // Show loading state
         btn.disabled = true;
-        msg.textContent = 'Logging in...';
+        btn.innerHTML = '<span class="btn-spinner"></span> Logging in...';
+        msg.textContent = '';
         msg.className = 'msg';
 
         const data = await apiCall('/api/auth/login', {
             method: 'POST',
-            body: JSON.stringify({
-                email: document.getElementById('email').value.trim(),
-                password: document.getElementById('password').value
-            })
+            body: JSON.stringify({ email, password })
         });
 
         if (data.success) {
-            msg.textContent = 'Login successful! Redirecting...';
+            msg.textContent = '✓ Login successful! Redirecting...';
             msg.className = 'msg success';
-            setTimeout(() => window.location.href = 'dashboard.html', 500);
+            btn.innerHTML = '✓ Success';
+            setTimeout(() => window.location.href = 'dashboard.html', 600);
         } else {
-            msg.textContent = data.error || 'Login failed.';
+            msg.textContent = data.error || 'Login failed. Check your credentials.';
             msg.className = 'msg error';
             btn.disabled = false;
+            btn.innerHTML = 'Login';
         }
     };
 </script>
