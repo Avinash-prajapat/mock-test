@@ -51,7 +51,7 @@ function escapeHtml(s) {
 }
 
 // ============================================
-// FULLSCREEN HELPERS — Sirf test page ke liye
+// FULLSCREEN — Sirf test page ke liye
 // ============================================
 const FS_KEY = 'exam_fullscreen';
 
@@ -82,10 +82,9 @@ function exitFullscreen() {
     }
 }
 
-// Sirf test page pe call karo
 function enforceTestFullscreen() {
     if (!isFsEnabled()) return;
-    console.log('[FS] Test fullscreen enforcement active');
+    console.log('[FS] Test fullscreen active');
 
     document.addEventListener('fullscreenchange', () => {
         if (!document.fullscreenElement && isFsEnabled()) {
