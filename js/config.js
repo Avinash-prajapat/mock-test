@@ -50,10 +50,13 @@ function escapeHtml(s) {
     }[c]));
 }
 
-const FS_KEY = 'fs_enabled_v2';
+// ============================================
+// FULLSCREEN HELPERS — Sirf test page ke liye
+// ============================================
+const FS_KEY = 'exam_fullscreen';
 
 function isFsEnabled() {
-    return localStorage.getItem(FS_KEY) === '1';
+    return sessionStorage.getItem(FS_KEY) === '1';
 }
 
 async function goFullscreen() {
@@ -61,7 +64,7 @@ async function goFullscreen() {
     if (document.fullscreenElement) return true;
     try {
         await el.requestFullscreen({ navigationUI: 'hide' });
-        localStorage.setItem(FS_KEY, '1');
+        sessionStorage.setItem(FS_KEY, '1');
         console.log('[FS] ✅ Fullscreen entered');
         return true;
     } catch (err) {
@@ -71,7 +74,7 @@ async function goFullscreen() {
 }
 
 function exitFullscreen() {
-    localStorage.removeItem(FS_KEY);
+    sessionStorage.removeItem(FS_KEY);
     const overlay = document.getElementById('fs-resume-overlay');
     if (overlay) overlay.remove();
     if (document.fullscreenElement) {
@@ -79,10 +82,12 @@ function exitFullscreen() {
     }
 }
 
-function autoRestoreFullscreen() {
+// Ye function sirf test.html me call hoga
+function enforceTestFullscreen() {
     if (!isFsEnabled()) return;
-    console.log('[FS] Auto-restore armed on', window.location.pathname);
+    console.log('[FS] Test fullscreen enforcement active');
 
+    // Agar fullscreen toot jaye -> overlay dikhao
     document.addEventListener('fullscreenchange', () => {
         if (!document.fullscreenElement && isFsEnabled()) {
             showResumeOverlay();
@@ -92,13 +97,16 @@ function autoRestoreFullscreen() {
         }
     });
 
+    // Dangerous keys block (sirf test me)
     document.addEventListener('keydown', (e) => {
         if (!isFsEnabled()) return;
         if (e.key === 'Escape' || e.key === 'F11') e.preventDefault();
         if (e.ctrlKey && ['w', 'r', 't', 'n'].includes(e.key.toLowerCase())) e.preventDefault();
         if (e.altKey && e.key === 'F4') e.preventDefault();
+        if (e.key === 'F12') e.preventDefault();
     }, true);
 
+    // Right-click, copy, cut block
     document.addEventListener('contextmenu', (e) => {
         if (isFsEnabled()) e.preventDefault();
     });
@@ -109,23 +117,12 @@ function autoRestoreFullscreen() {
         if (isFsEnabled()) e.preventDefault();
     });
 
-    const firstClickRestore = async () => {
-        if (!isFsEnabled()) return;
-        if (document.fullscreenElement) {
-            document.removeEventListener('click', firstClickRestore);
-            return;
-        }
-        if (document.getElementById('fs-resume-overlay')) return;
-        const ok = await goFullscreen();
-        if (ok) document.removeEventListener('click', firstClickRestore);
-    };
-    document.addEventListener('click', firstClickRestore);
-
+    // Page load pe agar fullscreen nahi hai -> overlay dikhao
     setTimeout(() => {
         if (isFsEnabled() && !document.fullscreenElement) {
             showResumeOverlay();
         }
-    }, 150);
+    }, 200);
 }
 
 function showResumeOverlay() {
@@ -149,8 +146,8 @@ function showResumeOverlay() {
             Fullscreen Mode Required
         </h2>
         <p style="opacity: 0.8; margin-bottom: 2rem; max-width: 400px; line-height: 1.6;">
-            This is an exam session. You must stay in fullscreen mode.<br><br>
-            <strong>Click anywhere to continue.</strong>
+            You must stay in fullscreen mode during the test.<br><br>
+            <strong>Click anywhere to resume.</strong>
         </p>
         <button style="
             padding: 1rem 2.5rem;
@@ -158,7 +155,7 @@ function showResumeOverlay() {
             border: none; border-radius: 12px;
             font-size: 1rem; font-weight: 600;
             cursor: pointer;
-        ">Enter Fullscreen</button>
+        ">Resume Test</button>
     `;
 
     overlay.onclick = async (e) => {
@@ -168,32 +165,4 @@ function showResumeOverlay() {
     };
 
     document.body.appendChild(overlay);
-}
-
-function createFullscreenIndicator() {
-    if (!isFsEnabled()) return;
-    if (document.getElementById('fs-indicator')) return;
-
-    const el = document.createElement('div');
-    el.id = 'fs-indicator';
-    el.innerHTML = '⛶';
-    el.style.cssText = `
-        position: fixed; bottom: 12px; right: 12px;
-        width: 34px; height: 34px;
-        background: rgba(79,70,229,0.85); color: white;
-        border-radius: 50%; display: flex;
-        align-items: center; justify-content: center;
-        font-size: 16px; cursor: pointer; z-index: 99998;
-        user-select: none; opacity: 0.5;
-        transition: opacity 0.2s;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    `;
-    el.onmouseenter = () => el.style.opacity = '1';
-    el.onmouseleave = () => el.style.opacity = '0.5';
-    el.onclick = (e) => {
-        e.stopPropagation();
-        if (document.fullscreenElement) exitFullscreen();
-        else goFullscreen();
-    };
-    document.body.appendChild(el);
 }
