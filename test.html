@@ -35,7 +35,6 @@
         -webkit-font-smoothing: antialiased;
     }
 
-    /* ===== Animated Background ===== */
     .bg-wrap {
         position: fixed;
         inset: 0;
@@ -79,7 +78,10 @@
         font-size: 1.2rem;
         font-weight: 800;
         letter-spacing: -0.02em;
+        cursor: pointer;
+        transition: transform 0.2s;
     }
+    .brand:hover { transform: scale(1.03); }
     .brand-logo {
         width: 34px; height: 34px;
         border-radius: 9px;
@@ -128,7 +130,6 @@
         50% { transform: scale(1.03); }
     }
 
-    /* ===== Layout ===== */
     .container {
         max-width: 1100px;
         margin: 2rem auto;
@@ -140,7 +141,6 @@
         animation: fadeUp 0.6s ease;
     }
 
-    /* ===== Question Nav (Sidebar) ===== */
     .question-nav {
         background: var(--glass);
         border: 1px solid var(--glass-border);
@@ -195,7 +195,6 @@
         transform: scale(1.05);
     }
 
-    /* ===== Question Area ===== */
     .question-area {
         background: var(--glass);
         border: 1px solid var(--glass-border);
@@ -255,7 +254,6 @@
         color: var(--text);
     }
 
-    /* ===== Controls ===== */
     .controls {
         display: flex;
         justify-content: space-between;
@@ -311,7 +309,6 @@
         box-shadow: 0 12px 32px rgba(16,185,129,0.45);
     }
 
-    /* ===== Loading State ===== */
     .loading {
         grid-column: 1 / -1;
         text-align: center;
@@ -337,32 +334,31 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ===== Responsive ===== */
     @media (max-width: 768px) {
         .navbar { padding: 0.9rem 1rem; }
-        .brand-text { display: none; } /* Show only logo on small mobile */
-        .container { 
-            grid-template-columns: 1fr; 
+        .brand-text { display: none; }
+        .container {
+            grid-template-columns: 1fr;
             padding: 0 1rem;
             margin: 1rem auto;
         }
-        .question-nav { 
-            position: sticky; 
-            top: 65px; 
-            z-index: 10; 
-            order: -1; 
+        .question-nav {
+            position: sticky;
+            top: 65px;
+            z-index: 10;
+            order: -1;
             max-height: none;
         }
-        .nav-grid { 
-            display: flex; 
-            overflow-x: auto; 
-            gap: 0.5rem; 
+        .nav-grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 0.5rem;
             padding-bottom: 0.5rem;
-            scrollbar-width: none; /* Firefox */
+            scrollbar-width: none;
         }
-        .nav-grid::-webkit-scrollbar { display: none; } /* Chrome/Safari */
-        .q-btn { 
-            min-width: 42px; 
+        .nav-grid::-webkit-scrollbar { display: none; }
+        .q-btn {
+            min-width: 42px;
             flex-shrink: 0;
         }
         .question-area { padding: 1.5rem; }
@@ -370,16 +366,47 @@
         .controls { justify-content: stretch; }
         .controls button { flex: 1; text-align: center; }
     }
+
+    /* ===== Start Test Overlay ===== */
+    .start-overlay {
+        position: fixed; inset: 0; z-index: 999999;
+        background: rgba(0,0,0,0.95); color: white;
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        font-family: system-ui, -apple-system, sans-serif;
+        text-align: center; padding: 2rem;
+    }
+    .start-overlay .big-icon {
+        font-size: 4rem; margin-bottom: 1rem;
+    }
+    .start-overlay h2 {
+        font-size: 1.6rem; margin-bottom: 0.6rem; font-weight: 700;
+    }
+    .start-overlay p {
+        opacity: 0.8; margin-bottom: 2rem; max-width: 400px; line-height: 1.6;
+    }
+    .start-overlay button {
+        padding: 1rem 2.5rem;
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        border: none; border-radius: 12px;
+        font-size: 1rem; font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 8px 24px rgba(16,185,129,0.4);
+        transition: transform 0.2s;
+    }
+    .start-overlay button:hover {
+        transform: translateY(-2px);
+    }
 </style>
 </head>
 <body>
 
-<!-- Background layers -->
 <div class="bg-wrap"></div>
 <div class="grid-overlay"></div>
 
 <nav class="navbar">
-    <div class="brand">
+    <div class="brand" onclick="confirmExitTest()">
         <div class="brand-logo">📝</div>
         <span class="brand-text" id="testTitle">Loading...</span>
     </div>
@@ -401,17 +428,121 @@
     let timeLeft = 30 * 60;
     let timerInterval = null;
     let submitting = false;
+    let testStarted = false;
 
-    // Fullscreen restore on this page
-    autoRestoreFullscreen();
-    createFullscreenIndicator();
+    // 🔥 Fullscreen enforcement sirf test page pe
+    function activateTestFullscreen() {
+        sessionStorage.setItem('exam_fullscreen', '1');
 
-    // Tab switch detect
-    document.addEventListener('visibilitychange', () => {
-        if (document.hidden && isFsEnabled()) {
-            console.warn('⚠️ Tab switch detected!');
+        // Fullscreen exit detect -> overlay
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement && testStarted && isFsEnabled()) {
+                showResumeOverlay();
+            }
+        });
+
+        // Block keys
+        document.addEventListener('keydown', (e) => {
+            if (!isFsEnabled()) return;
+            if (e.key === 'Escape' || e.key === 'F11') e.preventDefault();
+            if (e.ctrlKey && ['w', 'r', 't', 'n'].includes(e.key.toLowerCase())) e.preventDefault();
+            if (e.altKey && e.key === 'F4') e.preventDefault();
+            if (e.key === 'F12') e.preventDefault();
+        }, true);
+
+        // Block right-click, copy, cut
+        document.addEventListener('contextmenu', (e) => {
+            if (isFsEnabled()) e.preventDefault();
+        });
+        document.addEventListener('copy', (e) => {
+            if (isFsEnabled()) e.preventDefault();
+        });
+        document.addEventListener('cut', (e) => {
+            if (isFsEnabled()) e.preventDefault();
+        });
+
+        // Tab switch detect
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden && isFsEnabled()) {
+                console.warn('⚠️ Tab switch detected!');
+            }
+        });
+    }
+
+    function showResumeOverlay() {
+        if (document.getElementById('fs-resume-overlay')) return;
+        if (document.fullscreenElement) return;
+
+        const overlay = document.createElement('div');
+        overlay.id = 'fs-resume-overlay';
+        overlay.style.cssText = `
+            position: fixed; inset: 0; z-index: 999999;
+            background: rgba(0,0,0,0.95); color: white;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            font-family: system-ui, -apple-system, sans-serif;
+            text-align: center; padding: 2rem; cursor: pointer;
+        `;
+        overlay.innerHTML = `
+            <div style="font-size: 4rem; margin-bottom: 1rem;">⛶</div>
+            <h2 style="font-size: 1.6rem; margin-bottom: 0.6rem; font-weight: 700;">
+                Fullscreen Mode Required
+            </h2>
+            <p style="opacity: 0.8; margin-bottom: 2rem; max-width: 400px; line-height: 1.6;">
+                You must stay in fullscreen mode during the test.<br><br>
+                <strong>Click anywhere to resume.</strong>
+            </p>
+            <button style="
+                padding: 1rem 2.5rem;
+                background: #4f46e5; color: white;
+                border: none; border-radius: 12px;
+                font-size: 1rem; font-weight: 600;
+                cursor: pointer;
+            ">Resume Test</button>
+        `;
+        overlay.onclick = async (e) => {
+            e.stopPropagation();
+            const ok = await goFullscreen();
+            if (ok) overlay.remove();
+        };
+        document.body.appendChild(overlay);
+    }
+
+    function showStartOverlay() {
+        const overlay = document.createElement('div');
+        overlay.id = 'start-overlay';
+        overlay.className = 'start-overlay';
+        overlay.innerHTML = `
+            <div class="big-icon">⛶</div>
+            <h2>Ready to Start Test?</h2>
+            <p>The test will open in <strong>fullscreen mode</strong>.<br>You must stay in fullscreen during the test.</p>
+            <button id="startTestBtn">Start Test in Fullscreen</button>
+        `;
+        document.body.appendChild(overlay);
+
+        document.getElementById('startTestBtn').onclick = async () => {
+            const ok = await goFullscreen();
+            if (ok) {
+                testStarted = true;
+                overlay.remove();
+                loadTestData();
+            } else {
+                alert('Fullscreen is required. Please allow fullscreen and try again.');
+            }
+        };
+    }
+
+    function confirmExitTest() {
+        if (!testStarted) {
+            window.location.href = 'index.html';
+            return;
         }
-    });
+        if (confirm('Are you sure you want to leave the test? Your progress will be lost.')) {
+            sessionStorage.removeItem('exam_fullscreen');
+            if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+            window.location.href = 'dashboard.html';
+        }
+    }
 
     (async () => {
         const user = await requireAuth();
@@ -423,6 +554,14 @@
             return;
         }
 
+        // Activate fullscreen enforcement
+        activateTestFullscreen();
+
+        // Show start overlay (user must click to enter fullscreen)
+        showStartOverlay();
+    })();
+
+    async function loadTestData() {
         const t = await apiCall(`/api/tests/${TEST_ID}`);
         if (t.success && t.test) {
             document.getElementById('testTitle').textContent = t.test.title;
@@ -432,6 +571,7 @@
         const data = await apiCall(`/api/tests/${TEST_ID}/questions`);
         if (!data.success || !data.questions.length) {
             alert('No questions found for this test');
+            sessionStorage.removeItem('exam_fullscreen');
             window.location.href = 'dashboard.html';
             return;
         }
@@ -439,7 +579,7 @@
         questions = data.questions;
         render();
         startTimer();
-    })();
+    }
 
     function render() {
         const container = document.getElementById('container');
@@ -544,8 +684,11 @@
         submitting = true;
         clearInterval(timerInterval);
 
-        // 🔥 Flag RAHEGA — fullscreen nahi tootega
-        localStorage.setItem('fs_enabled_v2', '1');
+        // 🔥 Fullscreen exit karo
+        sessionStorage.removeItem('exam_fullscreen');
+        if (document.fullscreenElement) {
+            document.exitFullscreen().catch(() => {});
+        }
 
         const btn = document.getElementById('submitBtn');
         if (btn) { btn.disabled = true; btn.textContent = 'Submitting...'; }
@@ -560,6 +703,7 @@
         } else {
             alert(data.error || 'Submission failed');
             submitting = false;
+            sessionStorage.setItem('exam_fullscreen', '1');
             if (btn) { btn.disabled = false; btn.textContent = 'Submit Test'; }
         }
     }
