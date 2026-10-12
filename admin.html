@@ -8,10 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="logo.png">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="apple-touch-icon" href="logo.png">
-<link rel="shortcut icon" href="logo.png">
-<meta name="theme-color" content="#7c5cff">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -126,6 +122,7 @@
     }
     .hamburger:active { transform: scale(0.95); }
 
+    /* Brand — click se page reload hoga, redirect nahi */
     .brand {
         display: flex; align-items: center; gap: 0.6rem;
         font-size: 1.1rem; font-weight: 800;
@@ -142,6 +139,12 @@
         display: grid; place-items: center;
         font-size: 1rem;
         box-shadow: 0 4px 16px rgba(239,68,68,0.3);
+        overflow: hidden;
+    }
+    .brand-logo img {
+        width: 100%; height: 100%;
+        object-fit: contain;
+        display: block;
     }
     .brand-text {
         background: linear-gradient(90deg, #fff, #fcd34d);
@@ -198,8 +201,8 @@
         z-index: 300;
         transform: translateX(-100%);
         transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-        overflow-y: auto;
         display: flex; flex-direction: column;
+        overflow: hidden;  /* 🔥 Fixed: prevent body scroll */
     }
     .sidebar.active { transform: translateX(0); }
 
@@ -207,6 +210,7 @@
         padding: 1.2rem 1.4rem;
         border-bottom: 1px solid var(--glass-border);
         display: flex; align-items: center; justify-content: space-between;
+        flex-shrink: 0;
     }
     .sidebar-brand {
         display: flex; align-items: center; gap: 0.6rem;
@@ -222,6 +226,12 @@
         display: grid; place-items: center;
         font-size: 0.95rem;
         box-shadow: 0 4px 12px rgba(239,68,68,0.3);
+        overflow: hidden;
+    }
+    .sidebar-brand-logo img {
+        width: 100%; height: 100%;
+        object-fit: contain;
+        display: block;
     }
     .sidebar-brand-text {
         background: linear-gradient(90deg, #fff, #fcd34d);
@@ -245,10 +255,25 @@
         color: #fca5a5;
     }
 
+    /* 🔥 Scrollable menu area */
     .sidebar-menu {
         padding: 1rem 0.8rem;
         flex: 1;
+        overflow-y: auto;     /* 🔥 Vertical scroll */
+        overflow-x: hidden;
+        -webkit-overflow-scrolling: touch;  /* 🔥 Smooth mobile scroll */
     }
+    /* Custom scrollbar */
+    .sidebar-menu::-webkit-scrollbar { width: 6px; }
+    .sidebar-menu::-webkit-scrollbar-track { background: transparent; }
+    .sidebar-menu::-webkit-scrollbar-thumb {
+        background: rgba(255,255,255,0.1);
+        border-radius: 3px;
+    }
+    .sidebar-menu::-webkit-scrollbar-thumb:hover {
+        background: rgba(255,255,255,0.2);
+    }
+
     .sidebar-section-title {
         font-size: 0.7rem;
         color: var(--muted-2);
@@ -296,6 +321,7 @@
     .sidebar-footer {
         padding: 1rem 0.8rem;
         border-top: 1px solid var(--glass-border);
+        flex-shrink: 0;
     }
     .sidebar-item.danger:hover {
         background: rgba(239,68,68,0.15);
@@ -360,10 +386,7 @@
     /* ====================================================
        TAB PANELS
        ==================================================== */
-    .tab-panel {
-        display: none;
-        animation: fadeUp 0.4s ease;
-    }
+    .tab-panel { display: none; animation: fadeUp 0.4s ease; }
     .tab-panel.active { display: block; }
 
     /* ====================================================
@@ -516,7 +539,6 @@
     .empty .big-icon { font-size: 2.5rem; margin-bottom: 0.6rem; opacity: 0.6; }
     .empty h3 { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
 
-    /* Inline loader */
     .inline-loader {
         display: flex; flex-direction: column;
         align-items: center; justify-content: center;
@@ -656,7 +678,7 @@
     table tr:hover td { background: var(--card-hover); }
 
     /* ====================================================
-       MODALS
+       MODALS — with close (✕) button
        ==================================================== */
     .modal-overlay {
         position: fixed; inset: 0;
@@ -679,16 +701,42 @@
         border: 1px solid var(--glass-border);
         box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         animation: modalIn 0.3s ease;
+        position: relative;  /* 🔥 For close button */
     }
     @keyframes modalIn {
         from { opacity: 0; transform: scale(0.95); }
         to { opacity: 1; transform: scale(1); }
     }
+    /* 🔥 Close button (top-right) */
+    .modal-close {
+        position: absolute;
+        top: 1rem; right: 1rem;
+        width: 34px; height: 34px;
+        border-radius: 10px;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        color: var(--muted);
+        cursor: pointer;
+        display: grid; place-items: center;
+        font-size: 1rem;
+        font-weight: 700;
+        transition: all 0.2s;
+        z-index: 10;
+    }
+    .modal-close:hover {
+        background: rgba(239,68,68,0.15);
+        border-color: rgba(239,68,68,0.4);
+        color: #fca5a5;
+        transform: rotate(90deg);
+    }
+    .modal-close:active { transform: rotate(90deg) scale(0.9); }
+
     .modal h3 {
         margin-bottom: 1.5rem;
         color: var(--text);
         font-size: 1.3rem;
         font-weight: 700;
+        padding-right: 3rem;  /* 🔥 Space for close button */
     }
     .modal-actions {
         display: flex; gap: 0.8rem;
@@ -768,11 +816,14 @@
 <div class="topbar">
     <div class="topbar-left">
         <button class="hamburger" id="hamburgerBtn" title="Open menu">☰</button>
-        <a href="index.html" class="brand">
-            <div class="brand-logo">🔐</div>
+        <!-- 🔥 Icon click = page reload (not redirect) -->
+        <div class="brand" onclick="window.location.reload()">
+            <div class="brand-logo">
+                <img src="logo.png" alt="Logo">
+            </div>
             <span class="brand-text">Admin Panel</span>
             <span class="badge">ADMIN</span>
-        </a>
+        </div>
     </div>
     <div class="topbar-right">
         <div class="admin-chip">
@@ -788,10 +839,13 @@
 <!-- ============ SIDEBAR ============ -->
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-        <a href="index.html" class="sidebar-brand">
-            <div class="sidebar-brand-logo">🔐</div>
+        <!-- 🔥 Sidebar logo click = page reload -->
+        <div class="sidebar-brand" onclick="window.location.reload()" style="cursor:pointer;">
+            <div class="sidebar-brand-logo">
+                <img src="logo.png" alt="Logo">
+            </div>
             <span class="sidebar-brand-text">Admin</span>
-        </a>
+        </div>
         <button class="sidebar-close" id="sidebarCloseBtn">✕</button>
     </div>
 
@@ -822,7 +876,7 @@
 <!-- ============ MAIN CONTENT ============ -->
 <div class="main-content">
 
-    <!-- ============ DASHBOARD TAB ============ -->
+    <!-- DASHBOARD TAB -->
     <div class="tab-panel active" id="panel-dashboard">
         <div class="welcome-card">
             <div class="welcome-content">
@@ -856,7 +910,7 @@
         </div>
     </div>
 
-    <!-- ============ TESTS TAB ============ -->
+    <!-- TESTS TAB -->
     <div class="tab-panel" id="panel-tests">
         <div class="section-header">
             <h2>📝 All Tests</h2>
@@ -865,7 +919,7 @@
         <div id="testsList"></div>
     </div>
 
-    <!-- ============ RESULTS TAB ============ -->
+    <!-- RESULTS TAB -->
     <div class="tab-panel" id="panel-results">
         <div class="section-header">
             <h2>📋 All Student Results</h2>
@@ -881,6 +935,7 @@
 <!-- Test Modal -->
 <div class="modal-overlay" id="testModal">
     <div class="modal">
+        <button class="modal-close" onclick="closeTestModal()" title="Close">✕</button>
         <h3 id="testModalTitle">Create Test</h3>
         <form id="testForm">
             <input type="hidden" id="testId">
@@ -898,12 +953,12 @@
 <!-- Questions Modal -->
 <div class="modal-overlay" id="questionsModal">
     <div class="modal" style="max-width: 800px;">
+        <button class="modal-close" onclick="closeQuestionsModal()" title="Close">✕</button>
         <h3 id="questionsModalTitle">Manage Questions</h3>
         <div id="questionsList"></div>
         <div style="display:flex;gap:0.7rem;margin-top:1.5rem;flex-wrap:wrap;">
             <button class="btn btn-primary" id="addQuestionBtn">+ Add Question</button>
             <button class="btn btn-secondary" id="bulkUploadBtn">📤 Bulk Upload (JSON)</button>
-            <button class="btn btn-secondary" onclick="closeQuestionsModal()">Close</button>
         </div>
     </div>
 </div>
@@ -911,6 +966,7 @@
 <!-- Question Form Modal -->
 <div class="modal-overlay" id="questionFormModal">
     <div class="modal">
+        <button class="modal-close" onclick="closeQuestionFormModal()" title="Close">✕</button>
         <h3 id="questionFormTitle">Add Question</h3>
         <form id="questionForm">
             <input type="hidden" id="questionId">
@@ -943,6 +999,7 @@
 <!-- Bulk Modal -->
 <div class="modal-overlay" id="bulkModal">
     <div class="modal">
+        <button class="modal-close" onclick="closeBulkModal()" title="Close">✕</button>
         <h3>Bulk Upload Questions</h3>
         <p style="color:var(--muted);font-size:0.9rem;margin-bottom:1rem;">Paste JSON array. Format:</p>
         <pre>[{"question_text":"Capital of India?","option_a":"Mumbai","option_b":"Delhi","option_c":"Kolkata","option_d":"Chennai","correct_option":"B","marks":1}]</pre>
@@ -999,20 +1056,30 @@
     function openSidebar() {
         sidebar.classList.add('active');
         sidebarOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';  // 🔥 Prevent body scroll
     }
     function closeSidebar() {
         sidebar.classList.remove('active');
         sidebarOverlay.classList.remove('active');
+        document.body.style.overflow = '';  // 🔥 Restore scroll
     }
     hamburgerBtn.onclick = openSidebar;
     sidebarCloseBtn.onclick = closeSidebar;
     sidebarOverlay.onclick = closeSidebar;
 
+    // ============ MODAL CLICK OUTSIDE = CLOSE ============
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                // Click directly on overlay (not inside modal)
+                overlay.classList.remove('active');
+            }
+        });
+    });
+
     // ============ STATE ============
     let currentTab = 'dashboard';
     let dashboardLoaded = false;
-    let testsLoaded = false;
-    let resultsLoaded = false;
     let allResultsData = [];
     let currentTestId = null;
 
@@ -1030,20 +1097,19 @@
 
         currentTab = tab;
 
-        if (tab === 'dashboard' && !dashboardLoaded) {
-            if (showLoader) showPageLoader('Loading dashboard...');
+        if (tab === 'dashboard') {
+            if (showLoader && !dashboardLoaded) showPageLoader('Loading dashboard...');
             await loadStats();
             dashboardLoaded = true;
-            if (showLoader) hidePageLoader();
+            if (showLoader && !dashboardLoaded) hidePageLoader();
+            if (globalLoader.classList.contains('hidden') === false) hidePageLoader();
         } else if (tab === 'tests') {
             if (showLoader) showPageLoader('Loading tests...');
             await loadTests();
-            testsLoaded = true;
             if (showLoader) hidePageLoader();
         } else if (tab === 'results') {
             if (showLoader) showPageLoader('Loading results...');
             await loadResults();
-            resultsLoaded = true;
             if (showLoader) hidePageLoader();
         }
     }
@@ -1071,7 +1137,6 @@
         document.getElementById('welcomeName').textContent = prettyName;
         document.getElementById('adminAvatar').textContent = prettyName.charAt(0).toUpperCase();
 
-        // Initial data (dashboard)
         await loadStats();
         dashboardLoaded = true;
 
@@ -1153,7 +1218,6 @@
             showToast(id ? 'Test updated!' : 'Test created!');
             closeTestModal();
             await loadTests();
-            // Refresh dashboard stats if loaded
             if (dashboardLoaded) await loadStats();
         } else showToast(data.error || 'Failed', 'error');
         setBtnLoading(btn, false);
@@ -1339,21 +1403,23 @@
         renderResults(filtered);
     });
 
-    // ============ LOGOUT → index.html ============
+    // ============ LOGOUT → index.html + DATA CLEAR ============
     document.getElementById('logoutBtn').onclick = async function() {
-        if (!confirm('Logout from admin panel?')) return;
+        if (!confirm('Logout from admin panel? You will need to login again.')) return;
         setBtnLoading(this, true);
 
+        // 🔥 Clear all session data
         try {
             sessionStorage.clear();
-            localStorage.removeItem('fs_enabled_v2');
-            localStorage.removeItem('exam_fullscreen');
+            localStorage.clear();  // 🔥 Sab kuch clear
         } catch (e) { }
 
+        // Call API to clear server session
         try {
             await apiCall('/api/auth/logout', { method: 'POST' });
         } catch (e) { }
 
+        // Redirect to home page (index.html)
         window.location.href = 'index.html';
     };
 
@@ -1364,6 +1430,14 @@
             if (!check.success || !check.is_admin) {
                 window.location.href = 'admin-login.html';
             }
+        }
+    });
+
+    // 🔥 BLOCK direct access if not admin
+    window.addEventListener('load', async () => {
+        const check = await apiCall('/api/admin/check');
+        if (!check.success || !check.is_admin) {
+            window.location.href = 'admin-login.html';
         }
     });
 </script>
