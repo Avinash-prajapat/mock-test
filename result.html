@@ -47,7 +47,43 @@
     .orb.o2 { width: 320px; height: 320px; background: #22d3ee; bottom: 20%; right: -80px; animation-delay: -6s; }
     @keyframes float { 0%,100%{transform:translate(0,0)} 50%{transform:translate(30px,-20px)} }
 
-    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    /* ===== Top Navbar ===== */
+    .topbar {
+        padding: 1rem 2rem;
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .topbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        font-size: 1.15rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: transform 0.2s;
+        text-decoration: none;
+        color: var(--text);
+    }
+    .topbar-brand:hover { transform: scale(1.03); }
+    .topbar-logo {
+        width: 34px; height: 34px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--accent-1), #22d3ee);
+        display: grid; place-items: center;
+        font-size: 1rem;
+        box-shadow: 0 8px 24px rgba(124,92,255,0.4);
+    }
+    .topbar-text {
+        background: linear-gradient(90deg, #fff, #c4b5fd);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 1rem 1rem 2rem; }
 
     .card {
         padding: 2.5rem 2rem;
@@ -182,6 +218,8 @@
     .empty { text-align: center; padding: 2rem; color: var(--muted); }
 
     @media (max-width: 600px) {
+        .topbar { padding: 0.8rem 1rem; }
+        .container { padding: 1rem 0.8rem 2rem; }
         .card { padding: 2rem 1.5rem; }
         h1 { font-size: 1.5rem; }
         .score-circle { width: 140px; height: 140px; font-size: 1.8rem; }
@@ -196,6 +234,14 @@
 <div class="grid-overlay"></div>
 <div class="orb o1"></div>
 <div class="orb o2"></div>
+
+<!-- Topbar with clickable brand -->
+<div class="topbar">
+    <a href="index.html" class="topbar-brand">
+        <div class="topbar-logo">📝</div>
+        <span class="topbar-text">MockTest</span>
+    </a>
+</div>
 
 <div class="container">
     <div class="card" id="card">
@@ -219,9 +265,6 @@
 
 <script src="js/config.js"></script>
 <script>
-    autoRestoreFullscreen();
-    createFullscreenIndicator();
-
     const params = new URLSearchParams(window.location.search);
     const RESULT_ID = params.get('id');
 
