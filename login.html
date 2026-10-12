@@ -126,7 +126,10 @@
         box-shadow: 0 8px 24px rgba(124,92,255,0.4);
         position: relative;
         overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.2s;
     }
+    .logo-icon:hover { transform: scale(1.05); }
     .logo-icon::after {
         content: "";
         position: absolute;
@@ -227,25 +230,8 @@
         min-height: 20px;
         transition: all 0.3s ease;
     }
-    .msg.error {
-        color: var(--error);
-    }
-    .msg.success {
-        color: var(--success);
-    }
-
-    /* ===== Fullscreen Note ===== */
-    .fs-note {
-        text-align: center;
-        font-size: 0.8rem;
-        color: var(--muted-2);
-        margin-top: 1.2rem;
-        padding: 0.8rem;
-        background: rgba(34,211,238,0.08);
-        border: 1px solid rgba(34,211,238,0.15);
-        border-radius: 10px;
-        line-height: 1.5;
-    }
+    .msg.error { color: var(--error); }
+    .msg.success { color: var(--success); }
 
     /* ===== Bottom Link ===== */
     .bottom-link {
@@ -267,24 +253,14 @@
 
     /* ===== Animations ===== */
     @keyframes fadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     /* ===== Responsive ===== */
     @media (max-width: 600px) {
-        .box {
-            padding: 2rem 1.5rem;
-        }
-        h1 {
-            font-size: 1.5rem;
-        }
+        .box { padding: 2rem 1.5rem; }
+        h1 { font-size: 1.5rem; }
     }
 </style>
 </head>
@@ -299,7 +275,7 @@
 
 <div class="box">
     <div class="logo">
-        <div class="logo-icon">📝</div>
+        <div class="logo-icon" onclick="window.location.href='index.html'">📝</div>
     </div>
     <h1>Welcome Back</h1>
     <p class="subtitle">Login to continue your practice</p>
@@ -307,11 +283,9 @@
     <form id="loginForm">
         <input type="email" id="email" placeholder="Email address" required>
         <input type="password" id="password" placeholder="Password" required>
-        <button type="submit" class="submit" id="loginBtn">Login & Enter Fullscreen</button>
+        <button type="submit" class="submit" id="loginBtn">Login</button>
         <p class="msg" id="msg"></p>
     </form>
-
-    <p class="fs-note">🔒 Login ke baad exam fullscreen mode me khulega</p>
 
     <div class="bottom-link">
         Don't have an account? <a href="signup.html">Sign up</a>
@@ -322,32 +296,11 @@
 <script>
     redirectIfLoggedIn();
 
-    if (isFsEnabled()) {
-        setTimeout(() => {
-            if (!document.fullscreenElement) showResumeOverlay();
-        }, 150);
-    }
-
     document.getElementById('loginForm').onsubmit = async (e) => {
         e.preventDefault();
 
         const btn = document.getElementById('loginBtn');
         const msg = document.getElementById('msg');
-
-        let fsEntered = false;
-        try {
-            if (!document.fullscreenElement) {
-                await document.documentElement.requestFullscreen({ navigationUI: 'hide' });
-                localStorage.setItem('fs_enabled_v2', '1');
-                fsEntered = true;
-                console.log('[FS] ✅ Fullscreen entered');
-            } else {
-                localStorage.setItem('fs_enabled_v2', '1');
-                fsEntered = true;
-            }
-        } catch (err) {
-            console.warn('[FS] ❌ Fullscreen failed:', err.message);
-        }
 
         btn.disabled = true;
         msg.textContent = 'Logging in...';
@@ -362,16 +315,10 @@
         });
 
         if (data.success) {
-            msg.textContent = fsEntered
-                ? 'Login successful! Entering exam mode...'
-                : 'Login successful!';
+            msg.textContent = 'Login successful! Redirecting...';
             msg.className = 'msg success';
-            setTimeout(() => window.location.href = 'dashboard.html', 600);
+            setTimeout(() => window.location.href = 'dashboard.html', 500);
         } else {
-            localStorage.removeItem('fs_enabled_v2');
-            if (document.fullscreenElement) {
-                document.exitFullscreen().catch(() => {});
-            }
             msg.textContent = data.error || 'Login failed.';
             msg.className = 'msg error';
             btn.disabled = false;
