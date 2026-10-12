@@ -106,7 +106,10 @@
         font-size: 1.25rem;
         font-weight: 800;
         letter-spacing: -0.02em;
+        cursor: pointer;
+        transition: transform 0.2s;
     }
+    .brand:hover { transform: scale(1.03); }
     .brand-logo {
         width: 36px; height: 36px;
         border-radius: 10px;
@@ -435,7 +438,7 @@
 <!-- Navbar -->
 <div class="navbar-wrap">
     <nav class="navbar">
-        <div class="brand">
+        <div class="brand" onclick="window.location.href='index.html'">
             <div class="brand-logo">📝</div>
             <span class="brand-text">MockTest</span>
         </div>
@@ -522,7 +525,7 @@
     });
 </script>
 
-<!-- Backend scripts (unchanged) -->
+<!-- Backend scripts -->
 <script src="js/config.js"></script>
 <script>
     redirectIfLoggedIn();
