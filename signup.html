@@ -126,7 +126,10 @@
         box-shadow: 0 8px 24px rgba(124,92,255,0.4);
         position: relative;
         overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.2s;
     }
+    .logo-icon:hover { transform: scale(1.05); }
     .logo-icon::after {
         content: "";
         position: absolute;
@@ -236,12 +239,8 @@
         min-height: 20px;
         transition: all 0.3s ease;
     }
-    .msg.error {
-        color: var(--error);
-    }
-    .msg.success {
-        color: var(--success);
-    }
+    .msg.error { color: var(--error); }
+    .msg.success { color: var(--success); }
 
     /* ===== Bottom Link ===== */
     .bottom-link {
@@ -263,24 +262,14 @@
 
     /* ===== Animations ===== */
     @keyframes fadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     /* ===== Responsive ===== */
     @media (max-width: 600px) {
-        .box {
-            padding: 2rem 1.5rem;
-        }
-        h1 {
-            font-size: 1.5rem;
-        }
+        .box { padding: 2rem 1.5rem; }
+        h1 { font-size: 1.5rem; }
     }
 </style>
 </head>
@@ -295,7 +284,7 @@
 
 <div class="box">
     <div class="logo">
-        <div class="logo-icon">📝</div>
+        <div class="logo-icon" onclick="window.location.href='index.html'">📝</div>
     </div>
     <h1>Create Account</h1>
     <p class="subtitle">Start your test preparation today</p>
