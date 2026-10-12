@@ -37,7 +37,6 @@
         -webkit-font-smoothing: antialiased;
     }
 
-    /* ===== Button spinner ===== */
     .btn-spinner {
         display: inline-block;
         width: 14px; height: 14px;
@@ -72,9 +71,6 @@
         -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
     }
 
-    /* ============================================================
-       NAVBAR
-       ============================================================ */
     .navbar {
         position: sticky;
         top: 0;
@@ -129,7 +125,6 @@
         max-width: 200px;
     }
 
-    /* Right side of navbar */
     .navbar-right {
         display: flex;
         align-items: center;
@@ -137,7 +132,6 @@
         flex-wrap: wrap;
     }
 
-    /* 🔥 Progress badge */
     .progress-badge {
         display: flex;
         align-items: center;
@@ -166,7 +160,6 @@
         font-size: 0.95rem;
     }
 
-    /* Timer */
     .timer {
         display: flex;
         align-items: center;
@@ -200,9 +193,6 @@
         50% { transform: scale(1.03); }
     }
 
-    /* ============================================================
-       MAIN LAYOUT
-       ============================================================ */
     .container {
         max-width: 1100px;
         margin: 2rem auto;
@@ -316,9 +306,6 @@
         transform: scale(1.05);
     }
 
-    /* ============================================================
-       QUESTION AREA
-       ============================================================ */
     .question-area {
         background: var(--glass);
         border: 1px solid var(--glass-border);
@@ -498,9 +485,6 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ============================================================
-       RESPONSIVE
-       ============================================================ */
     @media (max-width: 768px) {
         .navbar { padding: 0.9rem 1rem; }
         .brand-text { display: none; }
@@ -537,9 +521,6 @@
         .controls button { flex: 1; text-align: center; }
     }
 
-    /* ============================================================
-       OVERLAYS
-       ============================================================ */
     .start-overlay, .resume-overlay {
         position: fixed; inset: 0; z-index: 999999;
         background: rgba(0,0,0,0.95); color: white;
@@ -585,6 +566,133 @@
         font-size: 0.85rem;
         opacity: 0.6;
     }
+
+    /* ============================================================
+       CUSTOM CONFIRM POPUP
+       ============================================================ */
+    .popup-overlay {
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.75);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999999;
+        padding: 1rem;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+    .popup-overlay.active { display: flex; opacity: 1; }
+    .popup {
+        background: #12121a;
+        width: 100%;
+        max-width: 400px;
+        padding: 2rem;
+        border-radius: 20px;
+        border: 1px solid rgba(255,255,255,0.08);
+        box-shadow: 0 25px 70px rgba(0,0,0,0.6);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        animation: popupIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .popup::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(124,92,255,0.6), transparent);
+    }
+    @keyframes popupIn {
+        from { opacity: 0; transform: scale(0.9) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .popup-icon {
+        width: 64px; height: 64px;
+        border-radius: 50%;
+        display: grid; place-items: center;
+        font-size: 1.8rem;
+        margin: 0 auto 1.2rem;
+    }
+    .popup-icon.danger {
+        background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.1));
+        border: 2px solid rgba(239,68,68,0.3);
+        color: #fca5a5;
+        box-shadow: 0 0 30px rgba(239,68,68,0.2);
+    }
+    .popup-icon.warning {
+        background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.1));
+        border: 2px solid rgba(245,158,11,0.3);
+        color: #fcd34d;
+        box-shadow: 0 0 30px rgba(245,158,11,0.2);
+    }
+    .popup-icon.info {
+        background: linear-gradient(135deg, rgba(124,92,255,0.2), rgba(34,211,238,0.1));
+        border: 2px solid rgba(124,92,255,0.3);
+        color: #c4b5fd;
+        box-shadow: 0 0 30px rgba(124,92,255,0.2);
+    }
+    .popup-icon.success {
+        background: linear-gradient(135deg, rgba(16,185,129,0.2), rgba(16,185,129,0.1));
+        border: 2px solid rgba(16,185,129,0.3);
+        color: #6ee7b7;
+        box-shadow: 0 0 30px rgba(16,185,129,0.2);
+    }
+    .popup h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin-bottom: 0.6rem;
+    }
+    .popup p {
+        font-size: 0.95rem;
+        color: rgba(255,255,255,0.65);
+        line-height: 1.55;
+        margin-bottom: 1.8rem;
+        white-space: pre-line;
+    }
+    .popup-actions {
+        display: flex;
+        gap: 0.7rem;
+    }
+    .popup-actions button {
+        flex: 1;
+        padding: 0.85rem 1rem;
+        border: none;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: inherit;
+    }
+    .popup-actions .popup-cancel {
+        background: rgba(255,255,255,0.04);
+        color: #ffffff;
+        border: 1px solid rgba(255,255,255,0.08);
+    }
+    .popup-actions .popup-cancel:hover {
+        background: rgba(255,255,255,0.07);
+        transform: translateY(-2px);
+    }
+    .popup-actions .popup-confirm {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+        box-shadow: 0 6px 20px rgba(239,68,68,0.35);
+    }
+    .popup-actions .popup-confirm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(239,68,68,0.5);
+    }
+    .popup-actions .popup-confirm.primary {
+        background: linear-gradient(135deg, #7c5cff, #5b8cff);
+        box-shadow: 0 6px 20px rgba(124,92,255,0.35);
+    }
+    .popup-actions .popup-confirm.primary:hover {
+        box-shadow: 0 10px 28px rgba(124,92,255,0.5);
+    }
+    .popup-actions button:active { transform: scale(0.97); }
 </style>
 </head>
 <body>
@@ -592,7 +700,6 @@
 <div class="bg-wrap"></div>
 <div class="grid-overlay"></div>
 
-<!-- ============ NAVBAR ============ -->
 <nav class="navbar">
     <div class="brand" onclick="confirmExitTest()">
         <div class="brand-logo">
@@ -601,7 +708,6 @@
         <span class="brand-text" id="testTitle">Loading...</span>
     </div>
     <div class="navbar-right">
-        <!-- 🔥 Progress badge -->
         <div class="progress-badge">
             <span class="progress-num" id="answeredCount">0</span>
             <span class="progress-sep">/</span>
@@ -617,19 +723,30 @@
     <div class="loading">Loading test environment...</div>
 </div>
 
+<!-- ============ CUSTOM CONFIRM POPUP ============ -->
+<div class="popup-overlay" id="confirmPopup">
+    <div class="popup">
+        <div class="popup-icon danger" id="popupIcon">⚠️</div>
+        <h3 id="popupTitle">Are you sure?</h3>
+        <p id="popupMessage">Do you want to continue?</p>
+        <div class="popup-actions">
+            <button class="popup-cancel" id="popupCancelBtn">Cancel</button>
+            <button class="popup-confirm" id="popupConfirmBtn">Confirm</button>
+        </div>
+    </div>
+</div>
+
 <script src="js/config.js"></script>
 <script>
     const params = new URLSearchParams(window.location.search);
     const TEST_ID = params.get('id');
 
-    // ============ SESSION STORAGE KEY ============
     const STORAGE_KEY = 'test_autosave_' + TEST_ID;
 
-    // ============ STATE ============
     let questions = [];
     let currentIndex = 0;
     let answers = {};
-    let flagged = {};  // 🔥 Flagged questions
+    let flagged = {};
     let timeLeft = 30 * 60;
     let timerInterval = null;
     let submitting = false;
@@ -637,7 +754,64 @@
     let autoSaveInterval = null;
 
     // ============================================================
-    // 🔥 SESSION STORAGE — Auto Save / Restore
+    // CUSTOM CONFIRM POPUP
+    // ============================================================
+    function showConfirm(options) {
+        const overlay = document.getElementById('confirmPopup');
+        const iconEl = document.getElementById('popupIcon');
+        const titleEl = document.getElementById('popupTitle');
+        const msgEl = document.getElementById('popupMessage');
+        const cancelBtn = document.getElementById('popupCancelBtn');
+        const confirmBtn = document.getElementById('popupConfirmBtn');
+
+        titleEl.textContent = options.title || 'Are you sure?';
+        msgEl.textContent = options.message || 'Do you want to continue?';
+        cancelBtn.textContent = options.cancelText || 'Cancel';
+        confirmBtn.textContent = options.confirmText || 'Confirm';
+
+        iconEl.textContent = options.icon || '⚠️';
+        iconEl.className = 'popup-icon ' + (options.iconType || 'danger');
+
+        if (options.primary) confirmBtn.classList.add('primary');
+        else confirmBtn.classList.remove('primary');
+
+        overlay.classList.add('active');
+
+        const newCancel = cancelBtn.cloneNode(true);
+        const newConfirm = confirmBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+        confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
+
+        const close = () => overlay.classList.remove('active');
+
+        newCancel.onclick = () => {
+            close();
+            if (options.onCancel) options.onCancel();
+        };
+        newConfirm.onclick = () => {
+            close();
+            if (options.onConfirm) options.onConfirm();
+        };
+
+        overlay.onclick = (e) => {
+            if (e.target === overlay) {
+                close();
+                if (options.onCancel) options.onCancel();
+            }
+        };
+
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                close();
+                document.removeEventListener('keydown', escHandler);
+                if (options.onCancel) options.onCancel();
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+    }
+
+    // ============================================================
+    // SESSION STORAGE
     // ============================================================
     function saveState() {
         if (!testStarted || submitting) return;
@@ -680,7 +854,6 @@
         } catch (e) {}
     }
 
-    // Auto-save har 3 second
     function startAutoSave() {
         if (autoSaveInterval) clearInterval(autoSaveInterval);
         autoSaveInterval = setInterval(saveState, 3000);
@@ -693,7 +866,7 @@
     }
 
     // ============================================================
-    // 🔥 FULLSCREEN ENFORCEMENT
+    // FULLSCREEN
     // ============================================================
     function activateTestFullscreen() {
         sessionStorage.setItem('exam_fullscreen', '1');
@@ -756,7 +929,6 @@
         overlay.id = 'start-overlay';
         overlay.className = 'start-overlay';
 
-        // 🔥 Check if state exists — show "Resume" instead of "Start"
         const hasSaved = !!sessionStorage.getItem(STORAGE_KEY);
 
         overlay.innerHTML = `
@@ -778,32 +950,41 @@
                 testStarted = true;
                 overlay.remove();
 
-                // 🔥 Restore state if saved
-                if (hasSaved) {
-                    loadState();
-                }
+                if (hasSaved) loadState();
 
                 loadTestData();
                 startAutoSave();
             } else {
-                alert('Fullscreen is required. Please allow fullscreen and try again.');
+                showToastError('Fullscreen is required. Please allow fullscreen and try again.');
             }
         };
 
-        // Fresh start button
         const freshBtn = document.getElementById('freshStartBtn');
         if (freshBtn) {
             freshBtn.onclick = (e) => {
                 e.stopPropagation();
-                if (confirm('Clear previous progress and start fresh?')) {
-                    clearState();
-                    answers = {};
-                    flagged = {};
-                    currentIndex = 0;
-                    location.reload();
-                }
+                showConfirm({
+                    title: 'Start Fresh?',
+                    message: 'This will clear your previous progress. You will start the test from the beginning.',
+                    confirmText: 'Yes, Clear',
+                    cancelText: 'Cancel',
+                    icon: '🔄',
+                    iconType: 'warning',
+                    onConfirm: () => {
+                        clearState();
+                        answers = {};
+                        flagged = {};
+                        currentIndex = 0;
+                        location.reload();
+                    }
+                });
             };
         }
+    }
+
+    function showToastError(msg) {
+        // Simple fallback alert for fullscreen error
+        alert(msg);
     }
 
     // ============================================================
@@ -814,20 +995,28 @@
             window.location.href = 'index.html';
             return;
         }
-        if (confirm('Are you sure you want to leave the test? Your answers are saved and you can resume.')) {
-            saveState();  // Save before leaving
-            sessionStorage.removeItem('exam_fullscreen');
-            if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
-            window.location.href = 'dashboard.html';
-        }
+        showConfirm({
+            title: 'Leave Test?',
+            message: 'Your answers are auto-saved. You can resume this test later from your dashboard.',
+            confirmText: 'Yes, Leave',
+            cancelText: 'Stay',
+            icon: '⚠️',
+            iconType: 'warning',
+            onConfirm: () => {
+                saveState();
+                sessionStorage.removeItem('exam_fullscreen');
+                if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+                window.location.href = 'dashboard.html';
+            }
+        });
     }
 
     // ============================================================
-    // 🔥 BEFORE UNLOAD WARNING
+    // BEFORE UNLOAD
     // ============================================================
     window.addEventListener('beforeunload', (e) => {
         if (testStarted && !submitting) {
-            saveState();  // Save before unload
+            saveState();
             e.preventDefault();
             e.returnValue = 'Are you sure you want to leave? Your progress is saved.';
             return e.returnValue;
@@ -858,7 +1047,6 @@
         const t = await apiCall(`/api/tests/${TEST_ID}`);
         if (t.success && t.test) {
             document.getElementById('testTitle').textContent = t.test.title;
-            // ⚠️ Timer sirf fresh start pe set hoga
             if (!sessionStorage.getItem(STORAGE_KEY)) {
                 timeLeft = (t.test.duration_minutes || 30) * 60;
             }
@@ -874,8 +1062,6 @@
         }
 
         questions = data.questions;
-
-        // Validate restored currentIndex
         if (currentIndex >= questions.length) currentIndex = 0;
 
         render();
@@ -937,10 +1123,20 @@
             const unanswered = questions.length - Object.keys(answers).length;
             const flaggedCount = Object.keys(flagged).length;
             let msg = '';
-            if (unanswered > 0) msg += `You have ${unanswered} unanswered question(s).\n`;
-            if (flaggedCount > 0) msg += `You have ${flaggedCount} flagged question(s).\n`;
-            msg += '\nSubmit test?';
-            if (confirm(msg)) submitTest();
+            if (unanswered > 0) msg += `You have ${unanswered} unanswered question(s). `;
+            if (flaggedCount > 0) msg += `You have ${flaggedCount} flagged question(s). `;
+            msg += msg ? '\n\nDo you want to submit anyway?' : 'Are you ready to submit your test?';
+
+            showConfirm({
+                title: 'Submit Test?',
+                message: msg,
+                confirmText: 'Yes, Submit',
+                cancelText: 'Review',
+                icon: '✅',
+                iconType: 'info',
+                primary: true,
+                onConfirm: submitTest
+            });
         };
 
         document.getElementById('flagBtn').onclick = toggleFlag;
@@ -971,10 +1167,8 @@
         const box = document.getElementById('qBox');
         const opts = ['A', 'B', 'C', 'D'];
 
-        // Update counter
         document.getElementById('qCounter').textContent = `Question ${currentIndex + 1} of ${questions.length}`;
 
-        // Update flag button
         const flagBtn = document.getElementById('flagBtn');
         const flagIcon = document.getElementById('flagIcon');
         const flagText = document.getElementById('flagText');
@@ -1001,7 +1195,7 @@
         box.querySelectorAll('.option').forEach(el => {
             el.onclick = () => {
                 answers[q.id] = el.dataset.opt;
-                saveState();  // 🔥 Instant save
+                saveState();
                 updateProgress();
                 renderNav();
                 renderQuestion();
@@ -1012,9 +1206,6 @@
         document.getElementById('nextBtn').disabled = currentIndex === questions.length - 1;
     }
 
-    // ============================================================
-    // 🔥 FLAG FOR REVIEW
-    // ============================================================
     function toggleFlag() {
         const q = questions[currentIndex];
         if (flagged[q.id]) {
@@ -1028,9 +1219,6 @@
         renderQuestion();
     }
 
-    // ============================================================
-    // 🔥 UPDATE PROGRESS BADGE
-    // ============================================================
     function updateProgress() {
         const answeredCount = Object.keys(answers).length;
         const flagCount = Object.keys(flagged).length;
@@ -1039,9 +1227,6 @@
         document.getElementById('flagCount').textContent = `🚩 ${flagCount}`;
     }
 
-    // ============================================================
-    // TIMER
-    // ============================================================
     function startTimer() {
         const el = document.getElementById('timer');
         const update = () => {
@@ -1056,18 +1241,22 @@
         timerInterval = setInterval(() => {
             timeLeft--;
             update();
-            // Timer autosave handled by saveState() every 3s
             if (timeLeft <= 0) {
                 clearInterval(timerInterval);
-                alert('Time up! Auto-submitting...');
-                submitTest();
+                showConfirm({
+                    title: 'Time Up!',
+                    message: 'Your time is up. The test will be submitted automatically.',
+                    confirmText: 'OK',
+                    cancelText: 'OK',
+                    icon: '⏰',
+                    iconType: 'warning',
+                    onConfirm: submitTest,
+                    onCancel: submitTest
+                });
             }
         }, 1000);
     }
 
-    // ============================================================
-    // SUBMIT
-    // ============================================================
     async function submitTest() {
         if (submitting) return;
         submitting = true;
@@ -1075,7 +1264,6 @@
         clearInterval(timerInterval);
         stopAutoSave();
 
-        // Fullscreen exit
         sessionStorage.removeItem('exam_fullscreen');
         if (document.fullscreenElement) {
             document.exitFullscreen().catch(() => {});
@@ -1093,7 +1281,7 @@
         });
 
         if (data.success) {
-            clearState();  // 🔥 Clear saved state on success
+            clearState();
             window.location.href = `result.html?id=${data.result_id}`;
         } else {
             alert(data.error || 'Submission failed');
