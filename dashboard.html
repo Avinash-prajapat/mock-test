@@ -23,6 +23,8 @@
         --glass-border: rgba(255,255,255,0.08);
         --card-hover: rgba(255,255,255,0.07);
         --success: #10b981;
+        --warning: #f59e0b;
+        --danger: #ef4444;
     }
 
     html, body {
@@ -34,12 +36,9 @@
         -webkit-font-smoothing: antialiased;
     }
 
-    /* ===== Animated Background ===== */
+    /* ===== Background ===== */
     .bg-wrap {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        overflow: hidden;
+        position: fixed; inset: 0; z-index: -1; overflow: hidden;
         background:
             radial-gradient(1200px 600px at 80% -10%, rgba(124,92,255,0.2), transparent 60%),
             radial-gradient(900px 500px at -10% 30%, rgba(34,211,238,0.15), transparent 60%),
@@ -47,9 +46,7 @@
             var(--bg);
     }
     .grid-overlay {
-        position: fixed;
-        inset: 0;
-        z-index: -1;
+        position: fixed; inset: 0; z-index: -1;
         background-image:
             linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
             linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
@@ -58,17 +55,13 @@
         -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
     }
     .orb {
-        position: fixed;
-        border-radius: 50%;
-        filter: blur(80px);
-        opacity: 0.45;
-        z-index: -1;
+        position: fixed; border-radius: 50%; filter: blur(80px);
+        opacity: 0.45; z-index: -1;
         animation: float 18s ease-in-out infinite;
     }
     .orb.o1 { width: 400px; height: 400px; background: #7c5cff; top: -100px; left: -100px; }
     .orb.o2 { width: 340px; height: 340px; background: #22d3ee; top: 40%; right: -80px; animation-delay: -6s; }
     .orb.o3 { width: 360px; height: 360px; background: #f472b6; bottom: -120px; left: 30%; animation-delay: -12s; }
-
     @keyframes float {
         0%, 100% { transform: translate(0,0) scale(1); }
         33% { transform: translate(35px,-25px) scale(1.06); }
@@ -77,9 +70,7 @@
 
     /* ===== Navbar ===== */
     .navbar-wrap {
-        position: sticky;
-        top: 0;
-        z-index: 50;
+        position: sticky; top: 0; z-index: 50;
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         background: rgba(10,10,15,0.55);
@@ -87,20 +78,17 @@
     }
     .navbar {
         padding: 1rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1200px;
+        display: flex; justify-content: space-between;
+        align-items: center; max-width: 1200px;
         margin: 0 auto;
     }
     .brand {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        font-size: 1.2rem;
-        font-weight: 800;
+        display: flex; align-items: center; gap: 0.6rem;
+        font-size: 1.2rem; font-weight: 800;
         letter-spacing: -0.02em;
+        cursor: pointer; transition: transform 0.2s;
     }
+    .brand:hover { transform: scale(1.03); }
     .brand-logo {
         width: 36px; height: 36px;
         border-radius: 10px;
@@ -108,13 +96,10 @@
         display: grid; place-items: center;
         font-size: 1.1rem;
         box-shadow: 0 8px 24px rgba(124,92,255,0.4);
-        position: relative;
-        overflow: hidden;
+        position: relative; overflow: hidden;
     }
     .brand-logo::after {
-        content: "";
-        position: absolute;
-        inset: 0;
+        content: ""; position: absolute; inset: 0;
         background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
         transform: translateX(-100%);
         animation: shine 3.5s ease-in-out infinite;
@@ -125,30 +110,21 @@
     }
     .brand-text {
         background: linear-gradient(90deg, #fff, #c4b5fd);
-        -webkit-background-clip: text;
-        background-clip: text;
+        -webkit-background-clip: text; background-clip: text;
         color: transparent;
     }
 
-    .nav-right {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
     .user-email {
-        font-size: 0.9rem;
-        color: var(--muted);
+        font-size: 0.9rem; color: var(--muted);
         font-weight: 500;
     }
     .logout-btn {
         padding: 0.55rem 1.1rem;
-        background: var(--glass);
-        color: var(--text);
+        background: var(--glass); color: var(--text);
         border: 1px solid var(--glass-border);
-        border-radius: 10px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        font-weight: 500;
+        border-radius: 10px; cursor: pointer;
+        font-size: 0.9rem; font-weight: 500;
         font-family: inherit;
         transition: all 0.25s ease;
     }
@@ -160,82 +136,140 @@
 
     /* ===== Container ===== */
     .container {
-        max-width: 1100px;
-        margin: 2.5rem auto;
+        max-width: 1100px; margin: 2.5rem auto;
         padding: 0 1.5rem;
     }
 
-    /* ===== Headings ===== */
-    h1 {
-        font-size: 2rem;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        margin-bottom: 1.5rem;
-        background: linear-gradient(90deg, #fff, #c4b5fd);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
+    /* ===== Welcome ===== */
+    .welcome {
+        margin-bottom: 2rem;
         animation: fadeUp 0.6s ease;
     }
-    h2 {
-        font-size: 1.3rem;
-        font-weight: 700;
-        letter-spacing: -0.01em;
-        margin-top: 3rem;
-        margin-bottom: 1.2rem;
-        color: var(--text);
-        animation: fadeUp 0.7s ease;
+    .welcome h1 {
+        font-size: 2rem; font-weight: 800;
+        letter-spacing: -0.02em;
+        margin-bottom: 0.3rem;
+        background: linear-gradient(90deg, #fff, #c4b5fd);
+        -webkit-background-clip: text; background-clip: text;
+        color: transparent;
     }
+    .welcome p { color: var(--muted); font-size: 0.95rem; }
 
-    /* ===== Stats Row ===== */
+    /* ===== Stats ===== */
     .stats-row {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         gap: 1.2rem;
-        animation: fadeUp 0.8s ease;
+        margin-bottom: 2.5rem;
+        animation: fadeUp 0.7s ease;
     }
     .stat-card {
-        padding: 1.5rem;
+        padding: 1.4rem;
         background: var(--glass);
         border: 1px solid var(--glass-border);
         border-radius: 16px;
         backdrop-filter: blur(10px);
         transition: all 0.3s ease;
-        position: relative;
-        overflow: hidden;
+        position: relative; overflow: hidden;
     }
     .stat-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
+        content: ""; position: absolute;
+        top: 0; left: 0; right: 0; height: 2px;
         background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-        opacity: 0;
-        transition: opacity 0.3s ease;
+        opacity: 0; transition: opacity 0.3s ease;
     }
     .stat-card:hover {
         background: var(--card-hover);
         transform: translateY(-4px);
         border-color: rgba(255,255,255,0.15);
     }
-    .stat-card:hover::before {
-        opacity: 1;
+    .stat-card:hover::before { opacity: 1; }
+    .stat-icon {
+        font-size: 1.4rem;
+        margin-bottom: 0.6rem;
+        display: inline-block;
     }
     .stat-value {
-        font-size: 2rem;
-        font-weight: 800;
+        font-size: 1.9rem; font-weight: 800;
         background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-        -webkit-background-clip: text;
-        background-clip: text;
+        -webkit-background-clip: text; background-clip: text;
         color: transparent;
         margin-bottom: 0.3rem;
     }
     .stat-label {
-        font-size: 0.85rem;
-        color: var(--muted);
+        font-size: 0.85rem; color: var(--muted);
         font-weight: 500;
+    }
+
+    /* ===== Section Headers ===== */
+    .section-header {
+        display: flex; justify-content: space-between;
+        align-items: center; margin-bottom: 1.2rem;
+        flex-wrap: wrap; gap: 1rem;
+        animation: fadeUp 0.8s ease;
+    }
+    .section-header h2 {
+        font-size: 1.3rem; font-weight: 700;
+        letter-spacing: -0.01em;
+    }
+
+    /* ===== Search ===== */
+    .search-box {
+        position: relative;
+        flex: 1;
+        max-width: 300px;
+    }
+    .search-box input {
+        width: 100%;
+        padding: 0.65rem 1rem 0.65rem 2.5rem;
+        background: var(--glass);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        color: var(--text);
+        font-size: 0.9rem;
+        font-family: inherit;
+        outline: none;
+        transition: all 0.25s ease;
+    }
+    .search-box input:focus {
+        border-color: var(--accent-1);
+        background: rgba(124,92,255,0.06);
+        box-shadow: 0 0 0 3px rgba(124,92,255,0.12);
+    }
+    .search-box input::placeholder { color: var(--muted-2); }
+    .search-box::before {
+        content: "🔍";
+        position: absolute;
+        left: 0.9rem;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 0.85rem;
+        opacity: 0.5;
+    }
+
+    /* ===== Filter Tabs ===== */
+    .filter-tabs {
+        display: flex; gap: 0.4rem;
+        background: var(--glass);
+        padding: 0.3rem;
+        border-radius: 12px;
+        border: 1px solid var(--glass-border);
+    }
+    .filter-tab {
+        padding: 0.5rem 1rem;
+        border: none; background: transparent;
+        color: var(--muted);
+        cursor: pointer; border-radius: 8px;
+        font-size: 0.85rem; font-weight: 600;
+        font-family: inherit;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+    }
+    .filter-tab:hover { color: var(--text); }
+    .filter-tab.active {
+        background: linear-gradient(135deg, var(--accent-1), #5b8cff);
+        color: white;
+        box-shadow: 0 4px 12px rgba(124,92,255,0.3);
     }
 
     /* ===== Tests Grid ===== */
@@ -243,6 +277,7 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 1.2rem;
+        margin-bottom: 2.5rem;
         animation: fadeUp 0.9s ease;
     }
     .test-card {
@@ -252,18 +287,13 @@
         border-radius: 16px;
         backdrop-filter: blur(10px);
         transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-        display: flex;
-        flex-direction: column;
-        position: relative;
-        overflow: hidden;
+        display: flex; flex-direction: column;
+        position: relative; overflow: hidden;
     }
     .test-card::before {
-        content: "";
-        position: absolute;
-        inset: 0;
+        content: ""; position: absolute; inset: 0;
         background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 50%), rgba(124,92,255,0.15), transparent 40%);
-        opacity: 0;
-        transition: opacity 0.4s ease;
+        opacity: 0; transition: opacity 0.4s ease;
         pointer-events: none;
     }
     .test-card:hover::before { opacity: 1; }
@@ -272,20 +302,55 @@
         border-color: rgba(124,92,255,0.35);
         background: var(--card-hover);
     }
+
+    .test-header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 0.6rem;
+        margin-bottom: 0.8rem;
+    }
     .test-card h3 {
         color: var(--text);
-        font-size: 1.1rem;
-        font-weight: 700;
-        margin-bottom: 0.6rem;
+        font-size: 1.1rem; font-weight: 700;
         letter-spacing: -0.01em;
+        flex: 1;
     }
+    .test-badge {
+        font-size: 0.7rem;
+        font-weight: 700;
+        padding: 0.25rem 0.6rem;
+        border-radius: 6px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        white-space: nowrap;
+    }
+    .test-badge.easy { background: rgba(16,185,129,0.15); color: #10b981; }
+    .test-badge.medium { background: rgba(245,158,11,0.15); color: #f59e0b; }
+    .test-badge.hard { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .test-badge.done { background: rgba(124,92,255,0.15); color: #c4b5fd; }
+
     .test-card p {
         color: var(--muted);
         font-size: 0.9rem;
-        margin-bottom: 1.2rem;
+        margin-bottom: 1rem;
         flex: 1;
         line-height: 1.5;
     }
+
+    .test-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.8rem;
+        color: var(--muted-2);
+        margin-bottom: 1rem;
+    }
+    .test-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
     .start-btn {
         padding: 0.75rem 1.3rem;
         background: linear-gradient(135deg, var(--accent-1), #5b8cff);
@@ -301,9 +366,7 @@
         overflow: hidden;
     }
     .start-btn::before {
-        content: "";
-        position: absolute;
-        inset: 0;
+        content: ""; position: absolute; inset: 0;
         background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
         transform: translateX(-100%);
         transition: transform 0.6s ease;
@@ -313,12 +376,20 @@
         transform: translateY(-2px);
         box-shadow: 0 12px 32px rgba(124,92,255,0.5);
     }
+    .start-btn.completed {
+        background: rgba(16,185,129,0.15);
+        color: #10b981;
+        border: 1px solid rgba(16,185,129,0.3);
+        box-shadow: none;
+    }
+    .start-btn.completed:hover {
+        background: rgba(16,185,129,0.25);
+    }
 
     /* ===== Results List ===== */
     .results-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.8rem;
+        display: flex; flex-direction: column;
+        gap: 0.8rem; margin-bottom: 2rem;
         animation: fadeUp 1s ease;
     }
     .result-item {
@@ -326,12 +397,10 @@
         background: var(--glass);
         border: 1px solid var(--glass-border);
         border-radius: 14px;
-        display: flex;
-        justify-content: space-between;
+        display: flex; justify-content: space-between;
         align-items: center;
         backdrop-filter: blur(10px);
-        text-decoration: none;
-        color: inherit;
+        text-decoration: none; color: inherit;
         transition: all 0.3s ease;
     }
     .result-item:hover {
@@ -340,19 +409,20 @@
         transform: translateX(6px);
     }
     .result-item strong {
-        font-weight: 600;
-        font-size: 1rem;
+        font-weight: 600; font-size: 1rem;
         color: var(--text);
     }
     .result-score {
         font-weight: 700;
         color: var(--success);
-        font-size: 1.15rem;
+        font-size: 1.1rem;
         padding: 0.4rem 0.9rem;
         background: rgba(16,185,129,0.1);
         border: 1px solid rgba(16,185,129,0.2);
         border-radius: 10px;
     }
+    .result-score.low { color: #f59e0b; background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.2); }
+    .result-score.fail { color: #ef4444; background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.2); }
     .result-date {
         font-size: 0.8rem;
         color: var(--muted-2);
@@ -369,18 +439,28 @@
         border-radius: 14px;
         font-size: 0.95rem;
         backdrop-filter: blur(10px);
+        grid-column: 1 / -1;
+    }
+    .empty .big-icon {
+        font-size: 2.5rem;
+        margin-bottom: 0.6rem;
+        opacity: 0.6;
+    }
+    .empty h3 {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.4rem;
+    }
+    .empty p {
+        font-size: 0.9rem;
+        color: var(--muted);
     }
 
     /* ===== Animations ===== */
     @keyframes fadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     /* ===== Responsive ===== */
@@ -388,8 +468,10 @@
         .navbar { padding: 0.9rem 1rem; }
         .user-email { display: none; }
         .container { padding: 0 1rem; margin: 1.5rem auto; }
-        h1 { font-size: 1.6rem; }
-        h2 { font-size: 1.15rem; margin-top: 2rem; }
+        .welcome h1 { font-size: 1.6rem; }
+        .section-header { flex-direction: column; align-items: stretch; }
+        .search-box { max-width: 100%; }
+        .filter-tabs { overflow-x: auto; }
         .stats-row { grid-template-columns: 1fr; }
         .tests-grid { grid-template-columns: 1fr; }
     }
@@ -397,7 +479,6 @@
 </head>
 <body>
 
-<!-- Background layers -->
 <div class="bg-wrap"></div>
 <div class="grid-overlay"></div>
 <div class="orb o1"></div>
@@ -407,7 +488,7 @@
 <!-- Navbar -->
 <div class="navbar-wrap">
     <nav class="navbar">
-        <div class="brand">
+        <div class="brand" onclick="window.location.href='index.html'">
             <div class="brand-logo">📝</div>
             <span class="brand-text">MockTest</span>
         </div>
@@ -419,109 +500,246 @@
 </div>
 
 <div class="container">
-    <h1>Dashboard</h1>
+    <!-- Welcome -->
+    <div class="welcome">
+        <h1 id="welcomeTitle">Welcome Back! 👋</h1>
+        <p id="welcomeSub">Ready to practice? Let's get started.</p>
+    </div>
 
+    <!-- Stats -->
     <div class="stats-row">
         <div class="stat-card">
+            <div class="stat-icon">📚</div>
             <div class="stat-value" id="statTests">0</div>
             <div class="stat-label">Available Tests</div>
         </div>
         <div class="stat-card">
+            <div class="stat-icon">✅</div>
             <div class="stat-value" id="statAttempted">0</div>
             <div class="stat-label">Tests Attempted</div>
         </div>
         <div class="stat-card">
+            <div class="stat-icon">🎯</div>
             <div class="stat-value" id="statAvg">0%</div>
             <div class="stat-label">Average Score</div>
         </div>
+        <div class="stat-card">
+            <div class="stat-icon">🔥</div>
+            <div class="stat-value" id="statBest">0%</div>
+            <div class="stat-label">Best Score</div>
+        </div>
     </div>
 
-    <h2>Available Tests</h2>
+    <!-- Available Tests Section -->
+    <div class="section-header">
+        <h2>📖 Available Tests</h2>
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search tests...">
+        </div>
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all">All</button>
+            <button class="filter-tab" data-filter="pending">Pending</button>
+            <button class="filter-tab" data-filter="completed">Completed</button>
+        </div>
+    </div>
+
     <div class="tests-grid" id="testsGrid">
         <div class="empty">Loading tests...</div>
     </div>
 
-    <h2>My Results</h2>
+    <!-- Results Section -->
+    <div class="section-header">
+        <h2>📊 Recent Results</h2>
+    </div>
     <div class="results-list" id="resultsList">
         <div class="empty">Loading results...</div>
     </div>
 </div>
 
-<!-- Mouse glow on test cards -->
-<script>
-    document.querySelectorAll('.test-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
-            card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
-        });
-    });
-</script>
-
 <script src="js/config.js"></script>
 <script>
-    autoRestoreFullscreen();
-    createFullscreenIndicator();
+    let allTests = [];
+    let allResults = [];
+    let currentFilter = 'all';
+    let currentSearch = '';
 
     (async () => {
         const user = await requireAuth();
         if (!user) return;
         document.getElementById('userEmail').textContent = user.email || '';
-        loadTests();
-        loadResults();
+
+        // Personalized welcome
+        const emailName = (user.email || '').split('@')[0];
+        document.getElementById('welcomeTitle').textContent = `Welcome, ${emailName}! 👋`;
+
+        await loadData();
     })();
 
-    async function loadTests() {
-        const data = await apiCall('/api/tests/list');
-        const grid = document.getElementById('testsGrid');
-        if (data.success && data.tests.length) {
-            document.getElementById('statTests').textContent = data.tests.length;
-            grid.innerHTML = data.tests.map(t => `
-                <div class="test-card">
-                    <h3>${escapeHtml(t.title)}</h3>
-                    <p>${escapeHtml(t.description || 'No description')}</p>
-                    <a href="test.html?id=${t.id}" class="start-btn">Start Test</a>
-                </div>
-            `).join('');
-            
-            // Re-attach mouse glow to new cards
-            document.querySelectorAll('.test-card').forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
-                    card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
-                });
-            });
-        } else {
-            document.getElementById('statTests').textContent = '0';
-            grid.innerHTML = '<div class="empty">No tests available</div>';
-        }
+    async function loadData() {
+        const [testsData, resultsData] = await Promise.all([
+            apiCall('/api/tests/list'),
+            apiCall('/api/results/my')
+        ]);
+
+        allTests = testsData.success ? testsData.tests : [];
+        allResults = resultsData.success ? resultsData.results : [];
+
+        updateStats();
+        renderTests();
+        renderResults();
     }
 
-    async function loadResults() {
-        const data = await apiCall('/api/results/my');
-        const list = document.getElementById('resultsList');
-        if (data.success && data.results.length) {
-            document.getElementById('statAttempted').textContent = data.results.length;
-            const totalScore = data.results.reduce((a, r) => a + r.score, 0);
-            const totalMax = data.results.reduce((a, r) => a + r.total, 0);
+    function updateStats() {
+        document.getElementById('statTests').textContent = allTests.length;
+        document.getElementById('statAttempted').textContent = allResults.length;
+
+        if (allResults.length > 0) {
+            const totalScore = allResults.reduce((a, r) => a + r.score, 0);
+            const totalMax = allResults.reduce((a, r) => a + r.total, 0);
             const avg = totalMax > 0 ? Math.round((totalScore / totalMax) * 100) : 0;
             document.getElementById('statAvg').textContent = avg + '%';
 
-            list.innerHTML = data.results.map(r => `
+            const best = Math.max(...allResults.map(r => r.total > 0 ? (r.score / r.total) * 100 : 0));
+            document.getElementById('statBest').textContent = Math.round(best) + '%';
+        } else {
+            document.getElementById('statAvg').textContent = '0%';
+            document.getElementById('statBest').textContent = '0%';
+        }
+    }
+
+    function getTestIdFromResult(r) {
+        return r.test_id || (r.tests && r.tests.id);
+    }
+
+    function getCompletedTestIds() {
+        return new Set(allResults.map(r => getTestIdFromResult(r)).filter(Boolean));
+    }
+
+    function renderTests() {
+        const grid = document.getElementById('testsGrid');
+        const completedIds = getCompletedTestIds();
+
+        let filtered = allTests.filter(t => {
+            // Filter by search
+            if (currentSearch) {
+                const s = currentSearch.toLowerCase();
+                const matchesSearch =
+                    (t.title || '').toLowerCase().includes(s) ||
+                    (t.description || '').toLowerCase().includes(s);
+                if (!matchesSearch) return false;
+            }
+            // Filter by tab
+            if (currentFilter === 'pending') return !completedIds.has(t.id);
+            if (currentFilter === 'completed') return completedIds.has(t.id);
+            return true;
+        });
+
+        if (filtered.length === 0) {
+            if (allTests.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty">
+                        <div class="big-icon">📭</div>
+                        <h3>No tests available</h3>
+                        <p>Please check back later or contact your teacher.</p>
+                    </div>
+                `;
+            } else {
+                grid.innerHTML = `
+                    <div class="empty">
+                        <div class="big-icon">🔍</div>
+                        <h3>No matching tests</h3>
+                        <p>Try a different search or filter.</p>
+                    </div>
+                `;
+            }
+            return;
+        }
+
+        grid.innerHTML = filtered.map(t => {
+            const isCompleted = completedIds.has(t.id);
+            const duration = t.duration_minutes || 30;
+            const badge = isCompleted ? 'done' : 'medium';
+            const badgeText = isCompleted ? '✓ Done' : 'New';
+
+            return `
+                <div class="test-card" data-test-id="${t.id}">
+                    <div class="test-header-row">
+                        <h3>${escapeHtml(t.title)}</h3>
+                        <span class="test-badge ${badge}">${badgeText}</span>
+                    </div>
+                    <p>${escapeHtml(t.description || 'No description available')}</p>
+                    <div class="test-meta">
+                        <span>⏱ ${duration} min</span>
+                        ${isCompleted ? '<span>✅ Attempted</span>' : '<span>🆕 Not attempted</span>'}
+                    </div>
+                    <a href="test.html?id=${t.id}" class="start-btn ${isCompleted ? 'completed' : ''}">
+                        ${isCompleted ? 'Retake Test' : 'Start Test'}
+                    </a>
+                </div>
+            `;
+        }).join('');
+
+        // Attach mouse glow
+        grid.querySelectorAll('.test-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+                card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+            });
+        });
+    }
+
+    function renderResults() {
+        const list = document.getElementById('resultsList');
+        if (!allResults.length) {
+            list.innerHTML = `
+                <div class="empty">
+                    <div class="big-icon">📊</div>
+                    <h3>No results yet</h3>
+                    <p>Start your first test to see results here!</p>
+                </div>
+            `;
+            return;
+        }
+
+        // Show latest 5 results
+        const recent = allResults.slice(0, 5);
+
+        list.innerHTML = recent.map(r => {
+            const pct = r.total > 0 ? (r.score / r.total) * 100 : 0;
+            let scoreClass = '';
+            if (pct < 40) scoreClass = 'fail';
+            else if (pct < 60) scoreClass = 'low';
+
+            return `
                 <a class="result-item" href="result.html?id=${r.id}">
                     <div>
                         <strong>${escapeHtml(r.tests?.title || 'Test')}</strong>
                         <div class="result-date">${new Date(r.created_at).toLocaleString()}</div>
                     </div>
-                    <div class="result-score">${r.score}/${r.total}</div>
+                    <div class="result-score ${scoreClass}">${r.score}/${r.total}</div>
                 </a>
-            `).join('');
-        } else {
-            list.innerHTML = '<div class="empty">No results yet. Start your first test!</div>';
-        }
+            `;
+        }).join('');
     }
 
+    // Filter tabs
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+        tab.onclick = () => {
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            currentFilter = tab.dataset.filter;
+            renderTests();
+        };
+    });
+
+    // Search
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        currentSearch = e.target.value.trim();
+        renderTests();
+    });
+
+    // Logout
     document.getElementById('logoutBtn').onclick = async () => {
         exitFullscreen();
         await apiCall('/api/auth/logout', { method: 'POST' });
