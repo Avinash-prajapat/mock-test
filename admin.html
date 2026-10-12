@@ -72,7 +72,7 @@
         vertical-align: middle;
     }
 
-    /* ===== ANIMATED BACKGROUND ===== */
+    /* ===== Background ===== */
     .bg-wrap {
         position: fixed; inset: 0; z-index: -2; overflow: hidden;
         background:
@@ -91,7 +91,7 @@
     }
 
     /* ====================================================
-       TOP NAVBAR (with hamburger)
+       TOPBAR
        ==================================================== */
     .topbar {
         position: sticky; top: 0; z-index: 100;
@@ -103,7 +103,6 @@
         display: flex; justify-content: space-between; align-items: center;
     }
     .topbar-left { display: flex; align-items: center; gap: 1rem; }
-    
     .hamburger {
         width: 40px; height: 40px;
         border-radius: 10px;
@@ -164,7 +163,7 @@
     .admin-chip .avatar {
         width: 26px; height: 26px;
         border-radius: 50%;
-        background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+        background: linear-gradient(135deg, #f59e0b, #ef4444);
         display: grid; place-items: center;
         font-size: 0.75rem;
         color: white;
@@ -178,14 +177,11 @@
         position: fixed; inset: 0;
         background: rgba(0,0,0,0.6);
         backdrop-filter: blur(4px);
-        opacity: 0;
-        visibility: hidden;
+        opacity: 0; visibility: hidden;
         transition: all 0.3s ease;
         z-index: 200;
     }
-    .sidebar-overlay.active {
-        opacity: 1; visibility: visible;
-    }
+    .sidebar-overlay.active { opacity: 1; visibility: visible; }
 
     .sidebar {
         position: fixed;
@@ -357,6 +353,15 @@
     }
 
     /* ====================================================
+       TAB PANELS
+       ==================================================== */
+    .tab-panel {
+        display: none;
+        animation: fadeUp 0.4s ease;
+    }
+    .tab-panel.active { display: block; }
+
+    /* ====================================================
        STATS
        ==================================================== */
     .stats-grid {
@@ -372,7 +377,6 @@
         border-radius: 16px;
         backdrop-filter: blur(10px);
         transition: all 0.3s ease;
-        position: relative; overflow: hidden;
     }
     .stat-card:hover {
         background: var(--card-hover);
@@ -399,7 +403,41 @@
     .stat-label { font-size: 0.85rem; color: var(--muted); font-weight: 500; }
 
     /* ====================================================
-       CARDS & LISTS
+       SECTION HEADER
+       ==================================================== */
+    .section-header {
+        display: flex; justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.2rem;
+        flex-wrap: wrap; gap: 1rem;
+    }
+    .section-header h2 {
+        font-size: 1.3rem; font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--text);
+    }
+    .search-input {
+        padding: 0.7rem 1rem;
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        border-radius: 10px;
+        color: var(--text);
+        font-size: 0.9rem;
+        font-family: inherit;
+        outline: none;
+        transition: all 0.25s ease;
+        max-width: 300px;
+        width: 100%;
+    }
+    .search-input:focus {
+        border-color: var(--accent-1);
+        background: rgba(124,92,255,0.06);
+        box-shadow: 0 0 0 3px rgba(124,92,255,0.12);
+    }
+    .search-input::placeholder { color: var(--muted-2); }
+
+    /* ====================================================
+       CARDS & ITEMS
        ==================================================== */
     .card {
         background: var(--glass);
@@ -409,21 +447,7 @@
         backdrop-filter: blur(10px);
         margin-bottom: 1rem;
     }
-    .card-header {
-        display: flex; justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        flex-wrap: wrap; gap: 1rem;
-    }
-    .card-header h3 {
-        color: var(--text);
-        font-size: 1.15rem; font-weight: 700;
-        margin: 0;
-    }
 
-    /* ====================================================
-       ITEMS
-       ==================================================== */
     .test-item {
         background: var(--glass);
         border: 1px solid var(--glass-border);
@@ -470,11 +494,11 @@
     }
     .question-item .answer {
         font-size: 0.85rem; color: var(--success);
-        font-weight: 600; display: inline-flex;
-        align-items: center; gap: 0.3rem;
+        font-weight: 600;
     }
     .question-item-actions { margin-top: 0.8rem; display: flex; gap: 0.5rem; }
 
+    /* Empty state */
     .empty {
         text-align: center;
         padding: 3rem 2rem;
@@ -484,10 +508,21 @@
         border-radius: 14px;
         font-size: 0.95rem;
     }
-    .empty-icon { font-size: 2.5rem; margin-bottom: 0.8rem; opacity: 0.6; }
+    .empty .big-icon { font-size: 2.5rem; margin-bottom: 0.6rem; opacity: 0.6; }
+    .empty h3 { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; }
+
+    /* Inline loader */
+    .inline-loader {
+        display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        padding: 3rem 2rem; gap: 1rem;
+        color: var(--muted);
+    }
+    .inline-loader .loader-circle { width: 36px; height: 36px; border-width: 3px; }
+    .inline-loader span { font-size: 0.9rem; font-weight: 500; }
 
     /* ====================================================
-       BUTTONS (with active state)
+       BUTTONS
        ==================================================== */
     .btn {
         padding: 0.7rem 1.3rem;
@@ -503,7 +538,6 @@
         justify-content: center;
         gap: 0.4rem;
         position: relative;
-        overflow: hidden;
     }
     .btn:active:not(:disabled) {
         transform: scale(0.95) translateY(1px) !important;
@@ -716,7 +750,7 @@
 <body>
 
 <!-- GLOBAL LOADER -->
-<div id="globalLoader">
+<div id="globalLoader" class="hidden">
     <div class="loader-circle"></div>
     <div class="loader-text">Loading...</div>
 </div>
@@ -737,7 +771,7 @@
     </div>
     <div class="topbar-right">
         <div class="admin-chip">
-            <div class="avatar">A</div>
+            <div class="avatar" id="adminAvatar">A</div>
             <span class="email" id="adminEmail">admin@...</span>
         </div>
     </div>
@@ -783,7 +817,7 @@
 <!-- ============ MAIN CONTENT ============ -->
 <div class="main-content">
 
-    <!-- DASHBOARD -->
+    <!-- ============ DASHBOARD TAB ============ -->
     <div class="tab-panel active" id="panel-dashboard">
         <div class="welcome-card">
             <div class="welcome-content">
@@ -817,28 +851,24 @@
         </div>
     </div>
 
-    <!-- TESTS -->
+    <!-- ============ TESTS TAB ============ -->
     <div class="tab-panel" id="panel-tests">
-        <div class="card">
-            <div class="card-header">
-                <h3>📝 All Tests</h3>
-                <button class="btn btn-primary" id="createTestBtn">+ Create Test</button>
-            </div>
-            <div id="testsList"></div>
+        <div class="section-header">
+            <h2>📝 All Tests</h2>
+            <button class="btn btn-primary" id="createTestBtn">+ Create Test</button>
         </div>
+        <div id="testsList"></div>
     </div>
 
-    <!-- RESULTS -->
+    <!-- ============ RESULTS TAB ============ -->
     <div class="tab-panel" id="panel-results">
-        <div class="card">
-            <div class="card-header">
-                <h3>📋 All Student Results</h3>
-                <input type="text" id="resultSearch" placeholder="🔍 Search by name, email or test..."
-                    style="max-width:320px; width:100%; padding:0.7rem 1rem; background:var(--input-bg); border:1px solid var(--input-border); border-radius:10px; color:var(--text); font-size:0.9rem; outline:none;">
-            </div>
-            <div id="resultsContainer" class="table-wrapper"></div>
+        <div class="section-header">
+            <h2>📋 All Student Results</h2>
+            <input type="text" id="resultSearch" class="search-input" placeholder="🔍 Search by name, email or test...">
         </div>
+        <div id="resultsContainer" class="table-wrapper"></div>
     </div>
+
 </div>
 
 <!-- ============ MODALS ============ -->
@@ -973,54 +1003,73 @@
     sidebarCloseBtn.onclick = closeSidebar;
     sidebarOverlay.onclick = closeSidebar;
 
-    // ============ TAB SWITCH ============
-    function switchTab(tab) {
-        // Update main content panels
-        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-        document.getElementById('panel-' + tab).classList.add('active');
+    // ============ STATE ============
+    let currentTab = 'dashboard';
+    let dashboardLoaded = false;
+    let testsLoaded = false;
+    let resultsLoaded = false;
+    let allResultsData = [];
+    let currentTestId = null;
 
-        // Update sidebar active states
+    // ============ TAB SWITCH (lazy) ============
+    async function switchTab(tab, showLoader = true) {
+        closeSidebar();
+
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        const panel = document.getElementById('panel-' + tab);
+        if (panel) panel.classList.add('active');
+
         document.querySelectorAll('.sidebar-item[data-tab]').forEach(item => {
             item.classList.toggle('active', item.dataset.tab === tab);
         });
 
-        // Close sidebar on mobile
-        if (window.innerWidth < 900) closeSidebar();
+        currentTab = tab;
 
-        // Load data
-        if (tab === 'dashboard') loadStats();
-        if (tab === 'tests') loadTests();
-        if (tab === 'results') {
-            showPageLoader('Loading results...');
-            loadResults().then(() => hidePageLoader());
+        if (tab === 'dashboard' && !dashboardLoaded) {
+            if (showLoader) showPageLoader('Loading dashboard...');
+            await loadStats();
+            dashboardLoaded = true;
+            if (showLoader) hidePageLoader();
+        } else if (tab === 'tests') {
+            if (showLoader) showPageLoader('Loading tests...');
+            await loadTests();
+            testsLoaded = true;
+            if (showLoader) hidePageLoader();
+        } else if (tab === 'results') {
+            if (showLoader) showPageLoader('Loading results...');
+            await loadResults();
+            resultsLoaded = true;
+            if (showLoader) hidePageLoader();
         }
     }
+
     document.querySelectorAll('.sidebar-item[data-tab]').forEach(item => {
-        item.onclick = () => switchTab(item.dataset.tab);
+        item.onclick = () => switchTab(item.dataset.tab, true);
     });
 
     // ============ AUTH CHECK & INIT ============
     (async () => {
         showPageLoader('Verifying access...');
-        
+
         const check = await apiCall('/api/admin/check');
         if (!check.success || !check.is_admin) {
             window.location.href = 'admin-login.html';
             return;
         }
-        
+
         const me = await apiCall('/api/auth/me');
         const email = me.email || '';
         document.getElementById('adminEmail').textContent = email;
-        
-        // Welcome name from email
+
         const name = email.split('@')[0] || 'Admin';
         const prettyName = name.charAt(0).toUpperCase() + name.slice(1);
         document.getElementById('welcomeName').textContent = prettyName;
-        document.querySelector('.admin-chip .avatar').textContent = prettyName.charAt(0).toUpperCase();
-        
-        showPageLoader('Fetching data...');
-        await Promise.all([loadStats(), loadTests()]);
+        document.getElementById('adminAvatar').textContent = prettyName.charAt(0).toUpperCase();
+
+        // Initial data (dashboard)
+        await loadStats();
+        dashboardLoaded = true;
+
         hidePageLoader();
     })();
 
@@ -1047,14 +1096,14 @@
                         <p>${escapeHtml(t.description || 'No description')} · ⏱ ${t.duration_minutes} min · 📝 ${t.question_count} questions</p>
                     </div>
                     <div class="test-item-actions">
-                        <button class="btn btn-primary btn-sm" onclick="manageQuestions('${t.id}', '${escapeHtml(t.title)}')">Questions</button>
-                        <button class="btn btn-secondary btn-sm" onclick="editTest('${t.id}')">✏️ Edit</button>
+                        <button class="btn btn-primary btn-sm" onclick="manageQuestions('${t.id}', '${escapeHtml(t.title)}', this)">Questions</button>
+                        <button class="btn btn-secondary btn-sm" onclick="editTest('${t.id}', this)">✏️ Edit</button>
                         <button class="btn btn-danger btn-sm" onclick="deleteTest('${t.id}', this)">🗑 Delete</button>
                     </div>
                 </div>
             `).join('');
         } else {
-            container.innerHTML = '<div class="empty"><div class="empty-icon">📭</div>No tests yet. Create your first test!</div>';
+            container.innerHTML = '<div class="empty"><div class="big-icon">📭</div><h3>No tests yet</h3><p>Create your first test!</p></div>';
         }
     }
 
@@ -1067,8 +1116,10 @@
     };
     function closeTestModal() { document.getElementById('testModal').classList.remove('active'); }
 
-    async function editTest(id) {
+    async function editTest(id, btn) {
+        setBtnLoading(btn, true);
         const data = await apiCall('/api/admin/tests');
+        setBtnLoading(btn, false);
         if (!data.success) return;
         const t = data.tests.find(x => x.id === id);
         if (!t) return;
@@ -1093,8 +1144,13 @@
         const url = id ? `/api/admin/tests/${id}` : '/api/admin/tests';
         const method = id ? 'PUT' : 'POST';
         const data = await apiCall(url, { method, body: JSON.stringify(payload) });
-        if (data.success) { showToast(id ? 'Test updated!' : 'Test created!'); closeTestModal(); loadTests(); loadStats(); }
-        else showToast(data.error || 'Failed', 'error');
+        if (data.success) {
+            showToast(id ? 'Test updated!' : 'Test created!');
+            closeTestModal();
+            await loadTests();
+            // Refresh dashboard stats if loaded
+            if (dashboardLoaded) await loadStats();
+        } else showToast(data.error || 'Failed', 'error');
         setBtnLoading(btn, false);
     };
 
@@ -1102,20 +1158,28 @@
         if (!confirm('Delete this test and all its questions?')) return;
         setBtnLoading(btn, true);
         const data = await apiCall(`/api/admin/tests/${id}`, { method: 'DELETE' });
-        if (data.success) { showToast('Test deleted'); loadTests(); loadStats(); }
-        else { showToast(data.error || 'Failed', 'error'); setBtnLoading(btn, false); }
+        if (data.success) {
+            showToast('Test deleted');
+            await loadTests();
+            if (dashboardLoaded) await loadStats();
+        } else {
+            showToast(data.error || 'Failed', 'error');
+            setBtnLoading(btn, false);
+        }
     }
 
     // ============ QUESTIONS ============
-    let currentTestId = null;
-    async function manageQuestions(testId, testTitle) {
+    async function manageQuestions(testId, testTitle, btn) {
         currentTestId = testId;
         document.getElementById('questionsModalTitle').textContent = `Questions — ${testTitle}`;
         document.getElementById('questionsModal').classList.add('active');
-        document.getElementById('questionsList').innerHTML = '<div style="text-align:center;padding:2rem;"><div class="loader-circle" style="width:32px;height:32px;border-width:3px;margin:0 auto;"></div></div>';
+        document.getElementById('questionsList').innerHTML = '<div class="inline-loader"><div class="loader-circle"></div><span>Loading questions...</span></div>';
         await loadQuestions(testId);
     }
-    function closeQuestionsModal() { document.getElementById('questionsModal').classList.remove('active'); currentTestId = null; loadTests(); }
+    function closeQuestionsModal() {
+        document.getElementById('questionsModal').classList.remove('active');
+        currentTestId = null;
+    }
 
     async function loadQuestions(testId) {
         const data = await apiCall(`/api/admin/tests/${testId}/questions`);
@@ -1136,7 +1200,9 @@
                         <button class="btn btn-danger btn-sm" onclick="deleteQuestion('${q.id}', this)">🗑 Delete</button>
                     </div>
                 </div>`).join('');
-        } else { container.innerHTML = '<div class="empty">No questions yet.</div>'; }
+        } else {
+            container.innerHTML = '<div class="empty">No questions yet.</div>';
+        }
     }
 
     document.getElementById('addQuestionBtn').onclick = () => {
@@ -1182,9 +1248,8 @@
         if (data.success) {
             showToast(qId ? 'Question updated!' : 'Question added!');
             closeQuestionFormModal();
-            loadQuestions(currentTestId);
-        }
-        else showToast(data.error || 'Failed', 'error');
+            await loadQuestions(currentTestId);
+        } else showToast(data.error || 'Failed', 'error');
         setBtnLoading(btn, false);
     };
 
@@ -1192,28 +1257,47 @@
         if (!confirm('Delete this question?')) return;
         setBtnLoading(btn, true);
         const data = await apiCall(`/api/admin/questions/${qId}`, { method: 'DELETE' });
-        if (data.success) { showToast('Question deleted'); loadQuestions(currentTestId); }
-        else { showToast(data.error || 'Failed', 'error'); setBtnLoading(btn, false); }
+        if (data.success) {
+            showToast('Question deleted');
+            await loadQuestions(currentTestId);
+        } else {
+            showToast(data.error || 'Failed', 'error');
+            setBtnLoading(btn, false);
+        }
     }
 
     // ============ BULK UPLOAD ============
-    document.getElementById('bulkUploadBtn').onclick = () => { document.getElementById('bulkJson').value = ''; document.getElementById('bulkModal').classList.add('active'); };
+    document.getElementById('bulkUploadBtn').onclick = () => {
+        document.getElementById('bulkJson').value = '';
+        document.getElementById('bulkModal').classList.add('active');
+    };
     function closeBulkModal() { document.getElementById('bulkModal').classList.remove('active'); }
+
     document.getElementById('bulkSubmitBtn').onclick = async function() {
         if (!currentTestId) return;
         let questions;
         try { questions = JSON.parse(document.getElementById('bulkJson').value); }
         catch (err) { showToast('Invalid JSON format', 'error'); return; }
-        if (!Array.isArray(questions) || !questions.length) { showToast('Provide an array of questions', 'error'); return; }
+        if (!Array.isArray(questions) || !questions.length) {
+            showToast('Provide an array of questions', 'error');
+            return;
+        }
         setBtnLoading(this, true);
-        const data = await apiCall(`/api/admin/tests/${currentTestId}/questions/bulk`, { method: 'POST', body: JSON.stringify({ questions }) });
-        if (data.success) { showToast(`${data.inserted} questions uploaded!`); closeBulkModal(); loadQuestions(currentTestId); loadStats(); }
-        else showToast(data.error || 'Failed', 'error');
+        const data = await apiCall(`/api/admin/tests/${currentTestId}/questions/bulk`, {
+            method: 'POST',
+            body: JSON.stringify({ questions })
+        });
+        if (data.success) {
+            showToast(`${data.inserted} questions uploaded!`);
+            closeBulkModal();
+            await loadQuestions(currentTestId);
+        } else {
+            showToast(data.error || 'Failed', 'error');
+        }
         setBtnLoading(this, false);
     };
 
     // ============ RESULTS ============
-    let allResultsData = [];
     async function loadResults() {
         const data = await apiCall('/api/admin/results');
         if (data.success && data.results.length) {
@@ -1221,12 +1305,16 @@
             renderResults(allResultsData);
         } else {
             allResultsData = [];
-            document.getElementById('resultsContainer').innerHTML = '<div class="empty">No results yet.</div>';
+            document.getElementById('resultsContainer').innerHTML = '<div class="empty"><div class="big-icon">📊</div><h3>No results yet</h3><p>Student attempts will appear here.</p></div>';
         }
     }
+
     function renderResults(results) {
         const container = document.getElementById('resultsContainer');
-        if (!results || results.length === 0) { container.innerHTML = '<div class="empty">No matching results found.</div>'; return; }
+        if (!results || results.length === 0) {
+            container.innerHTML = '<div class="empty">No matching results found.</div>';
+            return;
+        }
         container.innerHTML = `<table><thead><tr><th>Student</th><th>Email</th><th>Test</th><th>Score</th><th>%</th><th>Date</th></tr></thead><tbody>
             ${results.map(r => {
                 const pct = r.total > 0 ? ((r.score / r.total) * 100).toFixed(1) : 0;
@@ -1234,6 +1322,7 @@
                 return `<tr><td>${escapeHtml(r.student_name)}</td><td>${escapeHtml(r.student_email)}</td><td>${escapeHtml(r.tests?.title || 'N/A')}</td><td>${r.score}/${r.total}</td><td style="color:${color};font-weight:700;">${pct}%</td><td>${new Date(r.created_at).toLocaleString()}</td></tr>`;
             }).join('')}</tbody></table>`;
     }
+
     document.getElementById('resultSearch').addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase().trim();
         if (!query) { renderResults(allResultsData); return; }
@@ -1245,13 +1334,33 @@
         renderResults(filtered);
     });
 
-    // ============ LOGOUT ============
+    // ============ LOGOUT → index.html ============
     document.getElementById('logoutBtn').onclick = async function() {
         if (!confirm('Logout from admin panel?')) return;
         setBtnLoading(this, true);
-        await apiCall('/api/auth/logout', { method: 'POST' });
-        window.location.href = 'admin-login.html';
+
+        try {
+            sessionStorage.clear();
+            localStorage.removeItem('fs_enabled_v2');
+            localStorage.removeItem('exam_fullscreen');
+        } catch (e) { }
+
+        try {
+            await apiCall('/api/auth/logout', { method: 'POST' });
+        } catch (e) { }
+
+        window.location.href = 'index.html';
     };
+
+    // ============ PAGE REFRESH PROTECTION ============
+    window.addEventListener('pageshow', async (event) => {
+        if (event.persisted) {
+            const check = await apiCall('/api/admin/check');
+            if (!check.success || !check.is_admin) {
+                window.location.href = 'admin-login.html';
+            }
+        }
+    });
 </script>
 </body>
 </html>
