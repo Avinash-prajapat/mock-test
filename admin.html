@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="logo.png">
+<meta name="theme-color" content="#7c5cff">
 <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -40,7 +41,6 @@
         -webkit-font-smoothing: antialiased;
     }
 
-    /* ===== GLOBAL LOADER ===== */
     #globalLoader {
         position: fixed; inset: 0; z-index: 9999;
         background: rgba(10, 10, 15, 0.9);
@@ -61,7 +61,6 @@
     .loader-text { font-size: 0.9rem; color: var(--muted); font-weight: 500; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ===== BUTTON SPINNER ===== */
     .btn-spinner {
         display: inline-block;
         width: 14px; height: 14px;
@@ -73,7 +72,6 @@
         vertical-align: middle;
     }
 
-    /* ===== Background ===== */
     .bg-wrap {
         position: fixed; inset: 0; z-index: -2; overflow: hidden;
         background:
@@ -91,9 +89,6 @@
         -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
     }
 
-    /* ====================================================
-       TOPBAR
-       ==================================================== */
     .topbar {
         position: sticky; top: 0; z-index: 100;
         backdrop-filter: blur(16px);
@@ -122,7 +117,6 @@
     }
     .hamburger:active { transform: scale(0.95); }
 
-    /* Brand — click se page reload hoga, redirect nahi */
     .brand {
         display: flex; align-items: center; gap: 0.6rem;
         font-size: 1.1rem; font-weight: 800;
@@ -178,9 +172,6 @@
         font-weight: 700;
     }
 
-    /* ====================================================
-       SIDEBAR
-       ==================================================== */
     .sidebar-overlay {
         position: fixed; inset: 0;
         background: rgba(0,0,0,0.6);
@@ -196,13 +187,16 @@
         top: 0; left: 0;
         width: var(--sidebar-width);
         height: 100vh;
+        height: 100dvh;
         background: var(--sidebar-bg);
         border-right: 1px solid var(--glass-border);
         z-index: 300;
         transform: translateX(-100%);
         transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-        display: flex; flex-direction: column;
-        overflow: hidden;  /* 🔥 Fixed: prevent body scroll */
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        -webkit-overflow-scrolling: touch;
     }
     .sidebar.active { transform: translateX(0); }
 
@@ -211,6 +205,7 @@
         border-bottom: 1px solid var(--glass-border);
         display: flex; align-items: center; justify-content: space-between;
         flex-shrink: 0;
+        background: var(--sidebar-bg);
     }
     .sidebar-brand {
         display: flex; align-items: center; gap: 0.6rem;
@@ -255,23 +250,31 @@
         color: #fca5a5;
     }
 
-    /* 🔥 Scrollable menu area */
     .sidebar-menu {
         padding: 1rem 0.8rem;
-        flex: 1;
-        overflow-y: auto;     /* 🔥 Vertical scroll */
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
         overflow-x: hidden;
-        -webkit-overflow-scrolling: touch;  /* 🔥 Smooth mobile scroll */
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+        overscroll-behavior: contain;
     }
-    /* Custom scrollbar */
     .sidebar-menu::-webkit-scrollbar { width: 6px; }
-    .sidebar-menu::-webkit-scrollbar-track { background: transparent; }
+    .sidebar-menu::-webkit-scrollbar-track {
+        background: transparent;
+        margin: 4px 0;
+    }
     .sidebar-menu::-webkit-scrollbar-thumb {
-        background: rgba(255,255,255,0.1);
+        background: rgba(255,255,255,0.12);
         border-radius: 3px;
     }
     .sidebar-menu::-webkit-scrollbar-thumb:hover {
-        background: rgba(255,255,255,0.2);
+        background: rgba(255,255,255,0.25);
+    }
+    .sidebar-menu {
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255,255,255,0.12) transparent;
     }
 
     .sidebar-section-title {
@@ -315,6 +318,7 @@
         font-size: 1rem;
         color: var(--muted);
         transition: color 0.2s;
+        flex-shrink: 0;
     }
     .sidebar-item:hover .sidebar-icon { color: var(--text); }
 
@@ -322,6 +326,7 @@
         padding: 1rem 0.8rem;
         border-top: 1px solid var(--glass-border);
         flex-shrink: 0;
+        background: var(--sidebar-bg);
     }
     .sidebar-item.danger:hover {
         background: rgba(239,68,68,0.15);
@@ -329,9 +334,6 @@
     }
     .sidebar-item.danger:hover .sidebar-icon { color: #fca5a5; }
 
-    /* ====================================================
-       MAIN CONTENT
-       ==================================================== */
     .main-content {
         padding: 2rem 1.5rem;
         max-width: 1200px;
@@ -339,7 +341,6 @@
         animation: fadeUp 0.5s ease;
     }
 
-    /* Welcome card */
     .welcome-card {
         background: linear-gradient(135deg, #7c5cff 0%, #5b8cff 100%);
         border-radius: 20px;
@@ -383,15 +384,9 @@
         max-width: 600px;
     }
 
-    /* ====================================================
-       TAB PANELS
-       ==================================================== */
     .tab-panel { display: none; animation: fadeUp 0.4s ease; }
     .tab-panel.active { display: block; }
 
-    /* ====================================================
-       STATS
-       ==================================================== */
     .stats-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -430,9 +425,6 @@
     }
     .stat-label { font-size: 0.85rem; color: var(--muted); font-weight: 500; }
 
-    /* ====================================================
-       SECTION HEADER
-       ==================================================== */
     .section-header {
         display: flex; justify-content: space-between;
         align-items: center;
@@ -464,9 +456,6 @@
     }
     .search-input::placeholder { color: var(--muted-2); }
 
-    /* ====================================================
-       CARDS & ITEMS
-       ==================================================== */
     .card {
         background: var(--glass);
         border: 1px solid var(--glass-border);
@@ -526,7 +515,6 @@
     }
     .question-item-actions { margin-top: 0.8rem; display: flex; gap: 0.5rem; }
 
-    /* Empty state */
     .empty {
         text-align: center;
         padding: 3rem 2rem;
@@ -548,9 +536,6 @@
     .inline-loader .loader-circle { width: 36px; height: 36px; border-width: 3px; }
     .inline-loader span { font-size: 0.9rem; font-weight: 500; }
 
-    /* ====================================================
-       BUTTONS
-       ==================================================== */
     .btn {
         padding: 0.7rem 1.3rem;
         border: none;
@@ -615,9 +600,6 @@
     }
     .btn-sm { padding: 0.45rem 0.9rem; font-size: 0.8rem; }
 
-    /* ====================================================
-       FORMS
-       ==================================================== */
     .form-group { margin-bottom: 1.2rem; }
     .form-group label {
         display: block; margin-bottom: 0.5rem;
@@ -650,9 +632,6 @@
     .form-group select option { background: var(--bg-2); color: var(--text); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
-    /* ====================================================
-       TABLE
-       ==================================================== */
     .table-wrapper {
         overflow-x: auto;
         background: var(--glass);
@@ -677,9 +656,6 @@
     table tr:last-child td { border-bottom: none; }
     table tr:hover td { background: var(--card-hover); }
 
-    /* ====================================================
-       MODALS — with close (✕) button
-       ==================================================== */
     .modal-overlay {
         position: fixed; inset: 0;
         background: rgba(0,0,0,0.7);
@@ -701,13 +677,12 @@
         border: 1px solid var(--glass-border);
         box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         animation: modalIn 0.3s ease;
-        position: relative;  /* 🔥 For close button */
+        position: relative;
     }
     @keyframes modalIn {
         from { opacity: 0; transform: scale(0.95); }
         to { opacity: 1; transform: scale(1); }
     }
-    /* 🔥 Close button (top-right) */
     .modal-close {
         position: absolute;
         top: 1rem; right: 1rem;
@@ -736,7 +711,7 @@
         color: var(--text);
         font-size: 1.3rem;
         font-weight: 700;
-        padding-right: 3rem;  /* 🔥 Space for close button */
+        padding-right: 3rem;
     }
     .modal-actions {
         display: flex; gap: 0.8rem;
@@ -754,9 +729,6 @@
         color: var(--muted);
     }
 
-    /* ====================================================
-       TOAST
-       ==================================================== */
     .toast {
         position: fixed;
         top: 90px; right: 20px;
@@ -784,8 +756,134 @@
     }
 
     /* ====================================================
-       RESPONSIVE
+       CUSTOM CONFIRM POPUP
        ==================================================== */
+    .popup-overlay {
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,0.75);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 99999;
+        padding: 1rem;
+        opacity: 0;
+        transition: opacity 0.25s ease;
+    }
+    .popup-overlay.active {
+        display: flex;
+        opacity: 1;
+    }
+    .popup {
+        background: var(--bg-2);
+        width: 100%;
+        max-width: 400px;
+        padding: 2rem;
+        border-radius: 20px;
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 25px 70px rgba(0,0,0,0.6);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        animation: popupIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .popup::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba(124,92,255,0.6), transparent);
+    }
+    @keyframes popupIn {
+        from { opacity: 0; transform: scale(0.9) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .popup-icon {
+        width: 64px; height: 64px;
+        border-radius: 50%;
+        display: grid; place-items: center;
+        font-size: 1.8rem;
+        margin: 0 auto 1.2rem;
+    }
+    .popup-icon.danger {
+        background: linear-gradient(135deg, rgba(239,68,68,0.2), rgba(239,68,68,0.1));
+        border: 2px solid rgba(239,68,68,0.3);
+        color: #fca5a5;
+        box-shadow: 0 0 30px rgba(239,68,68,0.2);
+    }
+    .popup-icon.warning {
+        background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(245,158,11,0.1));
+        border: 2px solid rgba(245,158,11,0.3);
+        color: #fcd34d;
+        box-shadow: 0 0 30px rgba(245,158,11,0.2);
+    }
+    .popup-icon.info {
+        background: linear-gradient(135deg, rgba(124,92,255,0.2), rgba(34,211,238,0.1));
+        border: 2px solid rgba(124,92,255,0.3);
+        color: #c4b5fd;
+        box-shadow: 0 0 30px rgba(124,92,255,0.2);
+    }
+
+    .popup h3 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 0.6rem;
+        letter-spacing: -0.01em;
+    }
+    .popup p {
+        font-size: 0.95rem;
+        color: var(--muted);
+        line-height: 1.55;
+        margin-bottom: 1.8rem;
+    }
+    .popup-actions {
+        display: flex;
+        gap: 0.7rem;
+    }
+    .popup-actions button {
+        flex: 1;
+        padding: 0.85rem 1rem;
+        border: none;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: inherit;
+    }
+    .popup-actions .popup-cancel {
+        background: var(--glass);
+        color: var(--text);
+        border: 1px solid var(--glass-border);
+    }
+    .popup-actions .popup-cancel:hover {
+        background: var(--card-hover);
+        border-color: rgba(255,255,255,0.2);
+        transform: translateY(-2px);
+    }
+    .popup-actions .popup-confirm {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        color: white;
+        box-shadow: 0 6px 20px rgba(239,68,68,0.35);
+    }
+    .popup-actions .popup-confirm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 28px rgba(239,68,68,0.5);
+    }
+    .popup-actions .popup-confirm.primary {
+        background: linear-gradient(135deg, var(--accent-1), #5b8cff);
+        box-shadow: 0 6px 20px rgba(124,92,255,0.35);
+    }
+    .popup-actions .popup-confirm.primary:hover {
+        box-shadow: 0 10px 28px rgba(124,92,255,0.5);
+    }
+    .popup-actions button:active {
+        transform: scale(0.97);
+    }
+
     @media (max-width: 768px) {
         .brand-text { display: none; }
         .admin-chip span.email { display: none; }
@@ -802,24 +900,20 @@
 </head>
 <body>
 
-<!-- GLOBAL LOADER -->
 <div id="globalLoader" class="hidden">
     <div class="loader-circle"></div>
     <div class="loader-text">Loading...</div>
 </div>
 
-<!-- Background -->
 <div class="bg-wrap"></div>
 <div class="grid-overlay"></div>
 
-<!-- ============ TOPBAR ============ -->
 <div class="topbar">
     <div class="topbar-left">
         <button class="hamburger" id="hamburgerBtn" title="Open menu">☰</button>
-        <!-- 🔥 Icon click = page reload (not redirect) -->
         <div class="brand" onclick="window.location.reload()">
             <div class="brand-logo">
-                <img src="logo.png" alt="Logo">
+                <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='🔐';">
             </div>
             <span class="brand-text">Admin Panel</span>
             <span class="badge">ADMIN</span>
@@ -833,23 +927,20 @@
     </div>
 </div>
 
-<!-- ============ SIDEBAR OVERLAY ============ -->
 <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-<!-- ============ SIDEBAR ============ -->
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
-        <!-- 🔥 Sidebar logo click = page reload -->
         <div class="sidebar-brand" onclick="window.location.reload()" style="cursor:pointer;">
             <div class="sidebar-brand-logo">
-                <img src="logo.png" alt="Logo">
+                <img src="logo.png" alt="Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='🔐';">
             </div>
             <span class="sidebar-brand-text">Admin</span>
         </div>
         <button class="sidebar-close" id="sidebarCloseBtn">✕</button>
     </div>
 
-    <div class="sidebar-menu">
+    <div class="sidebar-menu" id="sidebarMenu">
         <div class="sidebar-section-title">MAIN MENU</div>
         <button class="sidebar-item active" data-tab="dashboard">
             <span class="sidebar-icon">📊</span>
@@ -873,10 +964,8 @@
     </div>
 </aside>
 
-<!-- ============ MAIN CONTENT ============ -->
 <div class="main-content">
 
-    <!-- DASHBOARD TAB -->
     <div class="tab-panel active" id="panel-dashboard">
         <div class="welcome-card">
             <div class="welcome-content">
@@ -910,7 +999,6 @@
         </div>
     </div>
 
-    <!-- TESTS TAB -->
     <div class="tab-panel" id="panel-tests">
         <div class="section-header">
             <h2>📝 All Tests</h2>
@@ -919,7 +1007,6 @@
         <div id="testsList"></div>
     </div>
 
-    <!-- RESULTS TAB -->
     <div class="tab-panel" id="panel-results">
         <div class="section-header">
             <h2>📋 All Student Results</h2>
@@ -930,9 +1017,6 @@
 
 </div>
 
-<!-- ============ MODALS ============ -->
-
-<!-- Test Modal -->
 <div class="modal-overlay" id="testModal">
     <div class="modal">
         <button class="modal-close" onclick="closeTestModal()" title="Close">✕</button>
@@ -950,7 +1034,6 @@
     </div>
 </div>
 
-<!-- Questions Modal -->
 <div class="modal-overlay" id="questionsModal">
     <div class="modal" style="max-width: 800px;">
         <button class="modal-close" onclick="closeQuestionsModal()" title="Close">✕</button>
@@ -963,7 +1046,6 @@
     </div>
 </div>
 
-<!-- Question Form Modal -->
 <div class="modal-overlay" id="questionFormModal">
     <div class="modal">
         <button class="modal-close" onclick="closeQuestionFormModal()" title="Close">✕</button>
@@ -996,7 +1078,6 @@
     </div>
 </div>
 
-<!-- Bulk Modal -->
 <div class="modal-overlay" id="bulkModal">
     <div class="modal">
         <button class="modal-close" onclick="closeBulkModal()" title="Close">✕</button>
@@ -1007,6 +1088,19 @@
         <div class="modal-actions">
             <button type="button" class="btn btn-secondary" onclick="closeBulkModal()">Cancel</button>
             <button type="button" class="btn btn-success" id="bulkSubmitBtn">Upload</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============ CUSTOM CONFIRM POPUP ============ -->
+<div class="popup-overlay" id="confirmPopup">
+    <div class="popup">
+        <div class="popup-icon danger" id="popupIcon">⚠️</div>
+        <h3 id="popupTitle">Are you sure?</h3>
+        <p id="popupMessage">Do you want to continue?</p>
+        <div class="popup-actions">
+            <button class="popup-cancel" id="popupCancelBtn">Cancel</button>
+            <button class="popup-confirm" id="popupConfirmBtn">Confirm</button>
         </div>
     </div>
 </div>
@@ -1047,33 +1141,107 @@
         setTimeout(() => t.classList.remove('show'), 3000);
     }
 
+    // ============ CUSTOM CONFIRM POPUP ============
+    function showConfirm(options) {
+        const overlay = document.getElementById('confirmPopup');
+        const iconEl = document.getElementById('popupIcon');
+        const titleEl = document.getElementById('popupTitle');
+        const msgEl = document.getElementById('popupMessage');
+        const cancelBtn = document.getElementById('popupCancelBtn');
+        const confirmBtn = document.getElementById('popupConfirmBtn');
+
+        titleEl.textContent = options.title || 'Are you sure?';
+        msgEl.textContent = options.message || 'Do you want to continue?';
+        cancelBtn.textContent = options.cancelText || 'Cancel';
+        confirmBtn.textContent = options.confirmText || 'Confirm';
+
+        iconEl.textContent = options.icon || '⚠️';
+        iconEl.className = 'popup-icon ' + (options.iconType || 'danger');
+
+        if (options.primary) {
+            confirmBtn.classList.add('primary');
+        } else {
+            confirmBtn.classList.remove('primary');
+        }
+
+        overlay.classList.add('active');
+
+        const newCancel = cancelBtn.cloneNode(true);
+        const newConfirm = confirmBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(newCancel, cancelBtn);
+        confirmBtn.parentNode.replaceChild(newConfirm, confirmBtn);
+
+        const close = () => overlay.classList.remove('active');
+
+        newCancel.onclick = () => {
+            close();
+            if (options.onCancel) options.onCancel();
+        };
+        newConfirm.onclick = () => {
+            close();
+            if (options.onConfirm) options.onConfirm();
+        };
+
+        overlay.onclick = (e) => {
+            if (e.target === overlay) {
+                close();
+                if (options.onCancel) options.onCancel();
+            }
+        };
+
+        const escHandler = (e) => {
+            if (e.key === 'Escape') {
+                close();
+                document.removeEventListener('keydown', escHandler);
+                if (options.onCancel) options.onCancel();
+            }
+        };
+        document.addEventListener('keydown', escHandler);
+    }
+
     // ============ SIDEBAR CONTROL ============
     const sidebar = document.getElementById('sidebar');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const sidebarMenu = document.getElementById('sidebarMenu');
     const hamburgerBtn = document.getElementById('hamburgerBtn');
     const sidebarCloseBtn = document.getElementById('sidebarCloseBtn');
 
     function openSidebar() {
         sidebar.classList.add('active');
         sidebarOverlay.classList.add('active');
-        document.body.style.overflow = 'hidden';  // 🔥 Prevent body scroll
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+            const activeItem = sidebarMenu.querySelector('.sidebar-item.active');
+            if (activeItem) activeItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }, 300);
     }
     function closeSidebar() {
         sidebar.classList.remove('active');
         sidebarOverlay.classList.remove('active');
-        document.body.style.overflow = '';  // 🔥 Restore scroll
+        document.body.style.overflow = '';
     }
     hamburgerBtn.onclick = openSidebar;
     sidebarCloseBtn.onclick = closeSidebar;
     sidebarOverlay.onclick = closeSidebar;
 
-    // ============ MODAL CLICK OUTSIDE = CLOSE ============
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sidebar.classList.contains('active')) {
+            closeSidebar();
+        }
+    });
+
+    let touchStartX = 0;
+    sidebar.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+    }, { passive: true });
+    sidebar.addEventListener('touchmove', (e) => {
+        const diff = e.touches[0].clientX - touchStartX;
+        if (diff < -80) closeSidebar();
+    }, { passive: true });
+
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
         overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                // Click directly on overlay (not inside modal)
-                overlay.classList.remove('active');
-            }
+            if (e.target === overlay) overlay.classList.remove('active');
         });
     });
 
@@ -1083,7 +1251,6 @@
     let allResultsData = [];
     let currentTestId = null;
 
-    // ============ TAB SWITCH (lazy) ============
     async function switchTab(tab, showLoader = true) {
         closeSidebar();
 
@@ -1101,8 +1268,7 @@
             if (showLoader && !dashboardLoaded) showPageLoader('Loading dashboard...');
             await loadStats();
             dashboardLoaded = true;
-            if (showLoader && !dashboardLoaded) hidePageLoader();
-            if (globalLoader.classList.contains('hidden') === false) hidePageLoader();
+            if (showLoader) hidePageLoader();
         } else if (tab === 'tests') {
             if (showLoader) showPageLoader('Loading tests...');
             await loadTests();
@@ -1118,7 +1284,6 @@
         item.onclick = () => switchTab(item.dataset.tab, true);
     });
 
-    // ============ AUTH CHECK & INIT ============
     (async () => {
         showPageLoader('Verifying access...');
 
@@ -1143,7 +1308,6 @@
         hidePageLoader();
     })();
 
-    // ============ STATS ============
     async function loadStats() {
         const data = await apiCall('/api/admin/stats');
         if (data.success) {
@@ -1154,7 +1318,6 @@
         }
     }
 
-    // ============ TESTS ============
     async function loadTests() {
         const data = await apiCall('/api/admin/tests');
         const container = document.getElementById('testsList');
@@ -1223,21 +1386,30 @@
         setBtnLoading(btn, false);
     };
 
-    async function deleteTest(id, btn) {
-        if (!confirm('Delete this test and all its questions?')) return;
-        setBtnLoading(btn, true);
-        const data = await apiCall(`/api/admin/tests/${id}`, { method: 'DELETE' });
-        if (data.success) {
-            showToast('Test deleted');
-            await loadTests();
-            if (dashboardLoaded) await loadStats();
-        } else {
-            showToast(data.error || 'Failed', 'error');
-            setBtnLoading(btn, false);
-        }
+    // ============ DELETE TEST — Custom Popup ============
+    function deleteTest(id, btn) {
+        showConfirm({
+            title: 'Delete Test?',
+            message: 'This will permanently delete the test and all its questions. This action cannot be undone.',
+            confirmText: 'Yes, Delete',
+            cancelText: 'Cancel',
+            icon: '🗑️',
+            iconType: 'danger',
+            onConfirm: async () => {
+                setBtnLoading(btn, true);
+                const data = await apiCall(`/api/admin/tests/${id}`, { method: 'DELETE' });
+                if (data.success) {
+                    showToast('Test deleted');
+                    await loadTests();
+                    if (dashboardLoaded) await loadStats();
+                } else {
+                    showToast(data.error || 'Failed', 'error');
+                    setBtnLoading(btn, false);
+                }
+            }
+        });
     }
 
-    // ============ QUESTIONS ============
     async function manageQuestions(testId, testTitle, btn) {
         currentTestId = testId;
         document.getElementById('questionsModalTitle').textContent = `Questions — ${testTitle}`;
@@ -1322,20 +1494,29 @@
         setBtnLoading(btn, false);
     };
 
-    async function deleteQuestion(qId, btn) {
-        if (!confirm('Delete this question?')) return;
-        setBtnLoading(btn, true);
-        const data = await apiCall(`/api/admin/questions/${qId}`, { method: 'DELETE' });
-        if (data.success) {
-            showToast('Question deleted');
-            await loadQuestions(currentTestId);
-        } else {
-            showToast(data.error || 'Failed', 'error');
-            setBtnLoading(btn, false);
-        }
+    // ============ DELETE QUESTION — Custom Popup ============
+    function deleteQuestion(qId, btn) {
+        showConfirm({
+            title: 'Delete Question?',
+            message: 'This question will be permanently removed from the test.',
+            confirmText: 'Yes, Delete',
+            cancelText: 'Cancel',
+            icon: '🗑️',
+            iconType: 'danger',
+            onConfirm: async () => {
+                setBtnLoading(btn, true);
+                const data = await apiCall(`/api/admin/questions/${qId}`, { method: 'DELETE' });
+                if (data.success) {
+                    showToast('Question deleted');
+                    await loadQuestions(currentTestId);
+                } else {
+                    showToast(data.error || 'Failed', 'error');
+                    setBtnLoading(btn, false);
+                }
+            }
+        });
     }
 
-    // ============ BULK UPLOAD ============
     document.getElementById('bulkUploadBtn').onclick = () => {
         document.getElementById('bulkJson').value = '';
         document.getElementById('bulkModal').classList.add('active');
@@ -1366,7 +1547,6 @@
         setBtnLoading(this, false);
     };
 
-    // ============ RESULTS ============
     async function loadResults() {
         const data = await apiCall('/api/admin/results');
         if (data.success && data.results.length) {
@@ -1403,27 +1583,30 @@
         renderResults(filtered);
     });
 
-    // ============ LOGOUT → index.html + DATA CLEAR ============
-    document.getElementById('logoutBtn').onclick = async function() {
-        if (!confirm('Logout from admin panel? You will need to login again.')) return;
-        setBtnLoading(this, true);
+    // ============ LOGOUT — Custom Popup ============
+    document.getElementById('logoutBtn').onclick = function() {
+        showConfirm({
+            title: 'Logout?',
+            message: 'Are you sure you want to logout from the admin panel? You will need to login again.',
+            confirmText: 'Yes, Logout',
+            cancelText: 'Cancel',
+            icon: '🚪',
+            iconType: 'danger',
+            onConfirm: async () => {
+                try {
+                    sessionStorage.clear();
+                    localStorage.clear();
+                } catch (e) { }
 
-        // 🔥 Clear all session data
-        try {
-            sessionStorage.clear();
-            localStorage.clear();  // 🔥 Sab kuch clear
-        } catch (e) { }
+                try {
+                    await apiCall('/api/auth/logout', { method: 'POST' });
+                } catch (e) { }
 
-        // Call API to clear server session
-        try {
-            await apiCall('/api/auth/logout', { method: 'POST' });
-        } catch (e) { }
-
-        // Redirect to home page (index.html)
-        window.location.href = 'index.html';
+                window.location.href = 'index.html';
+            }
+        });
     };
 
-    // ============ PAGE REFRESH PROTECTION ============
     window.addEventListener('pageshow', async (event) => {
         if (event.persisted) {
             const check = await apiCall('/api/admin/check');
@@ -1433,7 +1616,6 @@
         }
     });
 
-    // 🔥 BLOCK direct access if not admin
     window.addEventListener('load', async () => {
         const check = await apiCall('/api/admin/check');
         if (!check.success || !check.is_admin) {
